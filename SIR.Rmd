@@ -33,7 +33,7 @@ At this point we have all seen at least one epidemic, if not many, happen around
 
 1. **Transmission**. This is the process by which uninfected, but susceptible individuals become infected. There are several routes of transmission (e.g., by direct contact, from the environment, via the bite of some arthropod vector), but we'll come back to these later. 
 
-2.  **Virulence**. This is the disease caused by infection---morbidity---potentially including death---mortality. This can range from barely detectable to mild (e.g., a fever and the sniffles) to very severe (e.g., bleeding out of every orrafice).  Actually, every biological and medical discipline seems to use this word differently^[To a virologist, virulence means the capacity to replicate efficiently in a host, but to a doctor virulence usually refers to the severity of symptoms.]. I'm a disease ecologist and so we will think about virulence as the disease-induced reduction in host fitness. This usually implies direct mortality, although it could also be making an individual sick enough they are more likely to die from other causes (e.g., predation, starvation). It would also include loss of reproductive output^[There are many, many castrating parasites, and not all of them are sexually-transmitted.]. 
+2.  **Virulence**. This is the disease caused by infection---morbidity---potentially including death---mortality. This can range from barely detectable to mild (e.g., a fever and the sniffles) to very severe (e.g., bleeding out of every orifice).  Actually, every biological and medical discipline seems to use this word differently^[To a virologist, virulence means the capacity to replicate efficiently in a host, but to a doctor virulence usually refers to the severity of symptoms.]. I'm a disease ecologist and so we will think about virulence as the disease-induced reduction in host fitness. This usually implies direct mortality, although it could also be making an individual sick enough they are more likely to die from other causes (e.g., predation, starvation). It would also include loss of reproductive output^[There are many, many castrating parasites, and not all of them are sexually-transmitted.]. 
  
 3. **Recovery**.  The job of the immune system is to prevent infections from taking hold and and to clear them out if they get established. When we say recovery, we mean the latter. Yes, there's lots of fascinating complexities to how this all works^[It is worth noting that while we tend to take a very mammalian-focused view of immunology, with innate and acquired branches, B- and T-cells, cytokines and all of that, virtually every organism has some sort of immune system.  Have you heard of the CRISPR-Cas9 system that is all the rage in molecular biology? It comes from the antiviral defense system of bacteria. And plants have sophisticated immune responses, too.], but for our purposes we need to make only one distinction: Is there immune memory or not? If not, individuals recover, but can be re-infected. If there is memory, recovered individuals are resistant to re-infection, at least for some time^[Yes, immunity to some pathogens wains. That is why you need booster shots, e.g., for tetanus.].  
 
@@ -191,7 +191,7 @@ $$
 \frac{dS}{dt} = -\beta\frac{I}{N}S.
 $$
 
-Notice that there is no way to gain new susceptible individuals, since we are not including birth or recovery without resistance (or waining immunity). They only flow out as they become infected.
+Notice that there is no way to gain new susceptible individuals, since we are not including birth or recovery without resistance (or waning immunity). They only flow out as they become infected.
 
 The infected box gains infections at this same rate of transmission as they are lost from susceptible class---this is a flow from $S$ to $I$, after all---and then they are lost to virulence and recovery.
 
@@ -199,7 +199,7 @@ $$
 \frac{dI}{dt} = +\beta\frac{I}{N}S - \alpha I - \gamma I.
 $$
 
-Finally, we gain individuals in the recovered/resistant box as individuals recover, but there is no way to lose them since we are not thinking about waining immunity or other forms of mortality. 
+Finally, we gain individuals in the recovered/resistant box as individuals recover, but there is no way to lose them since we are not thinking about waning immunity or other forms of mortality. 
 
 $$
 \frac{dR}{dt} = + \gamma I.
@@ -221,7 +221,7 @@ Now try something. Since we know that the whole population size is $N=S+I+R$, we
 
 ## A little aside on unit conversion
 
-It is important and can be very helpful to remember that we have writtern out _equations_. The stuff on the right-hand side of the equal signs must equal the stuff on the left hand sides. This includes the units. So for instance, if $dS/dt$ is in units of numbers of individual per time (e.g., days), everything on the right hand side must, collectively, be in the same units of numbers of individual per time. So what are the units on $\beta$ if $\beta\tfrac{I}{N}S$ has units of numbers of indiduals per time? If $I$, $N$, and $S$ are all numbers and we don't know what the units of $\beta$ are we can write:
+It is important and can be very helpful to remember that we have written out _equations_. The stuff on the right-hand side of the equal signs must equal the stuff on the left hand sides. This includes the units. So for instance, if $dS/dt$ is in units of numbers of individual per time (e.g., days), everything on the right hand side must, collectively, be in the same units of numbers of individual per time. So what are the units on $\beta$ if $\beta\tfrac{I}{N}S$ has units of numbers of individuals per time? If $I$, $N$, and $S$ are all numbers and we don't know what the units of $\beta$ are we can write:
 $$
 \frac{\text{numbers}}{\text{time}} = \text{?} \times \frac{\text{numbers}}{\text{numbers}} \times \text{numbers}
 $$
@@ -248,11 +248,11 @@ knitr::include_graphics("dimensional_analysis.png")
 
 # The dynamics of an epidemic
 
-So we have our model, but, I can almost hear you asking, what does it _do_? We're about to get there, simulating or running or solving these equations^[We won't worry about these details of how, but if you'r interested, it's a version of the Runga-Kutta method. Or, like I said, don't worry about it.] so that we can see how $S$, $I$, and $R$ change through time. But first I want you to take a moment and draw on these axes what _you_ think these three quantities will look like through time. Try it. Start at time zero with a large susceptible population ($S$ is big), a single infected ($I=1$), and no resistant individuals ($R=0$). What happens to these three groups as the epidemic progresses? You would probably do well to move in small steps, starting with $S$ and then thinking about $I$ and $R$. 
+So we have our model, but, I can almost hear you asking, what does it _do_? We're about to get there, simulating or running or solving these equations^[We won't worry about these details of how, but if you're interested, it's a version of the Runga-Kutta method. Or, like I said, don't worry about it.] so that we can see how $S$, $I$, and $R$ change through time. But first I want you to take a moment and draw on these axes what _you_ think these three quantities will look like through time. Try it. Start at time zero with a large susceptible population ($S$ is big), a single infected ($I=1$), and no resistant individuals ($R=0$). What happens to these three groups as the epidemic progresses? You would probably do well to move in small steps, starting with $S$ and then thinking about $I$ and $R$. 
 
 \newpage
 
-```{r simpleSI}
+```{r simpleSIR}
 SIR <- odeModel( 
           main = function (time, init, parms, ...) { 
             # (1) unpack variables
@@ -295,7 +295,7 @@ out(SIR) %>%
 
 # Why epidemics fade: think of fire
 
-Lastly, why did the epidemic fade? That is, why did the infected category enventually decline to near zero levels? I hope you can intuitively answer that, like a fire running out of fuel, the epidemic ran out of susceptible individual to infect (around day 12 or 13) and then those individuals that were infected at that point eventually died or recovered. 
+Lastly, why did the epidemic fade? That is, why did the infected category eventually decline to near zero levels? I hope you can intuitively answer that, like a fire running out of fuel, the epidemic ran out of susceptible individual to infect (around day 12 or 13) and then those individuals that were infected at that point eventually died or recovered. 
 
 
 We can better understand the growth and decline of infecteds by thinking about the rate at which infections are gained (and lost) as a function of the number of infected individuals, $I$, sort of like we did when thinking about population growth rate in the exponential and logistic models. 
@@ -315,7 +315,7 @@ tibble(I = 0:100,
 ```
 
 
-We can see that the rate of losses increases linearly with $I$, with a slope of $alpha + \gamma$, but it will take a bit more to understand the gains term, or transmission. First, let us simplify things a bit and ignore the recovered group, $R$, by setting $\gamma = 0$ and shunting all of this recovery into the virulence term ($\alpha = 0.04 + 0.08 = 0.12$). Since we can ignore the $R$ class, we see that $N=S+I$ and, by rearrangment, $S=N-I$. If we place this in the gains equation and do some re-arranging we get:
+We can see that the rate of losses increases linearly with $I$, with a slope of $alpha + \gamma$, but it will take a bit more to understand the gains term, or transmission. First, let us simplify things a bit and ignore the recovered group, $R$, by setting $\gamma = 0$ and shunting all of this recovery into the virulence term ($\alpha = 0.04 + 0.08 = 0.12$). Since we can ignore the $R$ class, we see that $N=S+I$ and, by rearrangement, $S=N-I$. If we place this in the gains equation and do some re-arranging we get:
 
 \begin{equation*}
 \begin{aligned}
@@ -374,7 +374,7 @@ R_0 &= \beta \times 1/(\alpha + \gamma) \\
 
 This is the magic term $R_0$, often called "R-naught" from the British English habit of calling zero, naught. It is also known as the reproductive number of the infection^[And its interpretation is analogous to the reproductive number of an organism estimated from a life table, $R_0 = \sum l_x b_x$ if you've seen that elsewhere.]. If $R_0>1$, meaning that an infection is expected to more than replace itself, the epidemic is expected to grow, on average, and if $R_0<1$, meaning an infection will not replace itself, the epidemic is expected to fade before it really gets going. 
 
-For context, one study^[[Liu et al. (2020) J. Travel Med.](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7074654/)] of early estimates of $R_0$ for COVID-19 found values from a low of 1.5 to a high of 6.68 and one^[Zhang et al. (2020) Int. J. Infect. Dis.](https://www.sciencedirect.com/science/article/pii/S1201971220300916)] from the Diamond Princess cruise ship, which was a nice, closed and well-studied population, was 2.28. All of these estimates suggest that COVID-19 would tend to grow, but by different amounts. Why the range of estimates? Some of it is just a product of statistical uncertainty and data sets of varying size and quality. But more fundamentally, that rates of transmission and the duration of infection are going to depend on the population in which the infection is spreading (e.g., young or old, healthy or sick) and the local conditions (e.g., crowded or not, little or lots of movement and contacts, as well as, perhaps, temperature and humidity). In other words, $R_0$ is _not_ a fixed characteristic of an infection or pathogen, but rather a product of that pathogen in a particular host population. 
+For context, one study^[[Liu et al. (2020) J. Travel Med.](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7074654/)] of early estimates of $R_0$ for COVID-19 found values from a low of 1.5 to a high of 6.68 and one^[[Zhang et al. (2020) Int. J. Infect. Dis.](https://www.sciencedirect.com/science/article/pii/S1201971220300916)] from the Diamond Princess cruise ship, which was a nice, closed and well-studied population, was 2.28. All of these estimates suggest that COVID-19 would tend to grow, but by different amounts. Why the range of estimates? Some of it is just a product of statistical uncertainty and data sets of varying size and quality. But more fundamentally, that rates of transmission and the duration of infection are going to depend on the population in which the infection is spreading (e.g., young or old, healthy or sick) and the local conditions (e.g., crowded or not, little or lots of movement and contacts, as well as, perhaps, temperature and humidity). In other words, $R_0$ is _not_ a fixed characteristic of an infection or pathogen, but rather a product of that pathogen in a particular host population. 
 
 It is important to remember that $R_0$ is defined with a single infected entering a wholly susceptible population. When an epidemic has begun this is no longer the case and so we instead think of the _effective_ reproductive number, $R$ or $R_{t}$, which describes the same things given whatever $I$ and $S$ are at the time^[See this site for a very state-by-state estimates of $R_t$ https://rt.live/]. 
 
@@ -398,7 +398,7 @@ out(SIR) %>%
   scale_y_log10(labels = trans_format("log10", math_format(10^.x)))
 ```
 
-Clearly, none of these lines are straight ovr the whole time period, but look at the line for the infected individuals. It looks like its initial increase is following a straight line for a while, and then it seems to decline along a straight line later. (You can probably find some bits of the other two lines that approximately straight for some stretches, too. But let us focus on the $I$ box.) Let me zoom in on the first ten days of the $I$ line and fit a linear regression to it:
+Clearly, none of these lines are straight over the whole time period, but look at the line for the infected individuals. It looks like its initial increase is following a straight line for a while, and then it seems to decline along a straight line later. (You can probably find some bits of the other two lines that approximately straight for some stretches, too. But let us focus on the $I$ box.) Let me zoom in on the first ten days of the $I$ line and fit a linear regression to it:
 ```{r, fig.margin=TRUE, fig.cap="The first ten days of dynamics of the infected box from an SIR model on a logarithmic y-axis. The blue line is from a linear regression."}
 out(SIR) %>% 
   # turn it from wide to long
@@ -430,13 +430,10 @@ You can think about most public health interventions as aimed at reducing $R_t$ 
 * **Vaccination** essentially reduces $S$ and puts those individuals into the $R$ class. This means fewer individuals that can get sick and, if you get a high enough fraction of the population vaccinated, that first infected individual will not find enough susceptibles in the population to replace itself before it dies or recovers. Indeed, there is a simple equation that describes the fraction of the population that must be vaccinated, which we call $q$, to ensure that $R_0 \leq 1$: $q \geq 1-\tfrac{1}{R_0}$. As you would expect, the higher $R_0$, the greater that fraction you must vaccinate. 
 * **Quarantine** and **social distancing** and **masks** are all aimed at reducing the number of potentially infectious contacts (remember $c(N)$?) or the probability of transmission given a contact ($\pi$), all of which should reduce $\beta$. From a public health point of view it does not matter whether a mask protects the wearer from infection or other people from an infected wearer, both reduce $\pi$. 
 * **Contact tracing** is especially important because it allows one to focus these efforts to reduce infectious contacts on 1) the infected people and 2) their close contacts that might have been infected. With good contact tracing^[Which requires good testing broadly applied.] one need not apply control measures blindly across a whole population. Indeed, most successful control programs, such as the recent end to the Ebola virus outbreak in northeastern Democratic Republic of the Congo^[https://www.scientificamerican.com/article/worlds-second-deadliest-ebola-outbreak-ends-in-democratic-republic-of-the-congo/], involve contact tracing in combination with quarantine and, often, targeted vaccination. 
-* **Treatment** of infections, often with chemical theraputics, can reduce the duration of an infection, as well as reduce morbidity and mortality. If individuals are infectious for less time^[It is important to note that some treatments and vaccines can reduce symptoms in a person or animal without reducing their ability to spread the infection. This is good for the individuals, sure, but it can exaserbate the spread of infection, making the epidemic worse. This is one of many potential conflicts between what is optimal for an indidividual vs for a population.], there is a shorter window for transmission, which can reduce $R_0$. 
+* **Treatment** of infections, often with chemical therapeutics, can reduce the duration of an infection, as well as reduce morbidity and mortality. If individuals are infectious for less time^[It is important to note that some treatments and vaccines can reduce symptoms in a person or animal without reducing their ability to spread the infection. This is good for the individuals, sure, but it can exacerbate the spread of infection, making the epidemic worse. This is one of many potential conflicts between what is optimal for an individual vs for a population.], there is a shorter window for transmission, which can reduce $R_0$. 
 
 
 THINGS TO HAVE THEM DO WITH SHINY MODEL
+
 * Change parameters and initial variable to see if they can make epidemic not happen (Fizzle) or be more severe (fewer R at end) by playing with contact rate, recovery rate, and virulence; S0
-
-
-
-
-At the end ask why, if epidemics eventually die-out, do we see persistent, endemic disease.
+* At the end ask why, if epidemics eventually die-out, do we see persistent, endemic disease.

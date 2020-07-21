@@ -1,0 +1,200 @@
+---
+title: "How should we think about transmission?"
+subtitle: "Frequency-dependence, density-dependence, and something in between"
+author: "Jesse Brunner"
+date: "`r Sys.Date()`"
+output:
+  tufte::tufte_handout: default
+header-includes:
+   - \usepackage{booktabs}
+   - \usepackage{cancel}
+---
+
+```{r setup, include=FALSE}
+library(tufte)
+# invalidate cache when the tufte version changes
+knitr::opts_chunk$set(tidy = FALSE, 
+                      message = FALSE, 
+                      warning = FALSE,
+                      echo = FALSE,
+                      cache.extra = packageVersion('tufte'))
+options(htmltools.dir.version = FALSE)
+```
+
+```{r, include=FALSE}
+library(tidyverse)
+library(scales) # for prettier axis labels
+library(simecol) # for running model 
+theme_set(theme_minimal())
+```
+
+# Transmission: where all of the interesting biology meets
+I'm going to display my bias here: Transmission is _the heart_ of infectious disease dynamics. Sure, it is important to understand the fate of an infected individual (i.e., recovery, death, etc.) and yes, we should even research the underlying mechanisms of pathogenesis and immune responses and so on. That's all cool. But 
+transmission is fundamental^[NIH, are you listening?] to the spread of infectious disease. It determines whether a pathogen can invade and persist in a host population, whether it will regulate the host population or cause its extinction, and whether management strategies are likely to be effective. Transmission is also arguably the most difficult aspect of host-parasite interactions to study^[The important part, parasites being transferred from one host to another, is essentially invisible. How would _you_ study it?].
+
+In outline, transmission is deceptively simple: an infected host comes into contact with a susceptible host and, with some probability, transmits the infection. But that simple description belies all of the interesting and important nuance to these interactions. For instance, we might assume that hosts contact each other randomly, like molecules in a chemical reaction^[You might see this called "mass action" transmission.], but real hosts are more likely to contact certain individuals than others. They might live in families or herds. They have social networks of interactions. Heck, they just live closer to some than others. And that does not even begin to consider all of the reasons some infected individuals are more infectious to others, why some susceptible individuals are more susceptible, and so on. To have a thorough understanding of transmission you need to think about population dynamics, behavior, geography, physiology, immunology, pathogen dynamics, and more! Yup, transmission is a meaty topic.
+
+# We simplify
+Given this complexity, we need to step back and simplify^[I am fond of saying that the goal of ecology is, or should be, to see how _litte_ we need to know about a system to have a good first approximation of how it works.]. How can we capture the general nature of the transmission process? 
+
+We wrote out one version of how to represent the transmission process mathematically when we were putting together our first $SIR$ model. We said the transmission rate was:
+$$
+S \times c(N) \times \frac{I}{N} \times \pi, 
+$$
+which can be read, from left to right, as susceptible hosts ($S$) contact other hosts at some rate, which likely is a function of the overall size of the population ($c(N)$), some fraction of which are with infectious individuals ($I/N$), and each of which has some probability of causing an infection ($\pi$). This captures the basic steps in the transmission process, and some version of this is used in most models of infectious disease, but I would like to point out that it is making several important, perhaps questionable assumptions:
+
+  * Contacts are made randomly. Every individual is equally likely to contact any other individual. There are no social networks here, nor geographic space. 
+  * Individuals in a box are identical. All individuals in the $S$ box are equally susceptible to infection and all those in the $I$ box are equally infectious. Moreover, there is no time-course of infectiousness (at least as written); as soon as an individual enters the $I$ box it is just as infectious as an indvidual that has been there for ages.
+  
+These assumptions are, well, wrong, but it might not matter a great deal. At least in large populations it might be reasonable to assume that the more-infectious-than-average individuals are balanced out by a group of less-infectious-than-average individuals, and so on. Similarly, at a large scale, contact structure (networks, space, etc.) might sort of wash out. In other words, this model, or transmission term in a model, does a pretty good job of describing the average transmission rate^[These and similar models are called "mean field" by the mathematically inclined. We love our jargon!]. We will come back to this averageness in another writing, but for now let's just note the assumptions and move on.
+
+
+
+# Two versions of the same simple model
+
+## Frequncy-dependent transmission
+In the prior discussion of the SIR model we made a simplifying assumption: "For simplicity, let's just assume that every susceptible makes $c'$ contacts per day, like 10 or something." And so we substituted $c'$ for $c(N)$. We then went on to say that $c' \times \pi = \beta$, since they are both constant values^[A constant times a constant is a constant.] in the model. Thus 
+
+\begin{equation*}
+\begin{aligned}
+&S \times c(N) \times \frac{I}{N} \times \pi\\
+=& S \times c' \pi\frac{I}{N}  \\
+=& S \times \beta \frac{I}{N} \\
+=& \beta \frac{I}{N}S.
+\end{aligned}
+\end{equation*}
+
+This is often called  frequency-dependent transmission, because the overall rate of transmission^[And the force of infection, which is the same thing, but for $S=1$ susceptible individual.] increases with the frequency or proportion of the population that is infected. 
+
+## Density-dependent transmission
+Before discussing this more, let me introduce the common alternative formulation, the density-dependent-transmission term. We start with the same general model, but instead of assuming that the contact rate is a constant (i.e., $c(N) = c'$), we assume that contact rate increases linearly with host density. That is, the larger the population, the more contacts an individual makes. Mathematically we could say that $c(N) = c''\times N$, where this new double-prime c is the contact rate per individual in the population which is then multiplied by the population size. Thus:
+
+\begin{equation*}
+\begin{aligned}
+&S \times c(N) \times \frac{I}{N} \times \pi\\
+=& S \times c''  \cancel{N} \times \frac{I}{\cancel{N}} \times \pi \\
+=& S \times c''  \times I \times \pi \\
+=& S \times c'' \pi \times I  \\
+=& S \times \beta \times I \\
+=& \beta IS,
+\end{aligned}
+\end{equation*}
+
+where $\beta =  c'' \pi$ as before^[Note that this new $\beta$ has different units than the frequency-dependent version.]. In this density-dependent version of the transmission term, the rate of transmission (and force of infection) increase with the number or density of infected hosts, hence the name. 
+
+## Why it matters
+OK, so we have two versions that look pretty similar, only in one we divide by $N$. What's the big deal? Well, it turns out that it matters. 
+
+
+```{r, fig.margin=TRUE, fig.cap="Contact rates and rates of transmission in the frequency-dependent and density-dependent models.  $\\beta_{FD} = 10 \text{contacts per day}\times 0.05 probability of infection per contact = 0.5$.  \\beta_{DD} = 0.1 \text{contacts per day per host}\times 0.05 probability of infection per contact = 0.005 N$."}
+df <- expand_grid(Density = 1:500, 
+                  Form = c("Frequency-dependent", "Density-dependent"))
+df %>% 
+  mutate(Contact = ifelse(Form=="Frequency-dependent", 10, 0.1*Density)) %>% 
+  ggplot(., aes(Density, Contact, color=Form)) +
+  geom_line() +
+  scale_y_continuous("Contact rate", sec.axis = sec_axis(~ .*0.05, name="Transmission rate")) + 
+  scale_x_continuous("Host population size") + 
+  theme(legend.position = "bottom",
+        legend.title=element_blank())
+```
+
+
+First, let's consider how contact rates change as host population size gets smaller and smaller (e.g., perhaps we are comparing transmission in populations of various sizes, or maybe we are thinking about what happens as disease reduces a population). The frequency-dependent model says that contact rates stay constant, whatever the host density. If it is 10 contacts per day per host in a population of 100 000 it is 10 contacts per day per host in a population of 100. The density-dependent model, however, says that if an individual has a, say, 1 in 100 chance of contacting any given individual per day, then that individual would make $0.01 \times 100000 = 1000$ contacts per day in the large population and $0.01 \times 100 = 1$ contact per day in the smaller population. Is one contact per day on average enough to sustain the chain of transmission? Only if transmission given a contact is essentially assured! In other words, the density-dependent version assumes that the rate at which an infection spreads should be higher in larger populations. Indeed, it also says that an infection cannot spread in very small populations. 
+
+Remember that for the frequency-dependent (FD) transmission model, R-naught, the reproductive number of the infection, is
+
+$$
+R_{0_{FD}} = \frac{\beta}{\alpha + \gamma}.
+$$
+In the density-dependent (DD) model it becomes 
+$$
+R_{0_{DD}} = \frac{\beta N}{\alpha + \gamma}.
+$$
+This means that the ability for an infection to take-off in a population depends on the size (or density) of the population. Below some critical population size, the infection cannot successfully invade. Sure, there may be a bit of transmission, but it should sputter out. 
+
+This density-dependent logic forms the basis for culling to prevent disease from invading wildlife and agricultural populations^[I'm focusing on the invasion side of things. Culling or depopulation is also used to prevent continued transmission during epidemics of economically important diseases such as avian influenza in chickens, African swine fever in pigs, and foot and mouth disease in cattle.]. It has historically been applied broadly in wildlife because there are few other levers to pull^[For instance, [culling of Badgers, which can carry tuberculosis, in the UK.](https://www.nytimes.com/2019/03/09/science/culling-badgers-disease.html)].
+
+
+#Which version is most realistic?
+Historically, the density-dependent model had been applied to wildlife, whose density can vary a great deal through time and from place to place, and the frequency-dependent model was used for human diseases, as human populations are less varied on the scale of an epidemic^[Yes, the Black Death affected up to a third of Europe, but that is rare, whereas some epidemics in wildlife might cause die-offs of over 90\% of a population.]. The frequency-dependent model is also used for sexually transmitted infections. The logic is that the number of sexual partners is largely independent of population size, even in wildlife. 
+
+The reality is that both versions are cartoons, extreme simplifications of reality that are used more for mathematical convenience than because they reflect the actual biology. The truth is that measuring transmission rates is incredibly difficult, so usually we do not know which version is best. We just use one version, find a value of $\beta$ that makes the model produce reasonable results, and move on. And really, it often does not matter. If the population is (relatively) constant, either transmission term can be made to produce the same dynamics. 
+
+But _still_, which is a better representation? Let me start by pointing out their flaws. The frequency-dependent model says that population size does not matter, but obviously at very low population sizes, this cannot hold. I mean, how can you have 10 unique contacts per day if there are only two of you? The frequency-dependent model falls apart at the low end. The density-dependent model realistically captures the increasing rate of contact with increasing population size, but then it extends that pattern to the absurd. I mean, with $\beta = 0.005$ this implies 50 contacts per day in a population of ten-thousand (reasonable) and 50,000 contacts per day in a population of ten-million (not so reasonable). Contact rates and transmission should not increase with density forever. Shouldn't they saturate or asymptote to some maximum?
+
+```{r, fig.margin=TRUE, fig.cap="Contact rates and rates of transmission in the frequency-dependent and density-dependent models, as before, with an a saturating \"in-between\" version in black."}
+df <- expand_grid(Density = 1:500, 
+                  Form = c("Frequency-dependent", "Density-dependent"))
+df %>% 
+  mutate(Contact = ifelse(Form=="Frequency-dependent", 10, 0.1*Density)) %>% 
+  ggplot(., aes(Density, Contact, color=Form)) +
+  geom_line() +
+  stat_function(color="black", 
+                fun=function(x) 11*x/(70+x)) + 
+  scale_y_continuous("Contact rate", sec.axis = sec_axis(~ .*0.05, name="Transmission rate")) + 
+  scale_x_continuous("Host population size") + 
+  theme(legend.position = "bottom",
+        legend.title=element_blank())
+```
+
+When researchers have actually measured transmission rates across densities they have almost always found^[My own work with amphibians and ranavirus transmission included.] that the best description was something like the black line, where transmission increases with host population size, but starts to level off. There are more reasons for this than we have time to list^[Heterogeneity in susceptibility, contact networks, the reality that all transmission is local, ...], but any sort of saturating function generally works pretty well. What's more, researchers usually find that the frequency-dependent model is a pretty reasonable approximation over a wide varity of conditions and the density-dependent model just plain stinks. It's the bedrock assumption of myriad models and wildlife management policy and so on and it is just plain bad. Once again, it pays to check your assumptions. 
+
+# Transmission from vectors
+
+So far we have been thinking about transmission of directly-transmitted infections, where some sort of contact between an infected and susceptible host is required. But many infections are transmitted by an intermediate, other organism, called a vector^[Usually a blood-feeding arthropod like a mosquito, tick, or kissing bug.] In these cases a susceptible host is bitten at some rate that likely increases with vector abundance or density, and again some fraction of these are infected and thus infectious. It's just like the density-dependent model. 
+
+$$
+\frac{dI}{dt} = \beta_H V I - \alpha_H I - \gamma_H I
+$$
+where $V$ is the density of infected vectors.
+
+We need to think about the
+
+$$
+\frac{dV}{dt} = \beta_V\frac{I}{N}U - \alpha_V I
+$$
+# Modes of transmission
+
+
+## Horiontal transmission
+
+So far all of the scenarios for how transmission migth work would fall into the box of horizontal transmission. This would include parasites pass between hosts through casual contact (e.g., speaking to another person, shaking hands), sex, aerosols, and so on. We just need to decide what sort of contact is potentially infectious and then that is the contact rate of interest. But there are many other ways that parasites go from one host to the next, and they often involve an intermediate. 
+
+# Transmission from the environment
+
+Many pathogens are transmitted from the abiotic components of the environment (e.g., water, soil, doorknobs). They tend to be environmentally resistant outside of a host, at least to a degree (hours^[E.g., SARS-CoV2] to weeks^[E.g., [hookworm](https://www.cdc.gov/parasites/hookworm/biology.html)] to years^[E.g., spores of _Bacillus anthracis_, the cause of anthrax, frequently [survive in the soil for years and even decades!](https://www.sciencedirect.com/science/article/pii/S0098299709000612)]). Or they might be free-living outside of a host (e.g., ticks and mosquitoes, trematodes and myriad worms). The point is that hosts obtain the parasite from somewhere in the environment rather than directly from another host or other animal. 
+
+If you were trying to describe environmental transmssion mathematically, you would need to keep track of the number or desnity of those parasites. That is, you'd want another box called $P$. Transmission would then look something like this:
+
+$$
+\frac{dI}{dt} = \beta P S + \dots
+$$
+where $\beta$ is basically the contact rate with _parasites_ times the probability infection given a contact. This again assumes random encounters and movements, like before. This way of thinking of transmission might be reasonable for anthrax in the environment or ticks that are questing for hosts in a particular spot. However, other parasites actually seek out their hosts. They swim or fly to their hosts, which is far from passive. We might thus make $\beta$ really big, to account for the fact that the contact rate is going to be very high, or we might instead think about this as akin to predation and use a different formulation. But really, the difference is that the infections come from $P$ rather than from the $I$.
+
+## Trophic transmission
+
+Sometimes parasites get into new hosts when they are consumed. Often this is a predator eating an infected prey. Frequently parasites with complex life cycles (e.g., XXX), that is parasites that have distinct reproductive and intermediate stages, are transmitted this way. For instance, the trematode that frequently causes limb deformities in amphibians,  _Riberoiea ondantrae_, LIFE CYCLE
+
+## Vector transmission
+
+mechanical vs. biolotical
+
+## Vertical transmission
+
+Lastly, there are some infections that are passed on from mother to offspring, exclusively or in addition to other routes of transmission. Think HIV or _Toxoplasma gondii_^[The acronym [CHEAPTORCHES](https://en.wikipedia.org/wiki/Vertically_transmitted_infection#Types_of_infections) includes many vertically transmitted pathogens of humans.] or _Wolbachia_. This mother-to-offspring route is called vertical transmission, as opposed to horizonal, which includes everything else we have mentioned so far. 
+
+Vertical transmission can be divided further by how the parasite gets into the offspring. Some parasites move from the mother into the egg (transovarial) or across the placenta into the embryo (transplacental), which is sometimes called "true" vertical transmission. These tend to be obligately vertically transmitted, meaning that is (virtually) the only way they get transmitted^[There are some really interesting questions about whether a parasite that is solely vertically transmitted can afford to be at all virulent, and whether those that _are_ virulent have some sneaky, unobserved means of transmission... more on this another time.]. Others, called "pseudo" vertically transmitted, are transferred during birth or egg laying, like accidental contamination. This opportunitistic route of transmission is usually a side gig for a horizontally transmitted parasite, but hey, Nature is complicated and these are not hard and fast rules. 
+
+Anyway, in terms of how you might describe vertical transmission mathematically, it really does not matter whether it is true or pseudovertical transmission. It just looks like birth into an infected class.
+$$
+\frac{dI}{dt} = b \phi I +\dots
+$$
+where $b$ is the birth rate of the hosts and some fraction, $\phi$, of those born to infecteds are born infected. If $\phi = 1$ then all of the offspring of an infected are born infected, but if $\phi < 1$ then some proportion ($1-\phi$) are born uninfected, into the susceptible class. Easy peasy, right?
+
+# Final notes
+
+* these are artificial distinctions; not every parasite fits neatly into a box. Moreover, there are other ways of classifying modes of transmission.
+
+* Note that often there are bioligcally important distinctions in how parasites are transmitted that might be modeled essentially the same way. E.g., true vs. pseudovertical transmission, biological vs. mechanical transmission by vectors.
+
