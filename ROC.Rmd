@@ -1,5 +1,7 @@
 ---
-title:  "ROC curves and thresholds in policy and public health"
+title: "The difficulty of diagnostics"
+subtitle:  "ROC curves and thresholds in policy and public health"
+author: "Jesse Brunner"
 date: "`r Sys.Date()`"
 output:
   tufte::tufte_handout: default

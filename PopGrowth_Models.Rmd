@@ -1,5 +1,6 @@
 ---
 title:  "Population growth & why we create models"
+author: "Jesse Brunner"
 date: "`r Sys.Date()`"
 output:
   tufte::tufte_handout: default
