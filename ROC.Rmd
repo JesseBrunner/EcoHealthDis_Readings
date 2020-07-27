@@ -1,10 +1,10 @@
 ---
 title: "The difficulty of diagnostics"
-subtitle:  "ROC curves and thresholds in policy and public health"
+subtitle: "ROC curves and thresholds in policy and public health"
 author: "Jesse Brunner"
 date: "`r Sys.Date()`"
 output:
-  tufte::tufte_handout: default
+  tufte::tufte_handout
 ---
 
 ```{r setup, include=FALSE}
@@ -285,7 +285,7 @@ tibble(Prevalence = seq(0,1, length.out = 101),
 
 ```
 
-Before moving on, there is one important caveat to all of this. As noted above, we were assuming that people were tested at random, so the probability they were infected before getting the test, the $\Pr (I^+)$ part, was just prevalence in the population. But if you go to the doctor because you are sick with flu-like symptoms and get tested, you are no longer a random person. The probability that you are infected is higher, probably much higher, than the general population. Maybe it's one in three instead of one in one-hundred. In that case, the probability you are actually infected given a positive test, like the one we described above, is 94%. So I am _not_ recommending you ignore your doctor and the lab results she gives you! I am, however, urging caution about things like using antibody tests across a broad swath of the population to assign "immunity cards." Run the numbers and see how much faith you would have that someone testing positive for antibodies is actually immune^[Setting aside the issue of whether some degree of antibody response confers _protective_ immunity, which is not, as of this writing, certain.]. 
+Before moving on, there is one important caveat to all of this. As noted above, we were assuming that people were tested at random, so the probability they were infected before getting the test, the $\Pr (I^+)$ part, was just prevalence in the population. But if you go to the doctor because you are sick with flu-like symptoms and get tested, you are no longer a random person. The probability that you are infected is higher, probably much higher, than the general population. Maybe it's one in three instead of one in one-hundred. In that case, the probability you are actually infected given a positive test, like the one we described above, is 94%. So I am _not_ recommending you ignore your doctor and the lab results she gives you! I am, however, urging caution about things like using antibody tests across a broad swath of the population to assign "immunity cards." Run the numbers and see how much faith you would have that someone testing positive for antibodies is actually immune^[All of which is complicated by the facts that [antibody titers vary in time and many tests measure non-neutralizing antobodies](https://www.nytimes.com/2020/07/26/health/coronvirus-antibody-tests.html), as well as that [infections can sometimes persist and hide out for long periods](https://www.nytimes.com/2020/07/22/health/covid-antibodies-herd-immunity.html)]. 
 
 # What are we to do? 
 

@@ -1,6 +1,6 @@
 ---
 title: "Epidemic dynamics"
-subtitle: "boxes and flows"
+subtitle: "Boxes and flows"
 author: "Jesse Brunner"
 date: "`r Sys.Date()`"
 output:
@@ -123,7 +123,7 @@ textrect(mid=c(0.91, 0.65), lab ="R",  radx = 0.07, rady = 0.2, cex = 2)
 textplain(mid=c(0.5, 0.06), lab ="Dead",  cex = 1.2)
 
 textplain(mid=c(0.3, 0.85), 
-          lab = "transmissoin", cex=0.7)
+          lab = "transmission", cex=0.7)
 ```
 
 
@@ -379,6 +379,7 @@ For context, one study^[[Liu et al. (2020) J. Travel Med.](https://www.ncbi.nlm.
 
 It is important to remember that $R_0$ is defined with a single infected entering a wholly susceptible population. When an epidemic has begun this is no longer the case and so we instead think of the _effective_ reproductive number, $R$ or $R_{t}$, which describes the same things given whatever $I$ and $S$ are at the time^[See this site for a very state-by-state estimates of $R_t$ https://rt.live/]. 
 
+
 ## An aside on estimating $R_0$ 
 
 You may recall that when we were discussing processes that grow exponentially, we included the early dynamics of epidemics. We also noted that log of a population  ($N(t)$, whether rice grains or infections) growing exponentially over time would follow a straight line with a slope of $r$, which we called the intrinsic rate of increase.
@@ -423,15 +424,18 @@ from which we get $1+`r round(coef(l)[2], 3)`/(0.04 + 0.08) = `r round(1+coef(l)
 
 In actual practice, researchers _do_ use this approach to estimate $R_0$, but actually sorting out the duration of time in the infected class can be tricky and nuanced. There are many other more sophisticated approaches to estimating $R_0$, as you might expect, but it is nice to see that 1) simple can work and 2) that, once again, plotting numbers against time on a logarithmic scale tells us something about the underlying process^[I'll let you think about what the linear _decline_ in $I$ on the graph above means and what the slope might represent.].
 
+# What does it take for an epidemic _not_ to grow? Reducing $R_0$ or $R_t < 1$
 
-# Control measures: reducing $R_0$ or $R_t < 1$
+You can think about most public health interventions as aimed at reducing $R_t$ or $R_0$ so that, on average, each infected individual produces less than one new infection. When this happens, the epidemic will start to fade. Of course this happens naturally when an infection has spread so much that it runs out of susceptible hosts^[[Although it can take a long time get there!](https://www.nytimes.com/interactive/2020/05/28/upshot/coronavirus-herd-immunity.html)]. Like a wildfire running out of unburned trees, the spread of the infection will slow down and eventually fade out. What's more, like the unburneed trees after a fire, an epidemic will not generally infect everyone, even if left uncontrolled. This was one of the more surprising results from early epidemic models. Even highly transmissible infections will not reach everone. 
 
-You can think about most public health interventions as aimed at reducing $R_t$ or $R_0$ so that, on average, each infected individual produces less than one new infection. When this happens, the epidemic will start to fade. (Of course this happens naturally when an infection has spread so much that it runs out of susceptible hosts---at least in situations like that described by our simple model---but usually we want to avoid that and we intervene earlier in ways that reduce $R_t \text{ or } R_0 < 1$.) Indeed you can map all interventions on to one or more components of the equation for $R_0$ or the underlying bits in our SIR model.
+This finding, and the underlying logic, that the we might reach a critical level of "**heard immunity**", has featured prominently in discussions about how the Covid-19 pandemic might end. If a large enough fraction of the population is immune (i.e., in the $R$ class) then infected individuals will, on average, fail to pass on their infection to someone else and the epidemic will wain. This has sometimes led to a I-might-as-well-get-it-over-with attitude in some, although [this is not without serious risks](https://www.nytimes.com/2020/04/08/opinion/coronavirus-parties-herd-immunity.html). A much better strategy is to intervene earlier in ways that reduce $R_t \text{ or } R_0 < 1$.) Indeed you can map all interventions on to one or more components of the equation for $R_0$ or the underlying bits in our SIR model.
 
-* **Vaccination** essentially reduces $S$ and puts those individuals into the $R$ class. This means fewer individuals that can get sick and, if you get a high enough fraction of the population vaccinated, that first infected individual will not find enough susceptibles in the population to replace itself before it dies or recovers. Indeed, there is a simple equation that describes the fraction of the population that must be vaccinated, which we call $q$, to ensure that $R_0 \leq 1$: $q \geq 1-\tfrac{1}{R_0}$. As you would expect, the higher $R_0$, the greater that fraction you must vaccinate. 
+* **Vaccination** essentially reduces $S$ and puts those individuals into the $R$ class. This means fewer individuals that can get sick and, if you get a high enough fraction of the population vaccinated, that first infected individual will not find enough susceptibles in the population to replace itself before it dies or recovers. This is heard immunity, but without all of the morbidity and mortality to get there^[[Yes, vaccines can have side effects, but those are much, much, much less severe than the disease.](https://gimletmedia.com/shows/science-vs/n8ho59/)]. What's more, you can protect particularly vulnerable groups, such as the very young or old or immunocompromised, by vaccinating the people around them.    
+  There is a simple equation that describes the fraction of the population that must be vaccinated, which we call $q$, to ensure that $R_0 \leq 1$: $q \geq 1-\tfrac{1}{R_0}$. As you would expect, the higher $R_0$, the greater that fraction you must vaccinate. 
 * **Quarantine** and **social distancing** and **masks** are all aimed at reducing the number of potentially infectious contacts (remember $c(N)$?) or the probability of transmission given a contact ($\pi$), all of which should reduce $\beta$. From a public health point of view it does not matter whether a mask protects the wearer from infection or other people from an infected wearer, both reduce $\pi$. 
 * **Contact tracing** is especially important because it allows one to focus these efforts to reduce infectious contacts on 1) the infected people and 2) their close contacts that might have been infected. With good contact tracing^[Which requires good testing broadly applied.] one need not apply control measures blindly across a whole population. Indeed, most successful control programs, such as the recent end to the Ebola virus outbreak in northeastern Democratic Republic of the Congo^[https://www.scientificamerican.com/article/worlds-second-deadliest-ebola-outbreak-ends-in-democratic-republic-of-the-congo/], involve contact tracing in combination with quarantine and, often, targeted vaccination. 
 * **Treatment** of infections, often with chemical therapeutics, can reduce the duration of an infection, as well as reduce morbidity and mortality. If individuals are infectious for less time^[It is important to note that some treatments and vaccines can reduce symptoms in a person or animal without reducing their ability to spread the infection. This is good for the individuals, sure, but it can exacerbate the spread of infection, making the epidemic worse. This is one of many potential conflicts between what is optimal for an individual vs for a population.], there is a shorter window for transmission, which can reduce $R_0$. 
+
 
 
 THINGS TO HAVE THEM DO WITH SHINY MODEL
