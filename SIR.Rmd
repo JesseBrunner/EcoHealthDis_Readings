@@ -60,7 +60,7 @@ The next step is to connect these boxes. How do we get new infections? They come
 Now it is time to start thinking about the rates at which the three processes occur. That is, how big are those arrows? What influences whether they are big or small? Let's start with the easier ones, virulence and recovery. 
 
 # Rates of flow from the $I$ box
-But first, let me emphasize the key word in that last paragraph: _rates_. Why are we focusing on say the rate of recovery rather than the probability or odds an individual recovers?  The reason is that all of these processes, and the unfolding of the epidemic overall, are _dynamic_, they occur over time, and so how long individuals spend in one box or another matters. For instance, consider two infections with zero virulence and 100% recovery. Outcome-wise, they are identical, but what if the first infection was cleared in five days, on average, whereas the second one took 25 days. What would the size of the overall epidemics look like? Well, individuals with the second infection would be hanging around in the infectious box five times longer, meaning they'd have five times as long to pass on the infection. We would expect, all else equal, many more new infections from each infected individual, and much larger epidemics. Rates (and residence times) matter. 
+But first, let me emphasize the key word in that last paragraph: _rates_. Why are we focusing on say the rate of recovery rather than the probability or odds an individual recovers?  The reason is that all of these processes, and the unfolding of the epidemic overall, are _dynamic_, they occur over time, and so how long individuals spend in one box or another matters. For instance, consider two infections with zero virulence and 100% recovery. Outcome-wise, they are identical, but what if the first infection was cleared in five days, on average, whereas the second one took 25 days. What would the size of the overall epidemics look like? Well, individuals with the second infection would be hanging around in the infectious box five times longer, meaning they'd have five times as long to pass on the infection. We would expect, all else equal, many more new infections from each infected individual, and much larger epidemics. Rates (and thus residence times) matter. 
 
 ```{r boxarrowsI, fig.margin = TRUE, echo=FALSE, message=FALSE, fig.width = 4, fig.height = 3}
 library(diagram)
@@ -81,7 +81,13 @@ textplain(mid=c(0.7, 0.85), lab = "recovery", cex=1)
 textplain(mid=c(0.55, 0.3), lab = "virulence", cex=1, adj=0)
 ```
 
-Now imagine we conduct an experiment where we infect animals with a pathogen of interest^[Pick your favorite!] and then track mortality  and recovery over time. Let's say everyone survives and recovers and it takes them ten days to do so, on average. Then the recovery rate would be 1/10 days or 0.1. If, instead, 80% recovered in the same time, but the others died, the recovery rate would be 0.8/10 or 0.08. So that's the average rate of recovery for an average individual. However, there might be few or many infected individuals in the $I$ box recovering, so the overall flow of individuals from the $I$ to the $R$ box is $0.8 \times I$, using the second estimate. More generally we might call the per capita recovery rate, $\gamma$, and the overall flow of individuals from $I$ to $R$ occurs at rate $\gamma I$. 
+Now imagine we conduct an experiment where we infect animals with a pathogen of interest^[Pick your favorite!] and then track how long they remain infectious. Let's say the animals remain infectious for ten days, on average. This is the **infectious period**^[Assuming they become infectious immediately. More on this below.]. We can calculate the rate at which individuals leave the $I$ box, which we will call $\gamma$, as the inverse of the infectious period or $\gamma$ = 1/(10 days) = 0.1  per day. 
+
+But notice that we have two arrows leaving the $I$ box. Animals can recover or die. Imagine in our experiment that 20% of the animals died and 80% recovered. We thus want to shunt 20% of the flow to death and 80% to the recovered/resistant box. Let us call the probability of death given an infection^[This probability, estimated by the proportion of infected individuals that die, is called the infection fatality rate. It's not a rate, but a probability or proportion, but whatever. It is similar to the _case_ fatality (or mortality) rate, which is the proportion of individuals meeting a case definition that end up dying. Cases are always a subset of infections, so case fatality rates are generally higher than infection fatality rates.], $\phi$. Thus, the overall rate of disease-induced mortality, which we call **virulence**, is $\phi \times \gamma$. In our make-believe experiment this is 0.2/10 = 0.02 per day. 
+
+Since those that do not die recover, we can write the recovery rate as  $(1-\phi) \times \gamma$.^[Note that I am parameterizing these a bit differently than you are likely to see in most models. Most of the time we simply have a recovery rate, often called $\gamma$, and a virulence rate, often called $\alpha$. The result is the same and I think this way is a bit clearer.] For our experimental data we would estimate the recovery rate as 0.8/10 = 0.08 per day. 
+
+These are the _average_ rates of disease induced mortality and recovery _for an individual_^[Like a _per capita_ rate.]. The overall flow of individuals out of the infected box and into, well, a heap on the ground^[We haven't created a box for the dead individuals. Instead, we just know that animals leaving $I$ to virulence are dead.] is $0.02 \times I$ (or $\phi \gamma I$ more generally). Similarly, the flow of individuals out of the $I$ box and into the $R$ box is $0.08 \times I$ (or $(1-\phi) \gamma I$).
 
 ```{r boxarrowsIeq, fig.margin = TRUE, echo=FALSE, message=FALSE, fig.width = 4, fig.height = 3}
 library(diagram)
@@ -97,14 +103,12 @@ textrect(c(0.5, 0.65), lab ="I", radx = 0.07, rady = 0.2, cex = 2)
 textrect(mid=c(0.91, 0.65), lab ="R",  radx = 0.07, rady = 0.2, cex = 2)
 textplain(mid=c(0.5, 0.06), lab ="Dead",  cex = 1.2)
 
-textplain(mid=c(0.7, 0.85), lab = expression(gamma*I), cex=1)
-textplain(mid=c(0.6, 0.3), lab = expression(alpha*I), cex=1)
+textplain(mid=c(0.7, 0.85), lab = expression((1-phi)*gamma*I), cex=1)
+textplain(mid=c(0.6, 0.3), lab = expression(phi*gamma*I), cex=1)
 ```
 
 
-We can use the same logic for the virulence or disease-induced mortality rate. We'll call the per capita disease-induced mortality rate $\alpha$ and so the overall flow of individuals out of the infected box and into, well, a heap on the ground^[We haven't created a box for the dead individuals. Instead, we just know that animals leaving $I$ to virulence are dead.], is $\alpha I$. If, in our hypothetical experiment 20% of infected individuals died^[The proportion of infected individuals that die is the infection fatality rate. It's actually a proportion, but whatever. It is similar to the _case_ fatality (or mortality) rate, which is the proportion of individuals meeting a case definition that end of dying. Cases are always a subset of infections, so case fatality rates are generally higher than infection fatality rates.] and they did so in eight days on average, then $\alpha = 0.2/5 = 0.04$ and the overall mortality rate would be $0.04 \times I$. 
-
-It is not essential that you are able to estimate virulence and recovery rates, but you should see that faster times and larger proportions imply faster rates. It can also be  an interesting exercise to think about what $\alpha$ might be for different sorts of infections, like influenza, which probably won't kill you, but if it does it does so quickly, and HIV/AIDS, which was very, very likely to kill you prior to effective treatments, but took years to do so. Which has higher virulence by our definition?
+It is not essential that you are able to estimate virulence and recovery rates, but you should see that shorter residence times and larger proportions imply faster rates. It can also be an interesting exercise to think about what virulence might be for different sorts of infections, like influenza, which probably won't kill you, but if it does it does so quickly, and HIV/AIDS, which was very, very likely to kill you prior to effective treatments, but took years to do so. Which has higher virulence by our definition?
 
 
 # Transmission
@@ -177,8 +181,8 @@ textplain(mid=c(0.5, 0.06), lab ="Dead",  cex = 1.2)
 
 textplain(mid=c(0.3, 0.85), 
           lab = expression(beta*frac(I,N)*S), cex=1)
-textplain(mid=c(0.7, 0.85), lab = expression(gamma*I), cex=1)
-textplain(mid=c(0.6, 0.3), lab = expression(alpha*I), cex=1)
+textplain(mid=c(0.7, 0.85), lab = expression((1-phi)*gamma*I), cex=1)
+textplain(mid=c(0.6, 0.3), lab = expression(phi*gamma*I), cex=1)
 ```
 
 
@@ -194,16 +198,16 @@ $$
 
 Notice that there is no way to gain new susceptible individuals, since we are not including birth or recovery without resistance (or waning immunity). They only flow out as they become infected.
 
-The infected box gains infections at this same rate of transmission as they are lost from susceptible class---this is a flow from $S$ to $I$, after all---and then they are lost to virulence and recovery.
+The infected box gains infections at this same rate of transmission as they are lost from susceptible class---this is a flow from $S$ to $I$, after all---and then they are lost to virulence and recovery at a collective rate of $\phi \gamma I + (1-\phi) \gamma I = \gamma I$.
 
 $$
-\frac{dI}{dt} = +\beta\frac{I}{N}S - \alpha I - \gamma I.
+\frac{dI}{dt} = +\beta\frac{I}{N}S - \gamma I.
 $$
 
 Finally, we gain individuals in the recovered/resistant box as individuals recover, but there is no way to lose them since we are not thinking about waning immunity or other forms of mortality. 
 
 $$
-\frac{dR}{dt} = + \gamma I.
+\frac{dR}{dt} = + (1-\phi)\gamma I.
 $$
 
 That's it! That's the whole model describing the dynamics of an epidemic of a directly transmitted infection with virulence and life-long immunity, absent any birth or non-disease death. 
@@ -213,8 +217,8 @@ Now try something. Since we know that the whole population size is $N=S+I+R$, we
 \begin{equation*}
 \begin{aligned}
 \frac{dS}{dt} &= -\beta\frac{I}{N}S \\
-\frac{dI}{dt} &= +\beta\frac{I}{N}S - \alpha I - \gamma I \\
-\frac{dR}{dt} &= + \gamma I \\
+\frac{dI}{dt} &= +\beta\frac{I}{N}S -  \gamma I \\
+\frac{dR}{dt} &= + (1-\phi) \gamma I \\
 \midrule 
 \frac{dN}{dt} &=
 \end{aligned}
@@ -246,7 +250,6 @@ knitr::include_graphics("dimensional_analysis.png")
 ```
 
 
-
 # The dynamics of an epidemic
 
 So we have our model, but, I can almost hear you asking, what does it _do_? We're about to get there, simulating or running or solving these equations^[We won't worry about these details of how, but if you're interested, it's a version of the Runga-Kutta method. Or, like I said, don't worry about it.] so that we can see how $S$, $I$, and $R$ change through time. But first I want you to take a moment and draw on these axes what _you_ think these three quantities will look like through time. Try it. Start at time zero with a large susceptible population ($S$ is big), a single infected ($I=1$), and no resistant individuals ($R=0$). What happens to these three groups as the epidemic progresses? You would probably do well to move in small steps, starting with $S$ and then thinking about $I$ and $R$. 
@@ -265,13 +268,13 @@ SIR <- odeModel(
             with(as.list(parms),  {
               # (3) transmission  #recovery   #virulence 
               dS <- -beta*(I/N)*S               		          
-              dI <-  beta*(I/N)*S  - gamma*I - alpha*I   
+              dI <-  beta*(I/N)*S  - (1-phi)*gamma*I - phi*gamma*I   
               
-              dR <- gamma*I
+              dR <- (1-phi)*gamma*I
               list(c(dS, dI, dR)) 
             })
           }, 
-          parms = c(beta=10*0.05, gamma=0.08, alpha=0.04), 
+          parms = c(beta=10*0.05, gamma=0.1, phi=0.2), 
           times = c(from=1, to=50, by=0.25),  
           init = c(S=100, I=1, R=0), 
           solver = "rk4" 
@@ -280,9 +283,9 @@ SIR <- odeModel(
 SIR <- sim(SIR) 
 ```
 
-OK, now here's what the model^[You'll probably notice that the model describes fractions of individuals in each box. This is because these equations describe numbers continuously, not as discrete individuals. You can make a model with discrete individuals, but it will necessarily be stochastic, involving chance events (e.g., did individual 99 get infected in this time step or not?). These ordinary differential equations are best thought of as describing the _average_ dynamics and work best in large populations.] actually does (using the parameters we imagined above). How does it differ from your predictions? Why? (This is a good time to stop and refine or reconcile your thinking before moving on.) Do you understand why $I$ goes up and down? Why $S$ only declines and $R$ only increases? What happened to the total population size, $N$? Does this make sense to you?
+OK, now here's what the model actually does (using the parameters we imagined above). How does it differ from your predictions? Why? (This is a good time to stop and refine or reconcile your thinking before moving on.) Do you understand why $I$ goes up and down? Why $S$ only declines and $R$ only increases? What happened to the total population size, $N$? Does this make sense to you?
 
-```{r, fig.margin=TRUE, fig.cap="Epidemic dynamics of an SIR model with $\\beta = 0.5$, $\\gamma=0.08$, and $\\alpha=0.04$ and starting from an a population with $S=100$ and $I=1$."}
+```{r, fig.margin=TRUE, fig.cap="Epidemic dynamics of an SIR model with $\\beta = 0.5$, $\\gamma=0.1$, and $\\phi=0.2$ and starting from an a population with $S=100$ and $I=1$."}
 out(SIR) %>% 
   # turn it from wide to long
   gather(key="Box", value="Number", S, I, R) %>% 
@@ -293,30 +296,105 @@ out(SIR) %>%
   scale_color_manual(values = c("Blue", "Red", "Green"))
 ```
 
+You'll probably notice that the model describes fractions of individuals in each box. This is because these equations describe numbers continuously, not as discrete individuals. You can make a model with discrete individuals, but it will necessarily be stochastic, involving chance events (e.g., did individual 99 get infected in this time step or not?). These ordinary differential equations (ODEs) are best thought of as describing the _average_ dynamics and work best in large populations.
 
+## Another aside: including an incubation period
+
+```{r boxarrowSEIR, fig.margin = TRUE, echo=FALSE, message=FALSE, fig.width = 4, fig.height = 3}
+library(diagram)
+
+openplotmat()
+        # pos <- coordinates(c(7))
+        straightarrow(c(0.1, 0.65), c(0.28, 0.65), arr.pos = 1)
+        straightarrow(c(0.4, 0.65), c(0.58, 0.65), arr.pos = 1)
+        # curvedarrow(c(0.45, 0.5), c(0.16, 0.5), arr.pos = 0.9, curve=0.8, endhead = TRUE)
+        straightarrow(c(0.75, 0.65), c(0.87, 0.65), arr.pos = 1)
+        straightarrow(c(0.66, 0.5), c(0.66, 0.2), arr.pos = 1)
+
+        textrect(c(0.058, 0.65), lab ="S", radx = 0.06, rady = 0.2, cex = 2)
+        textrect(c(0.36, 0.65), lab ="E", radx = 0.07, rady = 0.2, cex = 2)
+        textrect(c(0.66, 0.65), lab ="I", radx = 0.07, rady = 0.2, cex = 2)
+        textrect(mid=c(0.94, 0.65), lab ="R",  radx = 0.06, rady = 0.2, cex = 2)
+        textplain(mid=c(0.66, 0.06), lab ="Dead",  cex = 1.2)
+
+        textplain(mid=c(0.2, 0.85),
+                  lab = expression(beta*frac(I,N)*S), cex=0.7)
+        textplain(mid=c(0.5, 0.85),
+                  lab = expression(k*E), cex=0.7)
+        textplain(mid=c(0.8, 0.89),
+                  lab = expression((1-phi)*gamma*I), cex=0.7)
+        textplain(mid=c(0.75, 0.35),
+                  lab = expression(phi*gamma*I), cex=0.7)
+```
+
+You may have noticed or recall that we are assuming that all individuals in the $I$ class are equally infectious. One consequence of this is that infected individuals are _instantaneously_ infectious to others. But most infections take a bit to ramp up; there is an incubation period^[Doctors tend to define the incubation period as the time until symptoms develop, but epidemiological modelers would usually think of it as the time until they are infectious. They _can_ be the same thing, but not always.]. To account for this we can include an exposed-but-not-yet-infectious class, $E$. Newly infected individuals flow into the $E$ box with transmission and then flow out at a rate $k$ = 1/(the incubation period), on average. Everything else is the same. 
+
+```{r simpleSEIR, fig.margin=TRUE, fig.cap="Epidemic dynamics of an SEIR model with $\\beta = 0.5$, $k = 0.33$, $\\gamma=0.1$, and $\\phi=0.2$ and starting from an a population with $S=100$ and $I=1$."}
+SEIR <- odeModel( 
+          main = function (time, init, parms, ...) { 
+            # (1) unpack variables
+            S <- init["S"]
+            E <- init["E"]
+            I <- init["I"]
+            R <- init["R"]
+
+            N <- S+E+I+R
+            with(as.list(parms),  {
+              # (3) transmission  #recovery   #virulence 
+              dS <- -beta*(I/N)*S               		          
+              dE <-  beta*(I/N)*S  - k*E
+              dI <-  k*E - (1-phi)*gamma*I - phi*gamma*I   
+              dR <- (1-phi)*gamma*I
+              
+              list(c(dS, dE, dI, dR)) 
+            })
+          }, 
+          parms = c(beta=10*0.05, k=1/3, gamma=0.1, phi=0.2), 
+          times = c(from=1, to=50, by=0.25),  
+          init = c(S=100, E=0, I=1, R=0), 
+          solver = "rk4" 
+) 
+
+SEIR <- sim(SEIR) 
+
+
+out(SEIR) %>% 
+  # turn it from wide to long
+  gather(key="Box", value="Number", S, E, I, R) %>% 
+  mutate(Box = factor(Box, levels = c("S", "E", "I", "R"))) %>% 
+  # construct the plot
+  ggplot(., aes(x=time, y=Number, color=Box)) + 
+  geom_line() + 
+  scale_color_manual(values = c("Blue", "Orange", "Red", "Green"))
+```
+Indeed, the dynamics are usually very similar from an SEIR to an SIR. The delay, well, delays things a bit and so the steepness of the curves will vary. The shorter the incubation period, the more like an SIR it will become until at some point you might as well use an SIR. 
+
+This is just one example of how you can modify a compartment model to better match the biological realities of your system. We will see more later. 
+
+\newpage
 # Why epidemics fade: think of fire
 
-Lastly, why did the epidemic fade? That is, why did the infected category eventually decline to near zero levels? I hope you can intuitively answer that, like a fire running out of fuel, the epidemic ran out of susceptible individual to infect (around day 12 or 13) and then those individuals that were infected at that point eventually died or recovered. 
+Lastly, why did the epidemic fade? That is, why did the infected category eventually decline to near zero levels? I hope you can intuitively answer that: like a fire running out of fuel, the epidemic ran out of susceptible individual to infect (around day 12 or 13) and then those individuals that were infected at that point eventually died or recovered. 
 
 
 We can better understand the growth and decline of infecteds by thinking about the rate at which infections are gained (and lost) as a function of the number of infected individuals, $I$, sort of like we did when thinking about population growth rate in the exponential and logistic models. 
 
 $$
-\frac{dI}{dt} = \overbrace{ \beta\frac{I}{N}S }^{gains} - \overbrace{(\alpha + \gamma) I}^{losses}
+\frac{dI}{dt} = \overbrace{ \beta\frac{I}{N}S }^{gains} - \overbrace{\gamma I}^{losses}
 $$
 
-```{r, fig.margin=TRUE, fig.cap="Rates of gains (solid line) and losses (dotted line) as a function of $I$ with $\\beta = 1$, and $\\alpha=0.12$ (and $\\gamma=0$ for simplicity)."}
+```{r, fig.margin=TRUE, fig.cap="Rates of gains (solid line) and losses (dotted line) as a function of $I$ with $\\beta = 1$, $\\gamma=0.1$, and, for simplicity, $\\phi = 1$."}
 
 tibble(I = 0:100, 
        gains = 0.5*(I/100)*(100-I),
-       losses = 0.12*I) %>% 
+       losses = 0.1*I) %>% 
   gather(key=process, value=rate, -I) %>%  
   ggplot(., aes(I, rate, linetype=process)) + 
   geom_line()
 ```
 
 
-We can see that the rate of losses increases linearly with $I$, with a slope of $alpha + \gamma$, but it will take a bit more to understand the gains term, or transmission. First, let us simplify things a bit and ignore the recovered group, $R$, by setting $\gamma = 0$ and shunting all of this recovery into the virulence term ($\alpha = 0.04 + 0.08 = 0.12$). Since we can ignore the $R$ class, we see that $N=S+I$ and, by rearrangement, $S=N-I$. If we place this in the gains equation and do some re-arranging we get:
+We can see that the rate of losses increases linearly with $I$, with a slope of $\gamma$, but it will take a bit more to understand the gains term, or transmission. First, let us simplify things a bit and ignore the recovered group, $R$, by setting $\phi = 1$, meaning everyone dies. Since we can ignore the $R$ class, we see that $N=S+I$ and, by rearrangement, $S=N-I$. If we place this in the gains equation and do some re-arranging we get:
 
 \begin{equation*}
 \begin{aligned}
@@ -353,31 +431,30 @@ $$
 $$
 We can also think about this from the point of view of a single infected individual entering an otherwise wholly susceptible population (i.e., $I=1$ and $S=N-1 \approx N$). How many new cases will they produce over the length of their infection? If it is greater than one the epidemic will grow, but if it is less than one the infection will not spread and the epidemic will fade out before it gets going^[Importantly, we are thinking of this _on average_. When dealing with real individuals in real populations in, well, reality, chance events can be very important. If you introduced of a single infected individual into a whole bunch of identical susceptible populations you would get a whole range of outcomes, but on average the results would look like our calculations.]. So what is the rate at which the single $I$ causes new cases? That is simply $\beta\tfrac{S}{N}$ (remember, we said $I=1$, so it disappears from the gain term), which is essentially $\beta$ since we said that $S\approx N$. 
 
-Next, how long, on average, does a single infected individual stay infected before recovering or dying? Well, the average duration an individual spends in a box, such as the $I$ box, is one over the rate at which it leaves the box---a faster rate of loss means a shorter residence time. In this case, the rate of loss is $\alpha + \gamma$ and so the average residence time or life time of an infection is $1/(\alpha + \gamma)$. 
+Next, how long, on average, does a single infected individual stay infected before recovering or dying? Well, the average duration an individual spends in a box, such as the $I$ box, is one over the rate at which it leaves the box---a faster rate of loss means a shorter residence time. In this case, the rate of loss is $\gamma$ (whether they go to the $R$ box or the heap of dead on the floor) and so the average residence time or life time of an infection is $1/\gamma$. 
 
 We can then put these two together to get the average number of new, secondary cases by a single infected individual over the average life time of its infection^[You can get to the same place, at least in these simple models, by describing $R_0$ as the ratio of gains to losses in the $dN/dt$ equation, again assuming that $I=1$ and $S\approx N$:
 \begin{equation*}
 \begin{aligned}
 R_0 &= \frac{gains}{losses} \\
-&= \frac{\beta \frac{I}{N} S}{(\alpha + \gamma)I} \\
-&= \frac{\beta \frac{ \cancelto{1}{I}}{N} \cancelto{N}{S} }{(\alpha + \gamma)\cancelto{1}{I}} \\
-&= \frac{\beta\cancel{\frac{N}{N}}}{\alpha + \gamma} \\
-&= \frac{\beta}{\alpha + \gamma}
+&= \frac{\beta \frac{ \cancelto{1}{I}}{N} \cancelto{N}{S} }{\gamma \cancelto{1}{I}} \\
+&= \frac{\beta\cancel{\frac{N}{N}}}{\gamma} \\
+&= \frac{\beta}{\gamma}
 \end{aligned}
 \end{equation*}]:
 
 \begin{equation*}
 \begin{aligned}
-R_0 &= \beta \times 1/(\alpha + \gamma) \\
-&=\frac{\beta}{\alpha + \gamma}.
+R_0 &= \beta \times 1/(\gamma) \\
+&=\frac{\beta}{\gamma}.
 \end{aligned}
 \end{equation*}
 
-This is the magic term $R_0$, often called "R-naught" from the British English habit of calling zero, naught. It is also known as the reproductive number of the infection^[And its interpretation is analogous to the reproductive number of an organism estimated from a life table, $R_0 = \sum l_x b_x$ if you've seen that elsewhere.]. If $R_0>1$, meaning that an infection is expected to more than replace itself, the epidemic is expected to grow, on average, and if $R_0<1$, meaning an infection will not replace itself, the epidemic is expected to fade before it really gets going. 
+This is the magic term $R_0$, often called "R-naught" from the British English habit of calling zero, naught. It is also known as the reproductive number of the infection^[And its interpretation is analogous to the reproductive number of an organism estimated from a life table, $R_0 = \sum l_x b_x$ if you've seen one elsewhere.]. If $R_0>1$, meaning that an infection is expected to more than replace itself, the epidemic is expected to grow, on average, and if $R_0<1$, meaning an infection will not replace itself, the epidemic is expected to fade before it really gets going. 
 
 For context, one study^[[Liu et al. (2020) J. Travel Med.](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7074654/)] of early estimates of $R_0$ for COVID-19 found values from a low of 1.5 to a high of 6.68 and one^[[Zhang et al. (2020) Int. J. Infect. Dis.](https://www.sciencedirect.com/science/article/pii/S1201971220300916)] from the Diamond Princess cruise ship, which was a nice, closed and well-studied population, was 2.28. All of these estimates suggest that COVID-19 would tend to grow, but by different amounts. Why the range of estimates? Some of it is just a product of statistical uncertainty and data sets of varying size and quality. But more fundamentally, that rates of transmission and the duration of infection are going to depend on the population in which the infection is spreading (e.g., young or old, healthy or sick) and the local conditions (e.g., crowded or not, little or lots of movement and contacts, as well as, perhaps, temperature and humidity). In other words, $R_0$ is _not_ a fixed characteristic of an infection or pathogen, but rather a product of that pathogen in a particular host population. 
 
-It is important to remember that $R_0$ is defined with a single infected entering a wholly susceptible population. When an epidemic has begun this is no longer the case and so we instead think of the _effective_ reproductive number, $R$ or $R_{t}$, which describes the same things given whatever $I$ and $S$ are at the time^[See this site for a very state-by-state estimates of $R_t$ https://rt.live/]. 
+It is important to remember that $R_0$ is defined with a single infected entering a wholly susceptible population. When an epidemic has begun this is no longer the case and so we instead think of the _effective_ reproductive number, $R$ or $R_{t}$, which describes the same things given whatever $I$ and $S$ are at the time^[See this site for state-by-state estimates of $R_t$ https://rt.live/]. 
 
 
 ## An aside on estimating $R_0$ 
@@ -418,15 +495,15 @@ l <- lm(log(I) ~ time, data=filter(out(SIR), time <=5))
 
 It looks like pretty close, but not perfect fit. If you look very, very closely you will see that the red line curves downwards a bit, so the regression is a bit too flat early on and a bit too steep later on. But it is not a bad approximation. The slope of this linear regression on a natural log scale is `r round(coef(l)[2], 3)`. In other words, this slope is approximating $r$. But we want $R_0$. A simple extrapolation, from a rather more complex analysis^[[Wallinga & Lipsitch (2007) Proc. B Roy. Soc.](https://royalsocietypublishing.org/doi/full/10.1098/rspb.2006.3754#d3e347)] is:
 $$
-R_0 \approx 1 + r/(\alpha + \beta),
+R_0 \approx 1 + r/\gamma,
 $$
-from which we get $1+`r round(coef(l)[2], 3)`/(0.04 + 0.08) = `r round(1+coef(l)[2]/(0.04 + 0.08), 3)`$. This is a pretty close estimate of the  "known" value of $R_0 = \beta/(\alpha + \gamma) = 0.5/(0.04 + 0.08) =  4.1667$.
+from which we get $1+`r round(coef(l)[2], 3)`/0.1 = `r round(1+coef(l)[2]/0.1, 3)`$. This is a pretty close estimate of the  "known" value of $R_0 = \beta/\gamma = 0.5/0.1 =  5$.
 
 In actual practice, researchers _do_ use this approach to estimate $R_0$, but actually sorting out the duration of time in the infected class can be tricky and nuanced. There are many other more sophisticated approaches to estimating $R_0$, as you might expect, but it is nice to see that 1) simple can work and 2) that, once again, plotting numbers against time on a logarithmic scale tells us something about the underlying process^[I'll let you think about what the linear _decline_ in $I$ on the graph above means and what the slope might represent.].
 
 # What does it take for an epidemic _not_ to grow? Reducing $R_0$ or $R_t < 1$
 
-You can think about most public health interventions as aimed at reducing $R_t$ or $R_0$ so that, on average, each infected individual produces less than one new infection. When this happens, the epidemic will start to fade. Of course this happens naturally when an infection has spread so much that it runs out of susceptible hosts^[[Although it can take a long time get there!](https://www.nytimes.com/interactive/2020/05/28/upshot/coronavirus-herd-immunity.html)]. Like a wildfire running out of unburned trees, the spread of the infection will slow down and eventually fade out. What's more, like the unburneed trees after a fire, an epidemic will not generally infect everyone, even if left uncontrolled. This was one of the more surprising results from early epidemic models. Even highly transmissible infections will not reach everone. 
+You can think about most public health interventions as aimed at reducing $R_t$ or $R_0$ so that, on average, each infected individual produces less than one new infection. When this happens, the epidemic will start to fade. Of course this happens naturally when an infection has spread so much that it runs out of susceptible hosts^[[Although it can take a long time get there!](https://www.nytimes.com/interactive/2020/05/28/upshot/coronavirus-herd-immunity.html)]. Like a wildfire running out of unburned trees, the spread of the infection will slow down and eventually fade out. What's more, like the unburned trees after a fire, an epidemic will not generally infect everyone, even if left uncontrolled. This was one of the more surprising results from early epidemic models. Even highly transmissible infections will not reach everyone. 
 
 This finding, and the underlying logic, that the we might reach a critical level of "**heard immunity**", has featured prominently in discussions about how the Covid-19 pandemic might end. If a large enough fraction of the population is immune (i.e., in the $R$ class) then infected individuals will, on average, fail to pass on their infection to someone else and the epidemic will wain. This has sometimes led to a I-might-as-well-get-it-over-with attitude in some, although [this is not without serious risks](https://www.nytimes.com/2020/04/08/opinion/coronavirus-parties-herd-immunity.html). A much better strategy is to intervene earlier in ways that reduce $R_t \text{ or } R_0 < 1$.) Indeed you can map all interventions on to one or more components of the equation for $R_0$ or the underlying bits in our SIR model.
 
@@ -437,8 +514,3 @@ This finding, and the underlying logic, that the we might reach a critical level
 * **Treatment** of infections, often with chemical therapeutics, can reduce the duration of an infection, as well as reduce morbidity and mortality. If individuals are infectious for less time^[It is important to note that some treatments and vaccines can reduce symptoms in a person or animal without reducing their ability to spread the infection. This is good for the individuals, sure, but it can exacerbate the spread of infection, making the epidemic worse. This is one of many potential conflicts between what is optimal for an individual vs for a population.], there is a shorter window for transmission, which can reduce $R_0$. 
 
 
-
-THINGS TO HAVE THEM DO WITH SHINY MODEL
-
-* Change parameters and initial variable to see if they can make epidemic not happen (Fizzle) or be more severe (fewer R at end) by playing with contact rate, recovery rate, and virulence; S0
-* At the end ask why, if epidemics eventually die-out, do we see persistent, endemic disease.
