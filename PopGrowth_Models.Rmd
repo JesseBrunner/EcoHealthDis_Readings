@@ -2,8 +2,13 @@
 title:  "Population growth & why we create models"
 author: "Jesse Brunner"
 date: "`r Sys.Date()`"
-output:
-  tufte::tufte_handout: default
+output: tint::tintPdf
+latexfonts:
+  - package: newtxmath
+    options: 
+      - cmintegrals
+      - cmbraces
+  - package: ebgaramond-maths
 ---
 
 ```{r setup, include=FALSE}
@@ -65,7 +70,6 @@ This equation translates into words as, "the rate of change in $N$, that is the 
 
 Second, notice that larger populations grow faster, period. What if the population size was $N=1,000,000,000,000$? No problem, the population grows at rate $rN=r \times 1,000,000,000,000$. Whatever $N$ is, the population grows at rate $rN$. 
 
-We can plot this relationship between growth rate and population size. As you would expect from what we just said in words, this relationship is just a straight line starting at zero^[With a population of zero, there is no one to reproduce!] that goes up and up forever with a slope of $r$. 
 
 ```{r, fig.margin=TRUE, fig.cap="Population growth rate as a function of population size with $r=0.2$ from the exponential model."}
 ggplot(tibble(x=0:250, y=x*0.2), aes(x, y)) +
@@ -74,16 +78,19 @@ ggplot(tibble(x=0:250, y=x*0.2), aes(x, y)) +
   labs(x="Population size (N)", 
        y="Population growth rate (dN/dt)")
 ```
+We can plot this relationship between growth rate and population size. As you would expect from what we just said in words, this relationship is just a straight line starting at zero^[With a population of zero, there is no one to reproduce!] that goes up and up forever with a slope of $r$. 
 
 `r newthought("A word of warning:")` Be sure tp pay attention to the axis labels. Before we were plotting $N$ against time, but now we are plotting $dN/dt$ against $N$. They show different things even though they might have similar lines.
 
 ## Population growth rates vs. per capita growth rates
 So this model and graph describes the growth of the population as a whole. What does this model say about the growth of individuals^[Here we mean the average rate of births minus deaths from individuals, not a change in their sizes]? Well, if $dN/dt$ is the population growth rate, then dividing it by $N$ gives us the average growth per individual in the population (all $N$ of them). 
 
-\begin{align}
+\begin{equation*}
+\begin{aligned}
 \frac{dN}{dt} &= rN \\
 \frac{\frac{dN}{dt}}{N} &= \frac{rN}{N} = r
-\end{align}
+\end{aligned}
+\end{equation*}
 
 So mathematically the average growth per individual in the population, the _per capita_^[From the Latin, by heads.], is just $r$. Always. Whatever else might be happening, no matter how big or small the population, individuals reproduce (and die) on average at rate $r$. A plot of per capita growth rate against $N$ makes this clear; it always just $r$.
  
@@ -169,10 +176,12 @@ As an aside, this is one version of density-dependence, where a rate, here the p
 
 Anyway, how does the _population_ growth rate change with $N$? We can multiply both sides of the equation by $N$ (the reverse of what we did above, with the exponential model) to get the differential equation describing population growth with density dependence. 
 
-\begin{align}
+\begin{equation*}
+\begin{aligned}
 \frac{\frac{dN}{dt}}{N} \times N &= r \left( 1 - \frac{N}{k} \right) \times N \\
 \frac{dN}{dt} &= r N \left( 1 - \frac{N}{k} \right).
-\end{align}
+\end{aligned}
+\end{equation*}
 
 If we multiply the $rN$ term on the right-hand side through the terms in the parentheses we get 
 $$
@@ -187,8 +196,9 @@ ggplot(df, aes(N, growth, color=model)) +
   geom_line() + 
   geom_hline(yintercept=0, color="gray30") + 
   labs(x="Population size (N)", 
-       y="Population growth rate (dN/dt)") + 
-  theme(legend.position="bottom")
+       y="Population growth rate\n(dN/dt)") + 
+  theme(legend.position="bottom") + 
+  coord_cartesian(ylim=c(-15,30))
 ```
 You will see that the population growth rate is at first going up at about the same rate as the exponential model^[And if we make $k$ really, really big, then population growth in the logistic model will follow that of the exponential model over a much wider range. Think about what happens if $k = \infty$.], but curves away from the exponential line more and more as $N$ gets bigger. That is, the larger the population gets, the less it grows exponentially. That is the consequence of how we built this model. At $N=k$ the population growth rate is zero---that is, the population is stable---and beyond that it shrinks.
 
@@ -211,8 +221,8 @@ tibble(time=c(0,60), N=c(0, 250)) %>%
   annotate(geom="point",x=0, y=1)
 ```
 
-
-For completeness more than anything, here's the equation for solution to the logistic growth model^[This is called the logistic model because it "maps on to" the [logistic function](https://en.wikipedia.org/wiki/Logistic_function), meaning this is sort of a special case of that general function. The logistic function can be used to describe many, biological processes and patterns, from increasing probability of dying given increasing doses of a toxin to the prevalence of infection in a population when individuals do not recover. It's real workhorse and one worth getting to know. ]:
+\newpage
+For completeness more than anything, here's the equation for solution to the logistic growth model^[This is called the logistic model because it "maps on to" (is a special case of) the [logistic function](https://en.wikipedia.org/wiki/Logistic_function). It describes many biological processes from dose effects to the prevalence of infection in a population when individuals do not recover. It's real workhorse!]:
 
 $$
 N(t) = \frac{k}{1+\left(\frac{k}{N_0} - 1 \right) e^{-rt}}.
@@ -236,15 +246,15 @@ A + coord_cartesian(ylim=c(0,400))
 A + scale_y_log10()
 ```
 
-There we have it! This characteristic sigmoidal curve of population through time up to a "carrying capacity" we called $k$, is logistic growth. It's a curve you have almost certainly seen before, but now you see the underlying logic of it and how those assumptions we made lead to these dynamics. And it is your second model of population growth! A double Woo-woo!
+There we have it! The characteristic sigmoidal curve of population through time up to a "carrying capacity" we called $k$, is logistic growth. It's a curve you have almost certainly seen before, but now you see the underlying logic of it and how those assumptions we made lead to these dynamics. And it is your second model of population growth! A double woo-woo!
 
-Do we see logistic growth in nature? You bet! In a classic set of experiments Russian ecologist G. F. Gause studied how several species of ciliates (bacteria-eating protozoans with hair-like projections) and, in other experiments, yeast grew in isolation and in combination. You can see how the logistic curves seem to capture the general dynamics of his cliliates. It's not perfect, but it's pretty good!
+Do we see logistic growth in nature? You bet! For instance, in a classic set of experiments Russian biologist Georgii Frantsevich Gause  studied the growth of several species of ciliates (bacteria-eating protozoans) and, in other experiments, yeast, grown in isolation and in combination. You can see how the logistic curves seem to capture the general dynamics of his cliliates. It's not perfect, but it's pretty darn good!
 
-```{r, fig.cap="Gause's ciliates grown by themselves or in pairs with low food (half loop) or high food availability (one loop). Notice that when the food was doubled, the population size grew about twice as large."}
-knitr::include_graphics("Paurelia_Pcaudatum.png", dpi=400)
+```{r, fig.cap="Gause's ciliates grown by themselves or in pairs with low food (half loop) or high food availability (one loop). Notice that when the food was doubled, the population size grew about twice as large.", fig.height=3.5}
+knitr::include_graphics("Paurelia_Pcaudatum.png", dpi=425)
 ```
 
-
+\newpage
 
 # Is the logistic model better?
 

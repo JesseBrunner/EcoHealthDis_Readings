@@ -1,10 +1,15 @@
 ---
-title: "Exponential growth"
-subtitle: "three lessons"
+title: "The power of exponential growth"
+subtitle: "Three lessons"
 author: "Jesse Brunner"
 date: "`r Sys.Date()`"
-output:
-  tufte::tufte_handout
+output: tint::tintPdf
+latexfonts:
+  - package: newtxmath
+    options: 
+      - cmintegrals
+      - cmbraces
+  - package: ebgaramond-maths
 ---
 
 ```{r setup, include=FALSE}
@@ -29,7 +34,7 @@ theme_set(theme_minimal())
 
 Some years ago I had the opportunity to teach about ecology and evolution in a master gardener program. I was thrilled and started thinking about all of the things I thought would be fun and useful to teach about. Then I learned that I had one evening, something like 2 or 3 hours. How on earth could I fit this all in? What was essential? Then, after some thought, I realized that if I could convey the power of exponential growth, and a bit about heritable variation, the rest followed. All these years later I still think that if I could convey one lesson it would be this: beware the awesome power of exponential growth.
 
-In that first class with master gardeners, and in many classes with undergraduate and graduate students since, we explored the classic lesson about doubling^[And yes, doubling and exponential growth are intimately linked] on a chess board. The almost certainly apocryphal story goes something like this: The king/emperor/bigwig was so thrilled with the new game of chess that he reward its inventor with anything he might desire. The clever game-maker offered the modest suggestion that he receive a single grain of rice^[Or wheat, depending on the version.] on the first square, two on the second square, four on the third and so on and so forth. In the end this amounted to more grain or rice than existed in the kingdom and so, depending on the version, the inventor is either made an adviser (or king in the version I was told) or executed^[https://en.wikipedia.org/wiki/Wheat_and_chessboard_problem]. Nice story and all, but without some numbers it lacks a certain oomph. So, how much rice or wheat is that?
+In that first class with master gardeners, and in many classes with undergraduate and graduate students since, we explored the classic lesson about doubling^[And yes, doubling and exponential growth are intimately linked.] on a chess board. The [almost certainly apocryphal story](https://en.wikipedia.org/wiki/Wheat_and_chessboard_problem) goes something like this: The king/emperor/bigwig was so thrilled with the new game of chess that he reward its inventor with anything he might desire. The clever game-maker offered the modest suggestion that he receive a single grain of rice^[Or wheat, depending on the version.] on the first square, two on the second square, four on the third and so on and so forth. In the end this amounted to more grain or rice than existed in the kingdom and so, depending on the version, the inventor is either made an adviser (or king in the version I was told) or executed. Nice story and all, but without some numbers it lacks a certain oomph. So, how much rice or wheat is that?
 
 ```{r}
 chess <- data.frame(Square = 1:10)
@@ -42,13 +47,14 @@ knitr::kable(chess,col.names = c("Square ($x$)", "Rice on square $x$ ($n$)", "To
 
 
 Before we look at The Big Numbers that I've hinted at, let's see if we can't spot a pattern in how they grow (see the table above for the first ten squares).  Perhaps you'll recognize that the numbers on the squares are powers of two.
-
-\begin{align}
+\begin{equation*}
+\begin{aligned}
 2^0 &= 1\\
 2^1 &= 2\\
 2^2 &= 4\\
 2^3 &= 8
-\end{align}
+\end{aligned}
+\end{equation*}
 
 Following this pattern the amount on the 5th square is $2^{5-1}= 2^4 = 16$ and the amount on the 64th square is $2^{(64-1)} = 2^{63}$. In general^[Note that if we started counting the first square as zero, as we would if we were tracking time instead of counting squares, this would simply be $n(x)=2^{x}$.] for square $x$, the number of grains on the square is: 
 $$
@@ -70,7 +76,7 @@ knitr::include_graphics('Rice_Nutrition.png', dpi = 500)
 
 Let's try again. What is the total rice production in the world? [Wolfram Alpha](https://www.wolframalpha.com/input/?i=2^64+grains+of+rice) places it at 2.573 billion metric tons per year or $2.573 \times 10^9 \text{tons} \times 1000 \text{kg/ton} = 2.573 \times 10^{12} \text{kg}$. That's a lot! But it still pales in comparison to the $9.2 \times 10^{14} \text{kg}$ that the chessboard rice is estimated to weigh (see the nutrition panel above). In other words, we produce several _hundred_ times less rice in a year than would have been on that chess board if the king or emperor had been able to follow through on the deal. Zowie!
 
-I am by no means the first to use this example or to try to provide some context to the numbers^[Just search online for "exponential growth chess board" and you'll find TED talks, YouTube videos, and even stock photos. One of my favorites is this one: https://makershare.com/projects/chess-board-rice-exponential-growth]. The numbers are pretty mind boggling and so many have tried to put them in perspective. But it is important to note that doubling processes, and exponential growth more broadly, is interesting not just because you can get really, really huge numbers, but because of how you get there^[For instance, by the 13th square you would have enough rice for one bowl of rice, but by square 24 you would have enough rice to make the worlds largest paella (2400 bowls of rice)! Do with this information what you will.]. 
+I am by no means the first to use this example or to try to provide some context to the numbers^[Just search online for "exponential growth chess board" and you'll find TED talks, YouTube videos, stock photos, and even [displays worthy of a science museum](https://makershare.com/projects/chess-board-rice-exponential-growth)]. The numbers are pretty mind boggling and so many have tried to put them in perspective. But it is important to note that doubling processes, and exponential growth more broadly, is interesting not just because you can get really, really huge numbers, but because of how you get there^[For instance, by the 13th square you would have enough rice for one bowl of rice, but by the 24th you would have enough rice to make the worlds largest paella (2400 bowls of rice)! Do with this information what you will.]. 
 
 
 # Doubling processes can sneak up you
@@ -81,9 +87,9 @@ The answer is to work backwards. If the lily pad population doubles each day, th
 
 Well, on day 19 they covered half the pond, on day 18 they covered one-quarter of the pond (half of a half), on day 17 they covered one-eighth the pond (half of a half of a half), and so on. If $x$ is the time _before_ some threshold (i.e., 100% coverage occurs at $x=0$), such that $x$ is $0,-1,-2,...$, then the fraction of the pond covered at time $x$ is $n(x) = 2^x$. We find that when $x=-7$ less than $1\%$ of the surface area would be covered (precisely, $2^{-7} = 0.0078125$ or 0.78%). Think about that. If you were watching the lily grow, you wouldn't see anything worrying for a long time. Only on day 14 would more than 1% of the surface area be covered. Why worry? But in just a few days, a few more rounds of doubling, this process would start to look rather out of control. 
 
-The fact that doubling processes only seem out of control later on has been called the "second half of the chessboard" in business^[https://en.wikipedia.org/wiki/Wheat_and_chessboard_problem], but it applies equally to many processes. For instance, biological invasions start with small numbers of individuals that are quite capable of doubling over some time interval and are often discovered too late, as the invasion is out of control. The same is true of epidemics. They start small, but if one person infects two others, it is only nine "generations" of infection before that one infected person becomes more than a thousand, and nineteen generations before there are more than a million! 
+The fact that doubling processes only seem out of control later on has been called [the "second half of the chessboard" in business](https://en.wikipedia.org/wiki/Wheat_and_chessboard_problem), but it applies equally to many processes. For instance, biological invasions start with small numbers of individuals that are quite capable of doubling over some time interval and are often discovered too late, as the invasion is out of control. The same is true of epidemics. They start small, but if one person infects two others, it is only nine "generations" of infection before that one infected person becomes more than a thousand, and nineteen generations before there are more than a million! 
 
-It can be hard to recognize how a doubling process might grow in the early days. Again, the initial numbers are small and seemingly innocuous, if not plain hard to detect^[Consider the discovery of the (Asian giant hornet)[https://www.nytimes.com/2020/05/02/us/asian-giant-hornet-washington.html] in the Pacific Northwest. Was it _just_ introduced? Were there multiple introductions? Will it grow exponentially?]. But also, most processes, at least biological processes are messy or stochastic. One infected person give rise to one new infection, or three, or none. Those chance outcomes have a lot of influence early on in the process when the numbers are low, but average out later, when there are more people doing the infecting, or more individuals of an invasive species reproducing. 
+It can be hard to recognize how a doubling process might grow in the early days. Again, the initial numbers are small and seemingly innocuous, if not plain hard to detect^[Consider the discovery of the [Asian giant hornet](https://www.nytimes.com/2020/05/02/us/asian-giant-hornet-washington.html) in the Pacific Northwest. Was it _just_ introduced? Were there multiple introductions? Will it grow exponentially?]. But also, most processes, at least biological processes are messy or stochastic. One infected person give rise to one new infection, or three, or none. Those chance outcomes have a lot of influence early on in the process when the numbers are low, but average out later, when there are more people doing the infecting, or more individuals of an invasive species reproducing. 
 
 ```{r, fig.margin=TRUE, fig.cap="The doubling process with increasing amounts of chance or noise in the process. Each process was run three time. Notice that one of the three processes with the most noise fizzled out after generation three."}
 myreds <- c('black', RColorBrewer::brewer.pal(4,"Reds")[c(3,4)])
@@ -140,12 +146,14 @@ Now you might wonder how this equation relates to our chess-doubling game above,
 
 We can find the doubling time, which I will call $\tau$, given any (positive) value of $\lambda$ by recognizing that $N(\tau) = 2N_0$, taking the log of both sides, and then doing some re-arranging.
 
-\begin{align}
+\begin{equation*}
+\begin{aligned}
 N(\tau) = 2N_0 &= N_0 \times \lambda^\tau\\
 2&=\lambda^\tau\\
 \log(2) &= \log( \lambda^\tau ) = \tau \times \log(\lambda) \\
 \tau &= \frac{\log(2)}{\log(\lambda)}
-\end{align}
+\end{aligned}
+\end{equation*}
 
 So if $\lambda=2$ then the doubling time $\tau=1$ and if $\lambda = 1.5$ then $\tau = \log(2)/\log(1.5) = 1.7095$. 
 
@@ -165,13 +173,15 @@ N(t) = N_0 \times e^{rt}.
 $$
 In this exponential equation $e^r$ is equivalent to $\lambda$ in the geometric equation; we just need to keep in mind in this version the amount does not change when $r=0$ because $e^0 = 1$, it grows when $r>0$ and it shrinks when $r < 0$. Moreover, the doubling time is simply, 
 
-\begin{align}
+\begin{equation*}
+\begin{aligned}
 \tau &= \frac{\log(2)}{\log(\lambda)} \\
 &= \frac{\log(2)}{\log(e^r)} \\
 &= \frac{\log(2)}{r}.
-\end{align}
+\end{aligned}
+\end{equation*}
  
-The doubling time is one when $r=\log(2) = 0.693$.
+The doubling time is 1 when $r=\log(2) = 0.693$.
 
 If you want to ignore the math, just note that these two equations are equivalent and produce equivalent dynamics; only one takes time (or chess squares) in discrete steps and the other treats it as continuous. Most mathematically-inclined people favor the exponential equation because it has nicer properties that make it easier to work with. 
 
@@ -196,22 +206,24 @@ What is important about a logarithmic scale is that there is a constant proporti
 
 If a process produces a straight line on a logarithmic scale, it means growth (or decline) is happening at a constant rate. We can see why with a bit of light math. Let us simply take the log of both sides of the geometric growth equation and simplify.
 
-\begin{align}
+\begin{equation*}
+\begin{aligned}
 N(t) &= N_0 \times \lambda^t \\
 \log(N(t)) &= \log(N_0 \times \lambda^t) \\
 \log(N(t)) &= \log(N_0) +\log(\lambda)\times t
-\end{align}
+\end{aligned}
+\end{equation*}
 
 Notice that this now takes the form of a straight line ($y=b+mx$) where $\log(N_0)$ is the intercept and $\log(\lambda)$ is the slope. The rate of increase (or decrease, if the slope is negative) is $\log(\lambda)$ every where along the x-axis; it does not change. On the log-base 2 graph this doubling produces a slope of one because $\log_2(2)=1$. 
 
 The math is even easier with the exponential equation,
-\begin{align}
+\begin{equation*}
+\begin{aligned}
 \log(N(t)) = \log(N_0 \times e^{rt}) \\
 \log(N(t)) = \log(N_0) +r \times t
-\end{align}
+\end{aligned}
+\end{equation*}
 and shows that the slope on a (natural) log scale is simply $r$. Setting aside the math, what is the point? It is simply that logarithmic scales linearize geometric or exponentially growing (or shrinking) processes.
-
-It is also important to note that slightly different slopes, representing different growth rates, can have dramatic effects on the resulting amounts. Even seemingly small changes in slopes (i.e., $r$ or $\lambda$) can have profound impacts on how large something grows, even over just 10 time steps (e.g., several thousand to several hundred thousand).
 
 ```{r, fig.margin=TRUE, fig.cap = c("Exponential growth with a range of intrinsic growth rates, $r$ on a linear scale.", "Exponential growth with a range of intrinsic growth rates, $r$ on a logarithmic scale.")}
 exp2 <- function(x,r, n0=1){n0*exp(r*x)}
@@ -237,14 +249,15 @@ Q + scale_y_log10("N(t)", breaks = 10^c(1:9),
                      )
 ```
 
+It is also important to note that slightly different slopes, representing different growth rates, can have dramatic effects on the resulting amounts. Even seemingly small changes in slopes (i.e., $r$ or $\lambda$) can have profound impacts on how large something grows, even over just 10 time steps (e.g., several thousand compared to several hundred thousand). And in dozens or hundreds of time steps these small differences in growth are magnified into massive differences! The power of compounding!
+
+This same less also applies to _changes_ in slopes part way through a process. When we look at cases of COVID-19 (or resulting deaths)---as I have been obsessively doing for many weeks---we are interested in the slope as cases go up, which indicates how rapidly the epidemic is growing. We are also looking (and hoping) for these lines to bend flatter and flatter, meaning first that the rate at which the epidemics are growing is slowing. Eventually we hope they will slope downward, meaning the epidemic is waning.  
 
 
-```{r, fig.cap="Number of new confirmed cases per day. From http://91-divoc.com/pages/covid-visualization/ on 13 MAY 2020. The slopes in this figure change for many reasons---social distancing, reduced contacts, local epidemics running their course---but what ever the reason, a shallower line means a slower rate of growth in new cases.", out.width="4in"}
+
+```{r, fig.cap="Number of new confirmed cases per day. From http://91-divoc.com/pages/covid-visualization/ on 13 May 2020. The slopes in this figure change for many reasons---social distancing, reduced contacts, local epidemics running their course---but what ever the reason, a shallower line means a slower rate of growth in new cases.", out.width="4in"}
 knitr::include_graphics('COVID_curves.png')
-
 ```
-
-This also transfers to changes in slopes along a line. When we look at cases of COVID-19 (or resulting deaths)---as I have been obsessively doing for many weeks---we are interested in the slope as cases go up, which indicates how rapidly the epidemic is growing. We are also looking (and hoping) for these lines to bend flatter and flatter, meaning first that the rate at which the epidemics are growing is slowing. Eventually we hope they will slope downward, meaning the epidemic is waning.  
 
 # Early interventions are key
 
