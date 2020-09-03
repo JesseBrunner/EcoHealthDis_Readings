@@ -58,7 +58,9 @@ These assumptions are, well, wrong, but it might not matter a great deal. At lea
 # Two versions of the same simple model
 
 ## Frequency-dependent transmission
-In the prior discussion of the SIR model we made a simplifying assumption: "For simplicity, let's just assume that every susceptible makes $c'$ contacts per day, like 10 or something." And so we substituted $c'$ for $c(N)$. We then went on to say that $c' \times \pi = \beta$, since they are both constant values^[A constant times a constant is a constant.] in the model. Thus 
+In the prior discussion of the SIR model we made a simplifying assumption: "For simplicity, let's just assume that every susceptible makes $c'$ contacts per day, like 10 or something." And so we substituted $c'$ for $c(N)$. For instance, socially gregarious bats, which are increasingly threatened by white-nose syndrome, have the same number of contacts,  more or less, over roughly four orders of magnitude!^[[Langwig et al. 2012 Ecol. Letters](https://pubmed.ncbi.nlm.nih.gov/22747672/)] They come together to mingle, talk about the weather, and do whatever else bats do. But some of these contacts can spread the _Pseudogymnoascus destructans_ that causes white-nose syndrome. 
+
+Anyway, since $c'$ was a constant we then went on to say that $c' \times \pi = \beta$ was a constant^[A constant times a constant is a constant.] in the model. Thus 
 
 \begin{equation*}
 \begin{aligned}
@@ -72,7 +74,7 @@ In the prior discussion of the SIR model we made a simplifying assumption: "For 
 This is often called  frequency-dependent transmission, because the overall rate of transmission^[And the force of infection, which is the same thing, but for $S=1$ susceptible individual.] increases with the frequency or proportion of the population that is infected. 
 
 ## Density-dependent transmission
-Before discussing this more, let me introduce the common alternative formulation, the density-dependent-transmission term. We start with the same general model, but instead of assuming that the contact rate is a constant (i.e., $c(N) = c'$), we assume that contact rate increases linearly with host density. That is, the larger the population, the more contacts an individual makes. Mathematically we could say that $c(N) = c''\times N$, where this new double-prime c is the contact rate per individual in the population which is then multiplied by the population size. Thus:
+Before discussing this more, let me introduce the common alternative formulation, the density-dependent-transmission term. We start with the same general model, but instead of assuming that the contact rate is a constant (i.e., $c(N) = c'$), we assume that contact rate increases linearly with host density. That is, the larger the population, the more contacts an individual makes. For instance, solitary bat species, by their nature, do not aggregate and so their more-or-less accidental contacts with others tend to increase with population size.  Mathematically we could say that $c(N) = c''\times N$, where this new double-prime c is the contact rate per individual in the population which is then multiplied by the population size. Thus:
 
 \begin{equation*}
 \begin{aligned}
@@ -85,13 +87,13 @@ Before discussing this more, let me introduce the common alternative formulation
 \end{aligned}
 \end{equation*}
 
-where $\beta =  c'' \pi$ as before^[Note that this new $\beta$ has different units than the frequency-dependent version.]. In this density-dependent version of the transmission term, the rate of transmission (and force of infection) increase with the number or density of infected hosts, hence the name. 
+where $\beta =  c'' \pi$ as before^[Note that this new $\beta$ has different units than the frequency-dependent version.]. In this density-dependent version of the transmission term, the rate of transmission (and force of infection) increase with the number or density of infected hosts, hence the name^[This is almost precisely the way chemists thing of the rates of chemical reaction in gases or fluids. It's just molecules bouncing around randomly and when the right two happen to contact there is some probability of them becoming a new molecule. Of course animals are not molecules, but still, the model of transmission often works quite well!]. 
 
 ## Why it matters
 OK, so we have two versions that look pretty similar, only in one we divide by $N$. What's the big deal? Well, it turns out that it matters. 
 
 
-```{r, fig.margin=TRUE, fig.cap="Contact rates and rates of transmission in the frequency-dependent and density-dependent models.  $\\beta_{FD} = 10 \\text{contacts per day} \\times 0.05 \\text{chance of infection per contact} = 0.5$.  $\\beta_{DD} = 0.1 \\text{contacts per day per host} \\times 0.05 \\text{chance of infection per contact} = 0.005 N$."}
+```{r, fig.margin=TRUE, fig.cap="Contact rates and rates of transmission in the frequency-dependent and density-dependent models.  \\newline $\\beta_{FD} = 10 \\text{ contacts per day} \\times 0.05 \\text{ chance of infection per contact} = 0.5$.  \\newline $\\beta_{DD} = 0.1 \\text{ contacts per day per host}  \\times 0.05 \\text{ chance of infection per contact} = 0.005$."}
 df <- expand_grid(Density = 1:500, 
                   Form = c("Frequency-dependent", "Density-dependent"))
 df %>% 
@@ -123,11 +125,11 @@ This density-dependent logic forms the basis for culling to prevent disease from
 
 
 # Which version is most realistic?
-Historically, the density-dependent model had been applied to wildlife, whose density can vary a great deal through time and from place to place, and the frequency-dependent model was used for human diseases, as human populations are less varied on the scale of an epidemic^[Yes, the Black Death affected up to a third of Europe, but that is rare, whereas some epidemics in wildlife might cause die-offs of over 90\% of a population.]. The frequency-dependent model is also used for sexually transmitted infections. The logic is that the number of sexual partners is largely independent of population size, even in wildlife. 
+Historically, the density-dependent model had been applied to wildlife, whose density can vary a great deal through time and from place to place, and the frequency-dependent model was used for human diseases, as human populations are less varied on the scale of an epidemic^[Yes, the Black Death affected up to a third of Europe, but that is rare, whereas some epidemics in wildlife might cause die-offs of over 90\% of a population.]. The frequency-dependent model is also used for sexually transmitted infections (e.g., HIV), even in wildlife (e.g., feline immunodeficiency virus). The logic is that the number of sexual partners is largely independent of population size (e.g., whether in Pullman or Seattle). 
 
 The reality is that both versions are cartoons, extreme simplifications of reality that are used more for mathematical convenience than because they reflect the actual biology. The truth is that measuring transmission rates is incredibly difficult, so usually we do not know which version is best. We just use one version, find a value of $\beta$ that makes the model produce reasonable results, and move on. And really, it often does not matter. If the population is (relatively) constant, either transmission term can be made to produce the same dynamics. 
 
-But _still_, which is a better representation? Let me start by pointing out their flaws. The frequency-dependent model says that population size does not matter, but obviously at very low population sizes, this cannot hold. I mean, how can you have 10 unique contacts per day if there are only two of you? The frequency-dependent model falls apart at the low end. The density-dependent model realistically captures the increasing rate of contact with increasing population size, but then it extends that pattern to the absurd. I mean, with $\beta = 0.005$ this implies 50 contacts per day in a population of ten-thousand (reasonable) and 50,000 contacts per day in a population of ten-million (not so reasonable). Contact rates and transmission should not increase with density forever. Shouldn't they saturate or asymptote to some maximum?
+But _still_, which is a better representation? Let me start by pointing out their flaws. The frequency-dependent model says that population size does not matter, but obviously at very low population sizes, this cannot hold. I mean, how can you have 10 unique contacts per day if there are only two of you? The frequency-dependent model falls apart at the low end. 
 
 ```{r, fig.margin=TRUE, fig.cap="Contact rates and rates of transmission in the frequency-dependent and density-dependent models, as before, with an a saturating \"in-between\" version in black."}
 df <- expand_grid(Density = 1:500, 
@@ -145,7 +147,9 @@ df %>%
   coord_cartesian(ylim=c(0,30))
 ```
 
-When researchers have actually measured transmission rates across densities they have almost always found^[My own work with amphibians and ranavirus transmission included.] that the best description was something like the black line, where transmission increases with host population size, but starts to level off. There are more reasons for this than we have time to list^[Heterogeneity in susceptibility, contact networks, the reality that all transmission is local, ...], but any sort of saturating function generally works pretty well. What's more, researchers usually find that the frequency-dependent model is a pretty reasonable approximation over a wide variety of conditions and the density-dependent model just plain stinks. It's the bedrock assumption of myriad models and wildlife management policy and so on and it is just plain bad. Once again, it pays to check your assumptions. 
+The density-dependent model realistically captures the increasing rate of contact with increasing population size, but then it extends that pattern to the absurd. I mean, with $\beta = 0.005$ this implies 50 contacts per day in a population of ten-thousand (reasonable) and 50,000 contacts per day in a population of ten-million (not so reasonable). Contact rates and transmission should not increase with density forever. Shouldn't they saturate or asymptote to some maximum?
+
+When researchers have actually measured transmission rates across densities they have almost always found^[My own work with amphibians and ranavirus transmission included.([See Brunner et al. 2017 Ecology](https://labs.wsu.edu/brunner/publications/). My co-authors were undergrads!)] that the best description was something like the black line, where transmission increases with host population size, but starts to level off. There are more reasons for this than we have time to list^[Heterogeneity in susceptibility, contact networks, the reality that all transmission is local, ...], but any sort of saturating function generally works pretty well. What's more, researchers usually find that the frequency-dependent model is a pretty reasonable approximation over a wide variety of conditions and the density-dependent model just plain stinks. It's the bedrock assumption of myriad models and wildlife management policy and so on, but it is just plain bad. Once again, it pays to check your assumptions. 
 
 
 
@@ -221,7 +225,7 @@ where $b$ is the birth rate of the hosts and some fraction, $\phi$, of those bor
 
 Let me end with a few final thoughts:
 
-* These are artificial distinctions; not every parasite fits neatly into a box. Moreover, there are other ways of classifying modes of transmission that might be more useful for different purposes.
+* These are artificial distinctions; not every parasite fits neatly into a box. Moreover, there are other ways of classifying modes of transmission that might be more useful for different purposes. Plus, some parasites are transmitted via multiple routes! 
 
 * Biologically important distinctions in how parasites are transmitted do not always lead to different ways of describing transmission. Remember, true and pseudo-vertical transmission are described essentially the say way as are biological and mechanical transmission by vectors. Even transmission from the environment and via free-swimming, host-seeking parasites might be described the same way! 
 
