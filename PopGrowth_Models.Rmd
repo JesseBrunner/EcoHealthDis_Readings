@@ -80,7 +80,7 @@ ggplot(tibble(x=0:250, y=x*0.2), aes(x, y)) +
 ```
 We can plot this relationship between growth rate and population size. As you would expect from what we just said in words, this relationship is just a straight line starting at zero^[With a population of zero, there is no one to reproduce!] that goes up and up forever with a slope of $r$. 
 
-`r newthought("A word of warning:")` Be sure tp pay attention to the axis labels. Before we were plotting $N$ against time, but now we are plotting $dN/dt$ against $N$. They show different things even though they might have similar lines.
+`r newthought("A word of warning:")` Be sure to pay attention to the axis labels. Before we were plotting $N$ against time, but now we are plotting $dN/dt$ against $N$. They show different things even though they might have similar lines.
 
 ## Population growth rates vs. per capita growth rates
 So this model and graph describes the growth of the population as a whole. What does this model say about the growth of individuals^[Here we mean the average rate of births minus deaths from individuals, not a change in their sizes]? Well, if $dN/dt$ is the population growth rate, then dividing it by $N$ gives us the average growth per individual in the population (all $N$ of them). 
@@ -126,7 +126,7 @@ ggplot(tibble(x=0:250, y=0.2), aes(x, y)) +
        y="Per capita growth rate ([dN/dt]/N)")
 ```
 
-So we know the extremes---at low $N$ per capita growth is $r$ and a $N=k$ per capita growth is zero---but how do we connect these terms? We have many options. Three are shown in the figure to the right. At one extreme (line C) we could create a model where the per capita growth is unaffected by population size right up to the point where it goes to zero, like an on/off switch. This does not seem very reasonable, as just below $k$ there is no effect of population size and then add one more individual and _bam!_, no more net growth! Instead, we might say that the effect of population size on per capita growth rate is negligable at low population sizes and then grows faster and faster (line B). That seems more reasonable. 
+So we know the extremes---at low $N$ per capita growth is $r$ and a $N=k$ per capita growth is zero---but how do we connect these terms? We have many options. Three are shown in the figure to the right. At one extreme (line C) we could create a model where the per capita growth is unaffected by population size right up to the point where it goes to zero, like an on/off switch. This does not seem very reasonable, as just below $k$ there is no effect of population size and then add one more individual and _bam!_, no more net growth! Instead, we might say that the effect of population size on per capita growth rate is negligible at low population sizes and then grows faster and faster (line B). That seems more reasonable. 
 
 ```{r, fig.margin=TRUE, fig.cap="Per capita growth rate as a function of population size with $r=0.2$ in the exponential model and three options for how we can reach zero per capita growth at $N=k=200$."}
 df <- expand.grid(N=0:250, model=c("exponential", "logistic"))
@@ -248,7 +248,7 @@ A + scale_y_log10()
 
 There we have it! The characteristic sigmoidal curve of population through time up to a "carrying capacity" we called $k$, is logistic growth. It's a curve you have almost certainly seen before, but now you see the underlying logic of it and how those assumptions we made lead to these dynamics. And it is your second model of population growth! A double woo-woo!
 
-Do we see logistic growth in nature? You bet! For instance, in a classic set of experiments Russian biologist Georgii Frantsevich Gause  studied the growth of several species of ciliates (bacteria-eating protozoans) and, in other experiments, yeast, grown in isolation and in combination. You can see how the logistic curves seem to capture the general dynamics of his cliliates. It's not perfect, but it's pretty darn good!
+Do we see logistic growth in nature? You bet! For instance, in a classic set of experiments Russian biologist Georgii Frantsevich Gause  studied the growth of several species of ciliates (bacteria-eating protozoans) and, in other experiments, yeast, grown in isolation and in combination. You can see how the logistic curves seem to capture the general dynamics of his ciliates. It's not perfect, but it's pretty darn good!
 
 ```{r, fig.cap="Gause's ciliates grown by themselves or in pairs with low food (half loop) or high food availability (one loop). Notice that when the food was doubled, the population size grew about twice as large.", fig.height=3.5}
 knitr::include_graphics("Paurelia_Pcaudatum.png", dpi=425)
@@ -258,7 +258,7 @@ knitr::include_graphics("Paurelia_Pcaudatum.png", dpi=425)
 
 # Is the logistic model better?
 
-In all my years of teaching about, sometimes jumping up and down excitedly about, population dynamics and these models, there is one question I _still_ find hard to answer, but one I'm asked a lot. _If the logistic model is better than the exponential model, why do we even bother with exponential growth?_ It's tricky because I get stuck on that one word, "better."  What do we mean by better? More "accurate" or "realistic" or "useful"? In all of these cases we need to be clear about what we want and why. But really, at it's heart, this is a question that boils down down to what are we using models for? 
+In all my years of teaching about, sometimes jumping up and down excitedly about, population dynamics and these models, there is one question I _still_ find hard to answer, but one I'm asked a lot. _If the logistic model is better than the exponential model, why do we even bother with exponential growth?_ It's tricky because I get stuck on that one word, "better."  What do we mean by better? More "accurate" or "realistic" or "useful"? In all of these cases we need to be clear about what we want and why. But really, at it's heart, this is a question that boils down to what are we using models for? 
 
 We actually construct models in science and more broadly for lots and lots of reasons Here's a partial, and somewhat overlapping list:
 
