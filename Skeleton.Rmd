@@ -3,8 +3,13 @@ title: "Skeleton version"
 subtitle: "YYY"
 author: "Jesse Brunner"
 date: "`r Sys.Date()`"
-output:
-  tufte::tufte_handout: default
+output: tint::tintPdf
+latexfonts:
+  - package: newtxmath
+    options: 
+      - cmintegrals
+      - cmbraces
+  - package: ebgaramond-maths
 header-includes:
    - \usepackage{booktabs}
    - \usepackage{cancel}
