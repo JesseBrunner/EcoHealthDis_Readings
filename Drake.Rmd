@@ -1,0 +1,72 @@
+---
+title: "The [Drake equation](https://www.youtube.com/watch?v=qMybbu_1hAY) and EIDs"
+author: "Jesse Brunner"
+date: "`r Sys.Date()`"
+output: tint::tintPdf
+latexfonts:
+  - package: newtxmath
+    options: 
+      - cmintegrals
+      - cmbraces
+  - package: ebgaramond-maths
+header-includes:
+   - \usepackage{booktabs}
+   - \usepackage{cancel}
+---
+
+```{r setup, include=FALSE}
+library(tufte)
+# invalidate cache when the tufte version changes
+knitr::opts_chunk$set(tidy = FALSE, 
+                      message = FALSE, 
+                      warning = FALSE,
+                      echo = FALSE,
+                      cache.extra = packageVersion('tufte'))
+options(htmltools.dir.version = FALSE)
+```
+
+```{r, include=FALSE}
+library(tidyverse)
+library(scales) # for prettier axis labels
+library(simecol) # for running model 
+theme_set(theme_minimal())
+```
+
+One of the beautiful things about mathematical equations is that they provide a way to frame our understanding and ignorance about even seemingly unknowable problems. For instance, in the late 1950's physicists and astronomers began to consider the possibility of detecting and even trying to communicate with alien life on other planets orbiting other stars. Frank Drake, an American astronomer and astrophysicist, was one of those people. In April through July 1960 he listened to radio signals from three sun-like stars for six hours a day for anything that might be recognizable as an alien signal^[Essentially any non-natural signals near the wavelength emitted by neutral hydrogen, which seemed like a natural place for an alien to transmit if they were trying to communicate]. Needless to say, he didn't find any signals, but it and upcoming conference he was hosting on the search for extraterrestrial intelligence led him to devise what became the "[Drake equation](https://en.wikipedia.org/wiki/Drake_equation)." 
+
+The equation was formulated as a simple way to estimate the number of civilizations in our galaxy with which communication might be possible. 
+
+$$
+N =   R_*  \times f_p \times n_e \times f_l \times f_i \times f_c \times L 
+$$
+
+It is, in essence, a series of rates and probabilities, the product of which give us this number, $N$. Working from left to right we have:  
+$R_*$ = the rate of star formation in our galaxy^[This rate is multiplied by a duration, $L$, so it ends up producing a number of stars. ]  
+$f_p$ = the the fraction of those stars that have planets.  
+$n_e$ = the average number of planets that can _potentially_ support life around those stars that have planets.  
+$f_l$ = the fraction of those planets that can support life that actually develop life  
+$f_i$ = the fraction of those planets that develop life that lead to _intelligent_ life (i.e., civilization)   
+$f_c$ = the faction of those civilizations that release detectable signals into space^[E.g., radio waves or maybe lasers.]  
+$L$ = the length of time those civilizations release detectable signals into space^[The thinking at the time was, "before they blow themselves up with nuclear weapons!" But it could also mean "until they moved from transmitting TV signals over the air to using cables or something else that did not emit signals" or "until they stopped trying to communicate with others."]
+
+Some of these numbers can be reasonably estimated. For instance, NASA and ESA have estimates that suggest $R_* =1.5-3$ stars per year in our galaxy. And $f_p \times n_e$ was originally thought to be around 0.2 to 2.5, better estimates derived from the Kepler space telescope suggest $f_p \times n_e = 0.4$. Other numbers, however, are essentially a guess. How often does life arise on a potentially suitable planet? So far we have only our own planet we know of for certain. Life seems to have arisen rapidly after the initial bombardment of the planet eased, so that suggests life can arise quickly. But we have not yet^[As of this writing.] found life on Mars, which seems like it could be or have been suitable for life. So...? 
+
+Some have argued that the Drake equation amounts to a Rorschach test, essentially revealing a person's existing beliefs about the likelihood of intelligent life. Indeed, individual estimates range from essentially zero to numbers in the millions or above! Others have argued (at least on [YouTube](https://www.youtube.com/watch?v=B8-k8ZoMaa0)) that the equation is useless because actually multiplying through these values to estimate $N$ does nothing but reveal the consequences of our assumptions; that is, we've learned nothing new. But I disagree. 
+
+I think understanding the consequences of our assumptions or estimates is important! I also think that this equation, as it was originally intended, helps guide our thinking about the key steps or bits of knowledge we lack. If we want to be able estimate $N$, we really need a better sense of those last four terms! Finally, we can turn this exercise on its head and ask, for instance, how small must $f_l \times f_i$ be to ensure that we are and have been the only intelligent life to arise in our galaxy or the whole universe^[[Frank & Sullivan. 2016. A New Empirical Constraint on the Prevalence of Technological Species in the Universe. Astrobiology 6:359-362](https://pubmed.ncbi.nlm.nih.gov/27105054/). Short version: very, very unlikely!] (setting aside the communication part). 
+
+# What would a Drake equation look like for disease emergence?
+
+In any case, this sort of thinking has been applied to a number of contexts including, recently, COVID-19 transmission^[[Mittal et al. 2020. A mathematical framework for estimating risk of airborne transmission of COVID-19 with application to face mask use and social distancing. Phys. Fluids 32, 101903](https://aip.scitation.org/doi/10.1063/5.0025476)], [finding a boy/girlfriend](https://www.youtube.com/embed/ClPPSry8bBw?hl=en), and, um, flakes:
+
+
+
+```{r, fig.fullwidth = TRUE, fig.cap="From https://xkcd.com/718/. "}
+
+knitr::include_graphics("the_flake_equation.png", dpi=200)
+```
+
+
+As a disease ecologist, I see a lot of similarities between the question of how many alien civilizations might be out there trying to communicate and the question of how many new diseases might emerge in any given year. I think this is a great way to think through the processes involved in emergence and their probabilities. So, in class on Thursday, this is my question for you:
+
+What would a Drake equation for emerging infectious diseases (EIDs)look like?
