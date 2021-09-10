@@ -140,8 +140,8 @@ So now we can describe what happens to the infected individuals in a population,
 
 Let's first describe the steps that go into transmission, from the susceptible's point of view^[The rate at which an average susceptible individual becomes infected is called the force of infection (FOI) and it's pretty handy. It is sometimes possible to estimate the FOI from sentinels. For instance, sentinel chickens are routinely placed in various environments to estimate the rate at which they become infected with West Nile virus or other arboviruses.]. 
 
-*  First a susceptible individual comes into contact with other individuals^[We'll focus on directly transmitted infections, but we could also replace hosts with, say, mosquitoes.]. at some rate, which we'll call $c(N)$ because I'm not feeling very creative. This way of writing it, though, suggests that the contact rate might be a function of population size, $N$, where $N=S+I+R$.
-*  Only a fraction of those individuals are infected: $I/N$. 
+*  First a susceptible individual comes into contact with other individuals^[We'll focus on directly transmitted infections, but we could also replace hosts with, say, mosquitoes.] at some rate, which we'll call $c(N)$ because I'm not feeling very creative. This way of writing it, though, suggests that the contact rate might be a function of population size, $N$, where $N=S+I+R$.
+*  Only a fraction of those individuals are infected. Assuming the contacts happen randomly, the proportion of contacts that are with an infected individual is $I/N$. 
 *  Then, given a contact with an infected individual, there is some probability, $\pi$, the susceptible individual becomes infected. 
 
 Putting this all together we get the rate at which a single susceptible individual is infected:
@@ -155,7 +155,7 @@ $$
 c' \frac{I}{N} \pi,
 $$
 
-and if we say that $c' \pi = \beta$, since these are just two constant rates and so their product is a constant, and one term is simpler than two, we get 
+and if we say that $c' \pi = \beta$, since these are just two constant rates and so their product is thus a constant and one term is simpler than two, we get 
 
 $$
 c' \pi\frac{I}{N}  = \beta \frac{I}{N}.
@@ -193,7 +193,7 @@ textplain(mid=c(0.6, 0.3), lab = expression(phi*gamma*I), cex=1)
 
 # Putting it all together
 
-We've now described the rates at which all three processes in an epidemic occur, in simple mathematical terms. I know that lowercase Greek letters can make people's eyes glaze over^[And uppercase Greek letters make people think of frats and sororities?], but hopefully you followed along with the logic of how we thought about these rates. The next step is simply to put these all together in some equations that describe the rates or flows of individuals from one box to another. 
+We've now described the rates at which all three processes in an epidemic occur, in simple mathematical terms. I know that lowercase Greek letters can make peoples' eyes glaze over^[And uppercase Greek letters make people think of frats and sororities?], but hopefully you followed along with the logic of how we thought about these rates. The next step is simply to put these all together in some equations that describe the rates or flows of individuals from one box to another. 
 
 Since there are three boxes, we'll have three equations, and each will describe the flows in and out of that box. So, starting with the susceptible box, and remembering that changes in the rate of some quantity, $X$, is described mathematically as $dX/dt$, we get:
 
@@ -201,7 +201,7 @@ $$
 \frac{dS}{dt} = -\beta\frac{I}{N}S.
 $$
 
-Notice that there is no way to gain new susceptible individuals, since we are not including birth or recovery without resistance (or waning immunity). They only flow out as they become infected.
+Notice that there is no way to gain new susceptible individuals, since we are not including birth or recovery without resistance (or waning immunity)^[We could add these processes in. In fact it is worthwhile to think about how you might do so. But for now, let us keep things simple.]. They only flow out as they become infected.
 
 The infected box gains infections at this same rate of transmission as they are lost from susceptible class---this is a flow from $S$ to $I$, after all---and then they are lost to virulence and recovery at a collective rate of $\phi \gamma I + (1-\phi) \gamma I = \gamma I$.
 
@@ -257,7 +257,7 @@ knitr::include_graphics("dimensional_analysis.png")
 
 # The dynamics of an epidemic
 
-So we have our model, but, I can almost hear you asking, what does it _do_? We're about to get there, simulating or running or solving these equations^[We won't worry about these details of how, but if you're interested, it's a version of the Runga-Kutta method. Or, like I said, don't worry about it.] so that we can see how $S$, $I$, and $R$ change through time. But first I want you to take a moment and draw on these axes what _you_ think these three quantities will look like through time. Try it. Start at time zero with a large susceptible population ($S$ is big), a single infected ($I=1$), and no resistant individuals ($R=0$). What happens to these three groups as the epidemic progresses? You would probably do well to move in small steps, starting with $S$ and then thinking about $I$ and $R$. Try drawing the dynamics on these axes.
+So we have our model, but, I can almost hear you asking, what does it _do_? We're about to get there, simulating or running or solving these equations^[We won't worry about these details of how, but if you're interested, it's a version of the Runga-Kutta method. Or, like I said, don't worry about it.] so that we can see how $S$, $I$, and $R$ change through time. But first I want you to take a moment and draw on these axes what _you_ think these three quantities will look like through time. Try it. Start at time zero with a large susceptible population ($S$ is big), a single infected ($I=1$), and no resistant individuals ($R=0$). What happens to these three groups as the epidemic progresses? You would probably do well to move in small steps, starting with $S$ and then thinking about $I$ and $R$. Try drawing the dynamics on these axes.  No really! Before moving on, try it yourself!
 
 
 ```{r}
@@ -343,7 +343,7 @@ openplotmat()
                   lab = expression(phi*gamma*I), cex=0.7)
 ```
 
-You may have noticed or recall that we are assuming that all individuals in the $I$ class are equally infectious. One consequence of this is that infected individuals are _instantaneously_ infectious to others. But most infections take a bit to ramp up; there is an incubation period^[Doctors tend to define the incubation period as the time until symptoms develop, but epidemiological modelers would usually think of it as the time until they are infectious. They _can_ be the same thing, but not always.]. To account for this we can include an exposed-but-not-yet-infectious class, $E$. Newly infected individuals flow into the $E$ box with transmission and then flow out at a rate $k$ = 1/(the incubation period), on average. Everything else is the same. 
+You may have noticed or recall that we are assuming that all individuals in the $I$ class are equally infectious. One perhaps non-obvious consequence of this is that infected individuals in this model are _instantaneously_ infectious to others. But most real-life infections take a bit of time to ramp up; there is an incubation period^[Doctors tend to define the incubation period as the time until symptoms develop, but epidemiological modelers would usually think of it as the time until they are infectious. They _can_ be the same thing, but not always.]. To account for this we can include an exposed-but-not-yet-infectious class, $E$. Newly infected individuals flow into the $E$ box with transmission and then flow out at a rate $k$ = 1/(the incubation period), on average. Everything else is the same. 
 
 ```{r simpleSEIR, fig.margin=TRUE, fig.cap="Epidemic dynamics of an SEIR model with $\\beta = 0.5$, $k = 0.33$, $\\gamma=0.1$, and $\\phi=0.2$ and starting from an a population with $S=100$ and $I=1$."}
 SEIR <- odeModel( 
@@ -439,11 +439,11 @@ So, both mathematically and, I hope, intuitively we can see why epidemics fade: 
 
 # What does it take for an epidemic to grow? ($R_0$)
 
-Thinking of the equation for $I$ in terms of gains and losses also provides some insights into what it takes for an epidemic to grow. Intuitively, if the epidemic is to grow, the equation for $\tfrac{dI}{dt}$ must be positive. This only occurs if the gains are greater than the losses, or $\beta\tfrac{I}{N}S > (\alpha + \gamma) I$. 
+Thinking of the equation for $I$ in terms of gains and losses also provides some insights into what it takes for an epidemic to grow. Intuitively, if the epidemic is to grow, the equation for $\tfrac{dI}{dt}$ must be positive. This only occurs if the gains are greater than the losses, or $\beta\tfrac{I}{N}S >  \gamma I$. 
 
 
 $$
-\frac{dI}{dt} >0 \text{   only if   }  \overbrace{\beta\frac{I}{N}S}^{gains} > \overbrace{(\alpha + \gamma) I}^{losses}
+\frac{dI}{dt} >0 \text{   only if   }  \overbrace{\beta\frac{I}{N}S}^{gains} > \overbrace{\gamma I}^{losses}
 $$
 We can also think about this from the point of view of a single infected individual entering an otherwise wholly susceptible population (i.e., $I=1$ and $S=N-1 \approx N$). How many new cases will they produce over the length of their infection? If it is greater than one the epidemic will grow, but if it is less than one the infection will not spread and the epidemic will fade out before it gets going^[Importantly, we are thinking of this _on average_. When dealing with real individuals in real populations in, well, reality, chance events can be very important. If you introduced of a single infected individual into a whole bunch of identical susceptible populations you would get a whole range of outcomes, but on average the results would look like our calculations.]. So what is the rate at which the single $I$ causes new cases? That is simply $\beta\tfrac{S}{N}$ (remember, we said $I=1$, so it disappears from the gain term), which is essentially $\beta$ since we said that $S\approx N$. 
 
@@ -466,16 +466,16 @@ R_0 &= \beta \times 1/(\gamma) \\
 \end{aligned}
 \end{equation*}
 
-This is the magic term $R_0$, often called "R-naught" from the British English habit of calling zero, naught. It is also known as the reproductive number of the infection^[And its interpretation is analogous to the reproductive number of an organism estimated from a life table, $R_0 = \sum l_x b_x$ if you've seen one elsewhere.]. If $R_0>1$, meaning that an infection is expected to more than replace itself, the epidemic is expected to grow, on average, and if $R_0<1$, meaning an infection will not replace itself, the epidemic is expected to fade before it really gets going. 
+This is the magic term $R_0$, often called "R-naught" from the British English habit of calling zero "naught." It is also known as the reproductive number of the infection^[And its interpretation is analogous to the reproductive number of an organism estimated from a life table, $R_0 = \sum l_x b_x$ if you've seen one elsewhere.]. If $R_0>1$, meaning that an infection is expected to more than replace itself, the epidemic is expected to grow, on average, and if $R_0<1$, meaning an infection will not replace itself, the epidemic is expected to fade before it really gets going. 
 
-For context, one study^[[Liu et al. (2020) J. Travel Med.](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7074654/)] of early estimates of $R_0$ for COVID-19 found values from a low of 1.5 to a high of 6.68 and one^[[Zhang et al. (2020) Int. J. Infect. Dis.](https://www.sciencedirect.com/science/article/pii/S1201971220300916)] from the Diamond Princess cruise ship, which was a nice, closed and well-studied population, was 2.28. All of these estimates suggest that COVID-19 would tend to grow, but by different amounts. Why the range of estimates? Some of it is just a product of statistical uncertainty and data sets of varying size and quality. But more fundamentally, that rates of transmission and the duration of infection are going to depend on the population in which the infection is spreading (e.g., young or old, healthy or sick) and the local conditions (e.g., crowded or not, little or lots of movement and contacts, as well as, perhaps, temperature and humidity). In other words, $R_0$ is _not_ a fixed characteristic of an infection or pathogen, but rather a product of that pathogen in a particular host population. 
+For context, one study^[[Liu et al. (2020) J. Travel Med.](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7074654/)] of early estimates of $R_0$ for COVID-19 found values from a low of 1.5 to a high of 6.68 and one^[[Zhang et al. (2020) Int. J. Infect. Dis.](https://www.sciencedirect.com/science/article/pii/S1201971220300916)] from the Diamond Princess cruise ship, which was a nice, closed and well-studied population, was 2.28. All of these estimates suggest that COVID-19 would tend to grow, but by different amounts. Why the range of estimates? Some of it is just a product of statistical uncertainty and data sets of varying size and quality. But more fundamentally, the rate of transmission and duration of infection are going to depend on the population in which the infection is spreading (e.g., young or old, healthy or sick) and the local conditions (e.g., crowded or not, little or lots of movement and contacts, as well as, perhaps, temperature and humidity). In other words, $R_0$ is _not_ a fixed characteristic of an infection or pathogen, but rather a product of that pathogen in a particular host population. 
 
 It is important to remember that $R_0$ is defined with a single infected entering a wholly susceptible population. When an epidemic has begun this is no longer the case and so we instead think of the _effective_ reproductive number, $R$ or $R_{t}$, which describes the same things given whatever $I$ and $S$ are at the time^[See this site for state-by-state estimates of $R_t$ https://rt.live/]. 
 
 
 ## An aside on estimating $R_0$ 
 
-You may recall that when we were discussing processes that grow exponentially, we included the early dynamics of epidemics. We also noted that log of a population  ($N(t)$, whether rice grains or infections) growing exponentially over time would follow a straight line with a slope of $r$, which we called the intrinsic rate of increase.
+You may recall that when we were discussing processes that grow exponentially, we included the early dynamics of epidemics. We also noted that the log of a population  ($N(t)$, whether rice grains or infections) growing exponentially over time would follow a straight line with a slope of $r$, which we called the intrinsic rate of increase.
 $$
 \log(N(t)) = \log(N_0) +r \times t
 $$
@@ -493,7 +493,7 @@ out(SIR) %>%
   scale_y_log10(labels = trans_format("log10", math_format(10^.x)))
 ```
 
-Clearly, none of these lines are straight over the whole time period, but look at the line for the infected individuals. It looks like its initial increase is following a straight line for a while, and then it seems to decline along a straight line later. (You can probably find some bits of the other two lines that approximately straight for some stretches, too. But let us focus on the $I$ box.) Let me zoom in on the first ten days of the $I$ line and fit a linear regression to it:
+Clearly, none of these lines are straight over the whole time period, but look at the line for the infected individuals. It looks like its initial increase follows a straight line for a while, and then it seems to decline along a straight line later. (You can probably find some bits of the other two lines that approximately straight for some stretches, too. But let us focus on the $I$ box.) Let me zoom in on the first ten days of the $I$ line and fit a linear regression to it:
 ```{r, fig.margin=TRUE, fig.cap="The first ten days of dynamics of the infected box from an SIR model on a logarithmic y-axis. The blue line is from a linear regression."}
 out(SIR) %>% 
   # turn it from wide to long
@@ -509,17 +509,17 @@ out(SIR) %>%
 l <- lm(log(I) ~ time, data=filter(out(SIR), time <=5))
 ```
 
-It looks like pretty close, but not perfect fit. If you look very, very closely you will see that the red line curves downwards a bit, so the regression is a bit too flat early on and a bit too steep later on. But it is not a bad approximation. The slope of this linear regression on a natural log scale is `r round(coef(l)[2], 3)`. In other words, this slope is approximating $r$. But we want $R_0$. A simple extrapolation, from a rather more complex analysis^[[Wallinga & Lipsitch (2007) Proc. B Roy. Soc.](https://royalsocietypublishing.org/doi/full/10.1098/rspb.2006.3754#d3e347)] is:
+It looks like a pretty good, but not perfect fit. If you look very, very closely you will see that the red line curves downwards a bit, so the regression is a bit too flat early on and a bit too steep later on. But it is not a bad approximation. The slope of this linear regression on a natural log scale is `r round(coef(l)[2], 3)`. Recall that this slope is approximating $r$. But we want $R_0$. A simple extrapolation, from a rather more complex analysis^[[Wallinga & Lipsitch (2007) Proc. B Roy. Soc.](https://royalsocietypublishing.org/doi/full/10.1098/rspb.2006.3754#d3e347)] is:
 $$
 R_0 \approx 1 + r/\gamma,
 $$
 from which we get $1+`r round(coef(l)[2], 3)`/0.1 = `r round(1+coef(l)[2]/0.1, 3)`$. This is a pretty close estimate of the  "known" value of $R_0 = \beta/\gamma = 0.5/0.1 =  5$.
 
-In actual practice, researchers _do_ use this approach to estimate $R_0$, but actually sorting out the duration of time in the infected class can be tricky and nuanced. There are many other more sophisticated approaches to estimating $R_0$, as you might expect, but it is nice to see that 1) simple can work and 2) that, once again, plotting numbers against time on a logarithmic scale tells us something about the underlying process^[I'll let you think about what the linear _decline_ in $I$ on the graph above means and what the slope might represent.].
+In actual practice, researchers _do_ use this approach to estimate $R_0$, but actually sorting out the duration of time in the infected class can be tricky and nuanced. There are many other more sophisticated approaches to estimating $R_0$, as you might expect, but it is nice to see that 1) simple can work and 2) once again, plotting numbers against time on a logarithmic scale tells us something about the underlying process^[I'll let you think about what the linear _decline_ in $I$ on the graph above means and what the slope might represent.].
 
 # What does it take for an epidemic _not_ to grow? Reducing $R_t < 1$
 
-You can think about most public health interventions as aimed at reducing $R_t$ or $R_0$ so that, on average, each infected individual produces less than one new infection. When this happens, the epidemic will start to fade. Of course this happens naturally when an infection has spread so much that it runs out of susceptible hosts^[[Although it can take a long time get there!](https://www.nytimes.com/interactive/2020/05/28/upshot/coronavirus-herd-immunity.html)]. Like a wildfire running out of unburned trees, the spread of the infection will slow down and eventually fade out. What's more, like the unburned trees after a fire, an epidemic will not generally infect everyone, even if left uncontrolled. This was one of the more surprising results from early epidemic models. Even highly transmissible infections will not reach everyone. 
+You can think about most public health interventions as aimed at reducing $R_0$ (or really $R_t$, which relaxes the assumption of a wholey susceptible population) so that on average each infected individual produces less than one new infection. When this happens, the epidemic will start to fade. Of course this happens naturally when an infection has spread so much that it runs out of susceptible hosts^[[Although it can take a long time get there!](https://www.nytimes.com/interactive/2020/05/28/upshot/coronavirus-herd-immunity.html)]. Like a wildfire running out of unburned trees, the spread of the infection will slow down and eventually fade out. What's more, like the unburned trees after a fire, an epidemic will not generally infect everyone, even if left uncontrolled. This was one of the more surprising results from early epidemic models. Even highly transmissible infections will not reach everyone. 
 
 This finding, and the underlying logic, that we might reach a critical level of "**heard immunity**", has featured prominently in discussions about how the COVID-19 pandemic might end. If a large enough fraction of the population is immune (i.e., in the $R$ class) then infected individuals will, on average, fail to pass on their infection to someone else and the epidemic will wain. This has sometimes led to a I-might-as-well-get-it-over-with attitude in some, although [this is not without serious risks](https://www.nytimes.com/2020/04/08/opinion/coronavirus-parties-herd-immunity.html). A much better strategy is to intervene earlier in ways that reduce $R_t \text{ or } R_0 < 1$.) Indeed you can map all interventions on to one or more components of the equation for $R_0$ or the underlying bits in our SIR model.
 
