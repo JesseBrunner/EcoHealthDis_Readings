@@ -3,7 +3,7 @@ title: "The power of exponential growth"
 subtitle: "Three lessons"
 author: "Jesse Brunner"
 date: "`r Sys.Date()`"
-output: tint::tintPdf
+output: tint::tintHtml
 latexfonts:
   - package: newtxmath
     options: 
@@ -81,11 +81,11 @@ I am by no means the first to use this example or to try to provide some context
 
 # Doubling processes can sneak up you
 
-A classic question in math and ecology exams is the following: If a lily pad population grows so that it doubles its size (or coverage of a pond) each day and it covers the whole pond on the 20th day, on what day was the pond half covered? Take a moment and think about it...
+A classic question on math and ecology exams is the following: If a lily pad population grows so that it doubles its size (or coverage of a pond) each day and it covers the whole pond on the 20th day, on what day was the pond half covered? Take a moment and think about it...
 
 The answer is to work backwards. If the lily pad population doubles each day, then moving backward in time it is halved each day. So they covered half the pond the day before they covered the whole thing; the answer is day 19. The same is true for our chess board example and any other doubling process, although it may take more or less time than a day to double. For instance, if we were watching these lily pads grow on a pond, how much time would we have from when they covered $< 1\%$ of the pond to it covering the whole thing? 
 
-Well, on day 19 they covered half the pond, on day 18 they covered one-quarter of the pond (half of a half), on day 17 they covered one-eighth the pond (half of a half of a half), and so on. If $x$ is the time _before_ some threshold (i.e., 100% coverage occurs at $x=0$), such that $x$ is $0,-1,-2,...$, then the fraction of the pond covered at time $x$ is $n(x) = 2^x$. We find that when $x=-7$ less than $1\%$ of the surface area would be covered (precisely, $2^{-7} = 0.0078125$ or 0.78%). Think about that. If you were watching the lily grow, you wouldn't see anything worrying for a long time. Only on day 14 would more than 1% of the surface area be covered. Why worry? But in just a few days, a few more rounds of doubling, this process would start to look rather out of control. 
+Well, on day 19 they covered half the pond, on day 18 they covered one-quarter of the pond (half of a half), on day 17 they covered one-eighth the pond (half of a half of a half), and so on. If $x$ is the time _before_ some threshold (i.e., 100% coverage occurs at $x=0$), such that $x$ is $0,-1,-2,...$, then the fraction of the pond covered at time $x$ is $n(x) = 2^x$. We find that when $x=-7$ less than $1\%$ of the surface area would be covered (precisely, $2^{-7} = 0.0078125$ or 0.78%). Think about that. If you were watching the lily grow, you wouldn't see anything worrying for a long time. Only on the 14th day since introduction would more than 1% of the surface area be covered. Why worry? But in just a few days, a few more rounds of doubling, this process would start to look rather out of control. 
 
 The fact that doubling processes only seem out of control later on has been called [the "second half of the chessboard" in business](https://en.wikipedia.org/wiki/Wheat_and_chessboard_problem), but it applies equally to many processes. For instance, biological invasions start with small numbers of individuals that are quite capable of doubling over some time interval and are often discovered too late, as the invasion is out of control. The same is true of epidemics. They start small, but if one person infects two others, it is only nine "generations" of infection before that one infected person becomes more than a thousand, and nineteen generations before there are more than a million! 
 
@@ -136,13 +136,13 @@ Given the noisiness due to randomness in real-world processes, it is often hard 
 
 So far we have been dealing with processes where something doubles every time step. This is simply a special case of geometric growth (or decay), which is really just a discrete version of exponential growth (or decay). What does this mean? Let us first focus on the discrete cases.
 
-There are many cases where growth happens in discrete steps. For instance, birds and amphibians in temperate habitats usually breed in the spring and so there is a pulse of reproduction^[Although mortality can happen all year long.]. Similarly, your bank account might apply interest (or fees!) once a month. We might write an equation for the amount $n$ at time $t$ as, 
+There are many cases where growth happens in discrete steps. For instance, birds and amphibians in temperate habitats usually breed in the spring and so there is a pulse of reproduction^[Although mortality can happen all year long.]. Similarly, your bank account might apply interest (or fees!) once a month. We might write an equation for the amount, $n$, at time, $t$, as, 
 $$
 N(t) = N_0 \times \lambda^t,
 $$
 where $N_0$ is what you started with and $\lambda$ is the per time-step growth rate. If $\lambda = 1$ the amount never changes, but if $\lambda > 1$ the amount increases. And of course if $\lambda < 1$ then the amount decreases. 
 
-Now you might wonder how this equation relates to our chess-doubling game above, where $n(x)=2^{x-1}$. They are actually identical if we set $t=x-1$, because above we started counting at square one instead of time zero, $N_0 = 1$ because there was one grain of rice on the first square, and $\lambda = 2$ because we doubled every step. What this version of the equation makes clear is that we could play many versions of the game where instead of doubling  each step ($\lambda = 2$), we triple ($\lambda = 3$) or increase by one-quarter ($\lambda = 1.25$) or shrink by half ($\lambda = 0.5$) or use any other rate of change. It is also important to note that even if we are not precisely doubling each step ($\lambda \neq 2$), so long as the amount grows, it will double, and then double again, and so on. 
+Now you might wonder how this equation relates to our chess-doubling game above, where $n(x)=2^{x-1}$. They are actually identical if we set $t=x-1$, because above we started counting at square one instead of time zero, $N_0 = 1$ because there was one grain of rice on the first square, and $\lambda = 2$ because we doubled every step. What this version of the equation makes clear is that we could play many versions of the game where instead of doubling  each step ($\lambda = 2$), we triple ($\lambda = 3$) or increase by one-quarter ($\lambda = 1.25$) or shrink by half ($\lambda = 0.5$) or use any other rate of change. It is also important to note that even if we are not precisely doubling each step ($\lambda \neq 2$), so long as $\lambda$ is greater than one (i.e., the population grows), it will (eventually) double, and then double again, and so on. 
 
 We can find the doubling time, which I will call $\tau$, given any (positive) value of $\lambda$ by recognizing that $N(\tau) = 2N_0$, taking the log of both sides, and then doing some re-arranging.
 
@@ -155,11 +155,11 @@ N(\tau) = 2N_0 &= N_0 \times \lambda^\tau\\
 \end{aligned}
 \end{equation*}
 
-So if $\lambda=2$ then the doubling time $\tau=1$ and if $\lambda = 1.5$ then $\tau = \log(2)/\log(1.5) = 1.7095$. 
+So if $\lambda=2$ then the doubling time, $\tau$, is one, and if $\lambda = 1.5$ then $\tau = \log(2)/\log(1.5) = 1.7095$. 
 
 
 
-For many processes, from dividing bacteria to transmission of infections to the buying and selling of stocks, growth (or decline) does not happen in discrete steps, but rather everything happens all the time. In other words, it would be more accurate to think of time as continuous rather than discrete. 
+Often, however, growth (or decline) does not happen in discrete steps, but rather everything happens all the time. Think of dividing bacteria, transmission of infections, or the buying and selling of stocks. In these cases it would be more accurate to think of time as continuous rather than discrete. 
 ```{r, fig.margin=TRUE, fig.cap='Geometric doubling (black line) occurs in discrete steps whereas exponential doubling (red line) is a continuous process.'}
 ggplot(chess, aes(Square-1, Rice)) + 
   geom_step() +
@@ -295,4 +295,4 @@ The same is true for any exponentially growing process, from invasive species to
 knitr::include_graphics("Intervention_COVID.png", dpi=400)
 ```
 
-Similar logic applies to a growing epidemic^[Try playing with the slider in this [epidemic calculator](https://gabgoh.github.io/COVID/index.html)] or the invasion of an exotic species. Early interventions can keep exponentially growing problems smaller and more manageable. This is clear with COVID-19 epidemics. In nations and regions that adopted interventions like social distancing and restricting the size of public gathers kept those epidemics from getting as large as the places that waited^[Yes, there are exceptions to the pattern and some places with early successes have seen subsequent epidemics when they began to open up. A discussion of why will have to wait, but the underlying pattern, that early interventions are more effective than later ones is true across the board.]. Indeed, a recent modeling exercise found that beginning the interventions we undertook in the U.S.A. just _one week earlier_ could have cut the number of infections and death _in half_! That means fewer people and resources are needed to combat the growing epidemic, and the risk of it getting out of hand would have been reduced. Both people and money are saved. And all because someone understood the power of exponential growth and the importance of early interventions!
+Similar logic applies to a growing epidemic^[Try playing with the slider in this [epidemic calculator](https://gabgoh.github.io/COVID/index.html)] or the invasion of an exotic species. Early interventions can keep exponentially growing problems smaller and more manageable. This is clear with COVID-19 epidemics. In nations and regions that adopted interventions like social distancing and restricting the size of public gathers kept those epidemics from getting as large as the places that waited^[Yes, there are exceptions to the pattern and some places with early successes have seen subsequent epidemics when they began to open up. A discussion of why will have to wait, but the underlying pattern, that early interventions are more effective than later ones is true across the board.]. Indeed, several analyses have suggested that beginning the interventions we undertook in the U.S.A. just _one week earlier_ could have cut the number of infections and death _in half_^[For that wave... there have been many.]! That means fewer people and resources are needed to combat the growing epidemic, and the risk of it getting out of hand would have been reduced. Both people and money are saved. And all because someone understood the power of exponential growth and the importance of early interventions!
