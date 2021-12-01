@@ -42,7 +42,7 @@ By clarity I mean the clearness, intelligibility, comprehensibility, plainness, 
 
 The problem with the first of these is that while you might know what you mean, I cannot follow along. Often this comes from a lack of care or thought about the reader's perspective. Sometimes a sentence starts heading in one direction and then we are talking about ghosts. Sometimes ideas are repeated, but not always sequentially. Sometimes a sentences introduces a cool idea but never. Fragments are. Sometimes a person tries to connect multiple distinct ideas with a comma, I'm confused when it looks like a list but isn't. Sometimes a person repeats their ideas, making me wonder if there is some distinction I missed. 
 
-Often the relationship between ideas is just muddled, as if you are casually pointing out a two people at a party and saying they are related. But I don't know these people, I don't know what "related" means, precisely (siblings? significant others? both members of the Fraternal Order of Moose?), and I'm not sure why it is you're telling me this. I need context and guidance. I need structure. Even the order in which the ideas are presented generates structure, so if you give me a scatter shot of ideas, that's how they'll be arranged in my mind; all over the place! 
+Often the relationship between ideas is just muddled, as if you are casually pointing out two people at a party and saying they are related. But I don't know these people, I don't know what "related" means, precisely (siblings? significant others? both members of the Fraternal Order of Moose?), and I'm not sure why it is you're telling me this. I need context and guidance. I need structure. Even the order in which the ideas are presented generates structure, so if you give me a scatter shot of ideas, that's how they'll be arranged in my mind; all over the place! 
 
 
 Imagine you're explaining something complicated to a a seven year old with a short attention span. Then clarify it further.  Remember, you are not your audience; _I am_. You are not writing to get your ideas on paper for your own purposes (those are called notes), you are writing to convey ideas and understanding. So **keep your audience in mind**. _Guide_ the reader through comparisons (e.g., "The response was five-fold greater in the treatment group than the controls"), highlight the relationships between ideas or studies (e.g., "While x found this, y found the opposite" or "Similarly, ..." or "In contrast, ..."), and provide a clear structure (e.g., introduce ideas from small to large, first to last, or similar). 
@@ -86,7 +86,7 @@ To be clear, I am not implying that you write this paper in the first person (e.
 3.     "Adverbs that weaken (for example, "often", "probably")"
 
 
-* Words to avoid
+* **Words to avoid**
   * Feel. I do not care how you "feel"^[Well, as a person, sure, but not in these papers.]! I care how you weigh evidence, think through logic, and so on. 
   * Prove/disprove. See above.
   * It or that, unless it is very, very clear what you are referring to.
@@ -94,3 +94,4 @@ To be clear, I am not implying that you write this paper in the first person (e.
   * Any words imply values (i.e., good or bad)
   * Any words imply goals or intentions of animals (e.g., "Cthulhu wants to ensure its survival.")
   * Contractions. They smack of informal writing. Sure, I use them in these conversational readings, but I would never do so in a paper intended for publication. Treat your CAP as if it will be published.
+* **Spell out numbers** between zero and ten, and then use numerals for 11 and above6[This _is_ a stylistic thing, and you will see some journal prefer to use numerals all the time. But for my class, please follow my style guide!]. The exception is a measurement or count data, in which case you should use numerals for all of numbers.
