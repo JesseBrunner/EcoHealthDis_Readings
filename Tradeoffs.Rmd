@@ -44,9 +44,18 @@ knitr::include_graphics("Pick2.png", dpi=600)
 
 Go into any programmers' cubicle farm and you are almost guaranteed to see some version of this diagram. Yes, yes, it's sort of funny, but more importantly, there's a deeper wisdom here. In short, when one or more resources are limiting---money, energy, time, nutrients---you cannot have it all. You need to prioritize one thing at the cost of another^[Or, as the aphorism goes, "you aren't prioritizing if you aren't saying no."].
 
-It is worth noting that _something_ is virtually always limiting, in all sorts of contexts. A public health department has a limited budget, a busy student has limited time (or attention), and a growing _Daphnia_ has only so much energy and resources. It is worth noting that the limiting resource can be information, too! Remember that diagnostic tests could gain specificity at the cost of sensitivity, and vice versa. There is only so much information in a diagnostic test. You can use that information to improve the ability to detect infections (i.e., improve the diagnostic sensitivity), but that comes at the cost of increased false positives (reduced specificity). 
+It is worth noting that _something_ is virtually always limiting, in all sorts of contexts. A public health department has a limited budget, a busy student has limited time (or attention), and a growing _Daphnia_ has only so much energy and resources. It is worth noting that the limiting resource can be information^[There is only so much information in a diagnostic test, for instance, and soyou can use that information to improve the ability to detect infections (i.e., improve the diagnostic sensitivity), but that comes at the cost of increased false positives (reduced specificity).], too!  
 
-Individuals and organizations almost always have competing interests. The public health department needs to _educate_ health care workers, government officials, and the general public about health threats in hopes of preventing disease; _test_ for a wide range of infectious and non-infectious diseases, _collect data_ on current trends in disease incidence for numerous sources; and devise and implement _responses_ to improve public health^[And this is only the coarse level of their duties!]. An organism like our pet _Daphnia magna_ invests its limited energy and other resources among growth, maintenance (e.g., anti predator defenses & behaviors, foraging, etc.), and reproduction.Students must...well, I assume you have a keen sense of the many interests competing for your limited time and attention!.      
+Individuals and organizations almost always have competing interests for those limited resources. And when there are incompatible goals or processes competing for the same limited resource, that leads to **trade-offs**.
+
+The public health department needs to _educate_ health care workers, government officials, and the general public about health threats in hopes of preventing disease; _test_ for a wide range of infectious and non-infectious diseases, _collect data_ on current trends in disease incidence for numerous sources; and devise and implement _responses_ to improve public health^[And this is only the coarse level of their duties!]. An organism like our pet _Daphnia magna_ invests its limited energy and other resources among growth, maintenance (e.g., anti predator defenses & behaviors, foraging, etc.), and reproduction.Students must...well, I assume you have a keen sense of the many interests competing for your limited time and attention!.      
+
+When talking about trade-offs it can be useful to follow a framework to ensure everything tracks. I like to use this skeleton of a sentence:
+
+> Because ___________ [time, energy, resource, space, ...] is limiting, individuals/organizations/species increase __________ [one use of the limited resource] at the cost of _______ [another, incompatible use of the limited resource].
+
+For instance, because food and energy uptake are limited, some  _Daphnia_ species increase the number of eggs they invest in at the cost of those eggs being smaller. Make sense?
+
 
 # What to optimize
 
@@ -64,6 +73,8 @@ You will see I've mentioned "strategy" a few times. This is not far off from wha
 Your strategy as a student would involve the time and method of preparing for classes and studying, the relative amounts for different classes, and the time you spend on the folf course. That intramural prize might come at the cost of a B+ average, but the sacrifice will only make it that much sweeter.
 
 The strategy of our pet _Daphnia_, however, is a bit different. We do not assume they are making choices, but rather have more or less fixed strategies^[Although we can also consider "plastic" strategies that respond in predictable ways to different or varying environments. But again, we assume a genetic basis for them as opposed to learning and cognition.] that incorporates all the dimensions of its life history, such as its growth, rate of maturity, longevity, reproductive output, etc. While we might initially think an optimal _Daphnia_ should simply mature immediately and pump out clonal offspring as often as possible, we should remember that there are trade-offs. That (early) reproduction comes at the cost of growth---and larger individuals can produce more offspring per clutch---and maintenance---meaning there is a reduced chance of surviving to reproduce in the future.  So reproduction _now_ comes at the cost of _future_ growth and reproduction. So maybe a better strategy would be to grow to a certain size and then start to reproduce like bonker balls.
+
+A species' strategy is a genetically determined plan or approach to dealing with all of the trade-offs they face.
 
 
 # There is no single optimum 
