@@ -64,6 +64,13 @@ If we are willing to build a list of atoms instead of molecules, we can simply^[
 
 I also want to add that there is a quite long list of other elements that are essential in small amounts to all life^[E.g., Na, Mg, K, Ca, Cl, Mn, Fe, Cu, Zi, I, K, Fe. Google them to find out their various roles. They are quite interesting!], or to particular types of life (e.g., Boron for plants, sodium and chlorine for animals^[Think of nerve impulses.], or  silicon for diatoms). These are often called micronutrients because they are required in sometimes vanishingly small amounts. And again, remember that it is not necessarily the element that is important, but the molecule built from the elements. Vitamin C, for instance, is simply C~6~H~8~O~6~---all of the stuff we normally take in with CHNOPS---but we^[And guinea pigs for reasons I do not understand.] are unable to turn these elements we have in abundance into L-ascorbic acid. We must obtain it in its ready-to-use form. Our shortcut of simply counting atoms does not work universally, so take the next section with a grain of NaCl. 
 
+
+```{r, fig.margin=FALSE, fig.cap="https://xkcd.com/1490/."}
+
+knitr::include_graphics("atoms_2x.png", dpi=200)
+```
+
+
 # Stoichiometry becomes useful
 
 If we are willing to think of cells or larger organisms as sacks of chemical reactions---and _I_ am, at least^[Endless chains of chemical reactions where the product of one is a reactant to another. You have likely seen the citric acid or Krebs cycle, photosynthesis, protein synthesis, or any number of other reactions involved in life. That stuff---well, probably not photosynthesis!---is happening inside of us right now, as I write and you read.]---then our list of ingredients is something akin to the reactants on the left-hand side of a chemical reaction. (The cell or organism is, in a sense, the product on the right-hand side). What's more, we know the ratio of the different sorts of atoms required to make the cell or organism! This, my friend, is stoichiometry!^[Please don't roll your eyes like that! In fact, you should go back to your chemistry instructor and tell them that they were, in fact, correct: stoichiometry did prove useful!] 
