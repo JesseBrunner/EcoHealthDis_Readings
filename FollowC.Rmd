@@ -1,0 +1,100 @@
+---
+title: "Carbon as the common currency for life"
+author: "Jesse Brunner"
+date: "`r Sys.Date()`"
+output: tint::tintPdf
+latexfonts:
+  - package: newtxmath
+    options: 
+      - cmintegrals
+      - cmbraces
+  - package: ebgaramond-maths
+header-includes:
+   - \usepackage{booktabs}
+   - \usepackage{cancel}
+   - \usepackage[version=4]{mhchem}
+---
+
+```{r setup, include=FALSE}
+library(tufte)
+# invalidate cache when the tufte version changes
+knitr::opts_chunk$set(tidy = FALSE, 
+                      message = FALSE, 
+                      warning = FALSE,
+                      echo = FALSE,
+                      cache.extra = packageVersion('tufte'))
+options(htmltools.dir.version = FALSE)
+```
+
+```{r, include=FALSE}
+library(tidyverse)
+# library(scales) # for prettier axis labels
+# library(simecol) # for running model 
+theme_set(theme_minimal())
+```
+
+In graduate school I took an ecology class from a rather famous, very clever, and somewhat curmudgeonly professor. I was excited to learn more about population dynamics, community interactions, and on and on. So I was a little shocked when said, on the first day, that ecology was the study of cycling of energy and nutrients through ecosystems. I raised my hand immediately and ask, "Wait, is that all?" To which he responded, "What else is there?" I was quite frustrated---he had swept all of the things I cared about under the metaphorical rug!---but he had a point. From a certain point of view, the stupendous variety of interesting species interacting in all of their varied ways are just moving energy and nutrients around! Indeed, I hope to convince you that while we should not be so hasty as to ignore so much of ecology^[And really, this professor didn't really think that way. He just liked to push us to think (and rethink) our ideas and sometimes to defend them.] you can and should consider the implications of this perspective. It shines a lot of light on how our world^[Probably _all_ worlds.] works!
+
+#  Carbon carries the energy
+
+If we are sacks of (complex) chemical reactions, and most of those chemical reactions require some energy to proceed, then ATP is the energy carrier. And there are a _lot_ of these reactions requiring a lot of energy! [One paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2604989/) mentions in an off-hand way that the human body turns over its body weight in ATP (i.e., ATP releasing its energy and being converted to ADP, then being "re-energized" into ATP, over and over and over again)! 
+
+However, if we zoom out just a little bit we see that energy is stored in the form of sugars (e.g., \ce{C6H12O6}), starches (which are just chains of sugars; \ce{(C6H12O6)_n + (H2O)}), and fats (e.g., saturated fatty acids; \ce{CH3(CH2)_nCOOH}). Look again at those formula and what do you see? A heck of a lot of carbon atoms! Even proteins and their constituent amino acids are largely carbon. Indeed, if you squint^[Metaphorically. Actually squinting probably doesn't help.], you can see that virtually all of the energetic molecules we eat are primarily carbon. This is no coincidence; in a very real sense, the carbon atoms---or really, the bonds they form---carry the energy. 
+
+So if we are interested in how much energy is available in an ecosystem, or to a particular population or community---and trust me, we are!---we do not need to worry about the Kilocalories in this or that animal or plant. From the broad perspective of an ecosystem ecologist, all of the organisms growing, reproducing, dying, eating and being eaten, and so on is so many carbon atoms being cycled around; the rest is just details. 
+
+
+# Following the carbon
+
+Let us adopt this zoomed-out perspective for a moment as we consider ourselves and the energy that powers us. Consider the formula for oxidative respiration (skipping over a few details, of course): 
+\begin{align}
+\ce{C6H12O6 + 6O2 -> energy + 6CO2 + 6H2O}
+\end{align}
+In essence, one form of carbon (here, a sugar) is converted into another form of carbon (carbon dioxide) and in the process provides some energy to do some sort of work. So when you eat, you take in carbon and when you metabolize that food, you exhale it. Again, track the carbon, track the energy. 
+
+So where did we get our (energetic) carbon from? Our food, I can hear you thinking. And where did our our food get its carbon? From _its_ food. Of course if our food was a plant, then its food was \ce{CO2}. Sort of. 
+
+Actually the carbon came in the form of \ce{CO2}, but the _energy_ was from sunlight^[And yes, I am excluding chemoautotrophs that form sugars with the aid of energetic sulfur compounds or similar. Because while those systems are incredibly, achingly cool, they comprise a small bit of a tiny amount of the overall energy flow in the global ecosystem. And because I'm lazy.]. From our zoomed-out perspective, we can see photosynthesis as just the reverse of oxidative respiration:
+ \begin{align}
+\ce{C6H12O6 + 6O2 <-->[respiration][photosynthesis] energy + 6CO2 + 6H2O}
+\end{align}
+It _fixes_ carbon dioxide into energetic sugar molecules that can be converted into other molecules or be metabolized to harvest their energy. Photosynthesis is _amazing_ and it sort of kills me that we won't be discussing C3 and C4 and CAM photosynthetic pathways, water use efficiency, and all of the related topics^[As a relatively recent convert to the hotness that is photosynthesis, I get a bit overzealous!], but I did promise I wouldn't make this a plant-focused class. Plants are food and they make their food through photosynthesis. That will have to do. 
+
+Wait. One more thing. I need to tell you that photosynthesis, or the turning of inorganic \ce{CO2} into organic molecules, like sugars, is called **Primary Production**^[This is probably ringing a bell, or eliciting an eye roll, but bear with me.]
+
+## An aside on measuring photosynthesis
+
+```{r, fig.margin = TRUE, fig.cap="The Keeling curve."}
+knitr::include_graphics("Mauna_Loa_CO2_monthly_mean_concentration.svg.png", dpi=600)
+```
+
+One neat consequence of this chemical formulation is that we can see some ways we might  _measure_ the amount of photosynthesis or primary production. Look at that equation. What do we gain with photosynthesis? Complex organic carbon molecules, yes? Or since most (dry) biomass is carbon, we could just measure the increase in biomass! And oxygen, we could measure increases in oxygen produced during photosynthesis. Scientists use all of these as metrics of primary production, from simply weighing plants and trees to see how much they've grown to using "flux towers" to measure oxygen concentrations in and around forests. Finally, we could measure the (local) reduction in \ce{CO2} concentrations. You've seen the jagged [Keeling curve](https://en.wikipedia.org/wiki/Keeling_Curve) showing concentrations of \ce{CO2} in the Earth's atmosphere over the decades since March 1958. Well the jagged up and down in the line (that otherwise rises alarmingly) in an annual pattern corresponds to growing seasons and the fact that there is more productive surface area in the Northern than the Southern Hemisphere. That is the Earth "inhaling"  or fixing carbon in the northern summer and then "exhaling" or respiring more in the northern winter. Crazy, right?^[If you are uncertain what you are seeing in the figure, walk through what happens to \ce{CO2} when plants are growing and when they are not growing. And hint: plants respire as well as photosynthesize.]
+
+
+## An aside on the conservation of energy
+
+You may recall from an earlier science class that energy cannot be created nor destroyed^[It's the (first) law (of thermodynamics)!]. Well, it's true
+But we do lose _useful_ energy. That is, we use energy to, say, read this piece in front of you, but you're not very efficient and so a lot fo that energy is "wasted" in the form of heat or entropy. We can't easily convert that lost heat back into some form of useful energy. Entropy^[And the second law of thermodynamics] is a pain!
+
+So when we are following the carbon, we tend to focus on the _organic_ carbon, the stuff with the energy available to do work. The \ce{CO2} is just out there waiting to be turned into a useful form.
+
+# Sunshine to sugar
+
+Since essentially all the energy available for the world's organisms comes from photosynthesis^[Yes, ignoring chemoautotrophs, our use of photosynthetic energy from hundreds of millions of years ago.], it is interesting to pause and think about how much of that sunshine ends up becoming plant.  
+
+```{r, fig.margin = TRUE, fig.cap="The fate of sunlight in the conversion to sugars. Values taken from [Hall and Rao (1999) Photosynthesis](https://books.google.com/books?id=6F7yuf1Sj30C)"}
+knitr::include_graphics("Sankey_GPP.png", dpi=600)
+```
+
+First, nearly half of sunlight is outside the range that chlorophyll absorbs (400--700 nm). Then, of the "photosynthetically active radiation" range, another 47\% of the energy is simply not absorbed (e.g., they hit something besides a chlorophyll molecule) or otherwise lost in the interaction with the chlorophyl. We we are down to ~28\% of the sunlight shining down being collected by chlorophyll. But wait, something like 68\% is lost in the process of converting ATP and NADPH to glucose! However, the plant's photosynthetic machinery takes energy, too. Some 35--40\% of the remaining 9\% of sunlight's energy is respired just to keep this machinery working. So, of the sunlight that strikes a leaf, something like 5\%^[And often much, much less. Think winter or cloudy days or droughts or...] is actually converted into sugars that can then be used to grow and fuel the plant. 
+
+This, the actual amount of carbon that is made into usable sugars is called **Gross Primary Production** or $GPP$. But of course plants don't just make sugars, they use them, too. They _respire_, running that chemical reaction backwards, turning sugars into \ce{CO2} and energy. This is often^[I mean, by fun people in the know.] called $Ra$, for **autotrophic respiration**. What is left is called **Net primary production** or $NPP$^[You down with NPP?]. Or, to mathify it:
+
+$$
+NPP = GPP - Ra
+$$
+Simple, yes? But let's not forget the staggering fact that this simple formula hides: $NPP$---that bit of the 5\% of sunlight's energy that is left over after we account for plant respiration---is the energy that fuels _everything_ else: the growth and reproduction of the plant, the making and fueling the things that eat the plant, the energy to make the things that eat the plant eaters, the things that eat them, and so on. All of it is fueled by $NPP$^[_Now_ are you down with GPP?]. 
+
+## An aside on measuring $NPP$
+
+I should point out that biologists do not generally measure $NPP$ or the rest of it on a plant-by-plant basis, but instead on a per area per unit time basis. They might pick a hectare in a field or a forest in a watershed and measure the accumulation of carbon (or biomass) over a year to measure $NPP$ per hectare per year, or similar. Why bother? Because again, that $NPP$ is the  fuel for every living thing out there. I find that striking. Look out the window. All of the people and animals and interesting things moving outside are fueled by the conversion of some fraction of just 5% of the light that strikes the plants and algae in an area. You and I and the hummingbird that just flew by are made from and fueled by that tiny drip of photosynthetic sugars left over by primary producers^[But that drip is substantial. One of my favorite factoids is that in the summer growing season every square meter of deciduous forest is making the equivalent of a number 2 pencil from thin air every day.  Just imagine it growing there before your eyes!].

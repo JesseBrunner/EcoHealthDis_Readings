@@ -1,0 +1,99 @@
+---
+title: "Efficiency in the carbon cycle"
+subtitle: "YYY"
+author: "Jesse Brunner"
+date: "`r Sys.Date()`"
+output: tint::tintPdf
+latexfonts:
+  - package: newtxmath
+    options: 
+      - cmintegrals
+      - cmbraces
+  - package: ebgaramond-maths
+header-includes:
+   - \usepackage{booktabs}
+   - \usepackage[version=4]{mhchem}
+---
+
+```{r setup, include=FALSE}
+library(tufte)
+# invalidate cache when the tufte version changes
+knitr::opts_chunk$set(tidy = FALSE, 
+                      message = FALSE, 
+                      warning = FALSE,
+                      echo = FALSE,
+                      cache.extra = packageVersion('tufte'))
+options(htmltools.dir.version = FALSE)
+```
+
+```{r, include=FALSE}
+library(tidyverse)
+library(scales) # for prettier axis labels
+library(simecol) # for running model 
+theme_set(theme_minimal())
+```
+
+You may^[Should?] recall that 1) we can track organic carbon as a way of tracking energy flow within or among ecosystems and 2) that the sum amount of energy for _everything_ of interest in an ecosystem is called $NPP$. Moreover, this $NPP$ is what remains after a small part of the energy in the sunlight that strikes a leaf gets turned into sugars, after account for plant respiration. It is a fraction of a fraction of the energy hitting the ground. But that's it. That's all we have to play with. And yet it's enough to fuel amazing communities of diverse organisms in even the least productive places. That still blows my mind.
+
+# What do plants need?
+
+Given it's fundamental importance, it is worth thinking about what limits and what promotes $NPP$.  What might we include in this list? Of course, sunlight must be important, since it is the source of energy that is being harvested through photosynthesis. And indeed, we see more $NPP$ in places with more sunlight than less (e.g., tropics vs. poles). We also see seasonal patterns to $NPP$ corresponding lots of sunlight (spring + summer) vs. times with little sunlight (fall + winter)^[See the jagged teeth of the Keeling curve again.]. Why else would so many trees lose their leaves if not for the fact that they were no longer earning their keep in terms of $GPP$? 
+
+What else do plants need? Water, of course, which is intricately linked to photosynthesis^[How I ache to talk about C3 vs C4 photosynthesis and water use efficiency!] and so places (and times^[Think wet vs. dry seasons]) with more water available tend to have higher $NPP$. They also need nutrients, because those nutrients are part of enzymes, co-factors, and so on, which means you can increase $NPP$ by fertilizing an area^[Including oceans! You can cause algae blooms by adding iron and other nutrients!]. Essentially, anything that is limiting the growth of plants or algae can be increased to improve $NPP$. 
+
+Remember, photosynthesis is just a chemical reaction, albeit a complex one with several steps and many, many enzymes helping it along. So, like any chemical reaction, the things that can speed it along are things like high concentrations of reactants, temperature or energy, and ideal conditions. So in that light^[Pun most certainly _not_ intended!], nothing on our list should be surprising.  
+
+# How efficient are the vegans?
+
+Previously, we had considered the efficiency of primary production, which, again, was on the order of a few percent of sunlight's energy under ideal conditions. Now, let's think about the efficiency with which consumers---the things that eat plants directly, whether a cricket or guinea pig or vegan, take plants' hard-won energy^[How cruel!]---use that energy to make more of themselves. For consistency's sake, let's call this **secondary production**. 
+
+Imagine, for instance, that we wanted to raise some sort of animal in large numbers so as to feed us. Raising vegans is out, but what about guinea pigs versus crickets? Or perhaps some aquatic organism that eats algae? Which would be the most efficient way to make animal protein for us (non-vegan) humans? 
+
+The short answer is, "it depends." But that is not terribly satisfying. It depends on what? Well, let's follow the steps, like we did with $GPP$, and then talk about what makes them more or less efficient. 
+
+
+```{r, fig.margin = TRUE, fig.cap = "Secondary production of \\emph{Daphnia galatea} \"inspired\" by Urabe \\& Watanabe (1991) Functional Ecology 5:635-641. ( Reality is complicated and my estimates are rough.) Values correspond to one hundred 1-mm daphnia in the hhighest food treatent."}
+
+knitr::include_graphics("Sankey_DaphniaProduction.png", dpi=900)
+```
+
+
+Some fraction of the plant is eaten or _consumed_. Of course most animals tend not to eat toxic parts or sharp, pokey bits. Few animals can eat wood^[And those that can usually have microbial partners that bring the metabolic tools to do so.]. All of which means that the fraction of $NPP$ that is ingested can be much less than one. 
+
+Next, only a fraction of what is consumed becomes _assimilated_ or effectively taken up during digestion. The rest is simply pooped out or coughed up or similar. Again, woody things and celery are hard to digest, so they tend to be pooped out, leaving little to be assimilated. 
+
+Finally, animals take the energy they've assimilated and use some of it for respiration, leaving only a fraction for growth or _production_ of new animal (e.g., growth or reproduction). 
+
+We can think of the efficiency of each of these steps separately---consumption efficiency, assimilation efficiency, and production efficiency---or their overall product, **trophic efficiency**, as in, the efficiency of going from one trophic level to the next. How can we increase this trophic efficiency? 
+
+We could change what is being consumed. Obviously, feeding most animals on trees is pretty inefficient since they are so hard to consume and assimilate, but we can extend this a bit. Structural elements---the bits of an organism that hold it up against gravity and give it structure---tend to reduce trophic efficiency, as do toxins and secondary compounds^[A broad group of chemicals plants to prevent animals from eating them. Think tannins and bitter chemicals that we have learned to like, in moderation.]. If we could feed our consumers something without such impediments, we could increase trophic efficiency. What would suit the bill? Consider this: aquatic plants do not need to work so hard to fight against gravity, so they have many fewer structural elements, little cellulose and lignin^[Consumption efficiency in a forest might be about 7%, a grassland < 20%, while that of phytoplankton can be 50%. Why not 100% you ask? Because a lot of phytoplankton are simply not eaten before they die.]. They might make a great food!
+
+(Another way to think about the food is its stoichiometry or quality. Plants tend to have much higher ratios of carbon to nitrogen, phosphorus, and other things that consumers need. It's in their cell walls and structural elements.  But most of that extra carbon gets pooped out by the consumer as they shovel through, say, grass or bark trying to get enough N & P. You can gain efficiency by feeding the consumer something that is much closer to what it is is and needs.)
+
+We can also change the animal we are raising. Endotherms---animals that use metabolic heat to maintain their internal thermal environment---use an order of magnitude more energy than do equivalently sized ectotherms. Their respiration ($Rh$ for heterotroph respiration) is much, much higher, leaving much less for production^[One consequence of this difference was noted in a study of the importance of birds and salamanders in the food web of a New England forest. Birds get all of the attention and actually eat a lot of food, but they burn through that food quickly! Salamanders, however, have very low respiration rates. They feed the food web because they are so much more efficient with the food they do consume.]. So if our goal is efficiency, we should definitely choose the cricket over the guinea pig. Or maybe the aquatic insects^[Or crustaceans, like our daphnia!] over the more active herbivorous fish. 
+
+I should just get this out of the way and say that reality is complicated. These values can change throughout an organism's development, the food availability, and other factors that cause animals to be more or less efficient at consuming food or spending energy. The concepts hold, but we should not think of these as necessarily fixed values. 
+
+# And so on
+
+We can take this logic to the next trophic level, too: the predators. Everything that applied with consumers applies here, with a few small distinctions.  The structural elements that reduce consumption efficiency are now the bones and teeth and fur^[Some random internet site suggests that from a 1200 pound cow you can expect about 500 pounds of usable meat, for a possible consumption efficiency of well under 50%!], which are very difficult to digest. The assimilation efficiencies tend to be much higher because the prey is stoichiometrically pretty similar to the predator. But the issues with respiration and thus production efficiency are essentially identical. 
+
+There are some ballpark figures for trophic transfer efficiency ranging from 5--20\%, depending on many of the things we've mentioned (consumer efficiency tends to be on the 5% end and predators on the higher end, though it depends on metabolism, setting, and more). Let's say 10% for purposes of illustration as it is  common estimate from terrestrial systems. We can estimate 10\% of $NPP$ might end up in consumers, and then 10% of consumer will end up in the carnivores (=1\% of $NPP$). And then the top predators that often eat other predators might end up with 10\% of the predators' energy (=0.1\% of $NPP$). You can start to see why there are so few large toothy predators; there just isn't enough energy to support them!
+
+The one winner of this game, at least to my mind, are the detritivores. _Everything_ ends up in the big pile of what we might call dead organic material (DOM)---the left over plant biomass that could not be consumed, the poop that could not be assimilated, as well as all of the new consumer, predator, and so on. They all eventually die and become DOM, and all of that is fodder for some suite of detritivores or decomposers. 
+
+Of course reality is more complex than this simple illustration. A lot of $NPP$ goes uneaten, animals usually eat at multiple trophic levels, and the connections in a real food web make your plate of spaghetti seem well organized. I also failed to mention parasites, which exist at all levels and can make up a substantial part of the energy flow. The point is not that there are hard and fast rules about trophic transfer, but instead that every living organism you are likely to encounter is part of this great flow of energy that originates with sunlight, that is carried by carbon, and that gets inefficiently passed on from one organism to another^[And maybe we should all think more about what we eat and where we eat on the food chain.]. 
+
+# Putting it all together
+
+So ecosystem ecologists get very excited about all of these energy (and nutrient) flows^[Or fluxes, in the parlance.], especially since Howard T. Odum presented his work on Silver Springs ecosystem in the 1950s. Check out this lovely Sankey^[All of these diagrams where the width of the arrows is proportional to the size of the flow are or are inspired by Sankey diagrams.] diagram!
+
+
+```{r, fig-fullwidth,, fig.cap="From Odum, H. T. (1971). Environment, Power, and Society. Wiley-Interscience New York, N.Y.."}
+
+knitr::include_graphics("Silver_Spring_Model.jpg", dpi=600)
+```
+
+See the inputs of energy in the form of sunlight and "imports," which was basically biomass washing into the stream (or bread being thrown to ducks)? In this system, which was bigger, $NPP$ or "imports"? See how the amount of energy to each subsequent trophic level is reduced? Notice how everything that isn't being lost to heat eventually goes to the decomposers, including the decomposers? This figure shows so much in such an appealing form! 
+
+Finally, let's address the "so what" in the room. Why should you, a budding MD/OD/DVM/semi-interested person care about these efficiencies? There are actually lots of answers. The availability of energy restricts, to some extent, how long food chains can be and how many organisms^[Humans, perhaps?] at a particular food level there may be^[Again, reality is complicated, but the notion holds.]. Where we eat on the food chain also determines how much of that tiny trickle of $NPP$ we are consuming; eat plants and you tend to be consuming a lot less energy^[And producing a lot less \ce{CO2}.]. We can also take the follow-the-carbon approach to understanding where the energy in a place comes from, as in, _how is this stream flowing from a glacier in Greenland supporting all of this life?!_ But mostly, I think it just changes how you look at the world. If carbon is the currency of life, it shows us how we are all connected in real, tangible ways. What would _you_ add to this list? 
