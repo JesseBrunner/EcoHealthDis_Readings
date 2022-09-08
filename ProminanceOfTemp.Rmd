@@ -1,0 +1,119 @@
+---
+title: "The prominence of temperature in biology"
+author: "Jesse Brunner"
+date: "`r Sys.Date()`"
+output: tint::tintPdf
+latexfonts:
+  - package: newtxmath
+    options: 
+      - cmintegrals
+      - cmbraces
+  - package: ebgaramond-maths
+header-includes:
+   - \usepackage{booktabs}
+   - \usepackage{cancel}
+---
+
+```{r setup, include=FALSE}
+library(tufte)
+# invalidate cache when the tufte version changes
+knitr::opts_chunk$set(tidy = FALSE, 
+                      message = FALSE, 
+                      warning = FALSE,
+                      echo = FALSE,
+                      cache.extra = packageVersion('tufte'))
+options(htmltools.dir.version = FALSE)
+```
+
+```{r, include=FALSE}
+library(tidyverse)
+library(scales) # for prettier axis labels
+# library(simecol) # for running model 
+theme_set(theme_minimal())
+```
+
+
+# Biology is temperature-dependent
+In addition to adding more of a limiting reactant, one way to increase the rate of a chemical reaction is to add heat. With heat, chemicals bounce around faster and so come into contact more frequently^[Hmm...is this a useful analogy with susceptible and infected hosts interacting to cause more infections? Let's revisit this later!]. The added energy also speeds reactions by providing the activation energy required in endothermic and even some ectothermic reactions. All of which is to say, reactions go faster at warmer temperatures. What are the consequences? Let's consider two:
+
+# Thermal optima
+```{r, fig.margin=TRUE,}
+r <- log(2)/10
+df <- tibble(Temperature = 10:50, 
+             Reaction = exp(r*Temperature), 
+             Stability = (30 - exp(0.00003*Temperature^3))/30, 
+             Rate = Reaction*Stability) 
+
+ggplot(df, aes(Temperature, Reaction)) + 
+  geom_line(color = "blue", linetype = 2) + 
+  scale_y_continuous("Rate of enzymatic reaction") + 
+  coord_cartesian(ylim = c(0, max(df$Reaction))) + 
+  theme(axis.title.y.left = element_text(color = "blue"), 
+        axis.title.y.right = element_text(color = "red"))
+```
+
+Rates of chemical reactions increase _exponentially_ with temperature^[If you wonder why, look up the [Arrhenius equation](https://www.chemguide.co.uk/physical/basicrates/arrhenius.html)...yet another exponential model, but this one describes the "rate constant" of a chemical reaction.]. As a quick rule of thumb, if the temperature is increased by 10$^\circ C$, the rate of the reaction often doubles. So the rate of reactions, even enzymatic reactions such as those involved in metabolism or muscle contractions or most any other biochemical process, tends to increase like the blue line on the graph to the right.
+
+```{r, fig.margin=TRUE}
+ggplot(df, aes(Temperature, Stability*30)) + 
+  geom_line(color = "red", linetype = 2) + 
+  scale_y_continuous("", sec.axis = sec_axis(~ . /30, name = "Proportion enzyme active")) + 
+  theme(axis.title.y.left = element_text(color = "blue"), 
+        axis.title.y.right = element_text(color = "red"))
+```
+
+Your intuition is probably quietly screaming at you right now, saying, "yeah, but...!" And your intuition is right. This accelerating relationship between the rate of a reaction and temperature cannot go on forever. At some point, everything catches on fire and you get soot rather than a muscle contraction, right? Well before the fires start, our reactions run into other temperature limits. Most biochemical reactions involve enzymes and enzymes eventually fall apart or "denature." (The same can happen to some of the chemical reactants, too.) We might graph the rate at which an enzyme denatures as a function of temperature; see the red line on the graph to the right. 
+
+```{r, fig.margin=TRUE}
+ggplot(df, aes(Temperature, Rate)) + 
+  geom_line() + 
+  geom_line(aes(y=Reaction), color = "blue", linetype = 2) + 
+  geom_line(aes(y=Stability*30), color = "red", linetype = 2) + 
+ scale_y_continuous("Rate of enzymatic reaction", 
+                    sec.axis = sec_axis(~ . /30, 
+                                        name = "Proportion enzyme active")) + 
+  labs(title = "Overall rate of enzymatic reaction") + 
+  coord_cartesian(ylim = c(0, max(df$Reaction))) + 
+  theme(axis.title.y.left = element_text(color = "blue"), 
+        axis.title.y.right = element_text(color = "red")) 
+```
+
+When we put these rates together we get an overall rate of the reaction, with a clear peak. This peak is the "optimal" temperature in that it maximizes the overall rate for that reaction. What is striking is that the optimal temperature for many biochemical reactions in an organism are pretty similar^[Why would that be? Consider what would happen if they were all very different.]. What this means is that a organisms tend to have thermal optimums that relate to these biochemical optimums. Running speed of a lizard? Yes, it has a thermal optimum. A mosquito digesting a bloodmeal? That, too, happens fastest at a particular temperature. 
+
+Most all of biology has some small-ish range of temperatures where we perform best. We humans often do not think about this simply because our physiology works so hard to maintain our body temperature very near our thermal optimum. But trust me, if our core temperature drops a bit, so does our metabolism, just as we would expect^[This also hints at a secret weapon of ectothermic poikilotherms, those things like amphibians and reptiles and some fish that not only get most of their heat from the world around them, but can let their body temperature vary a great deal: they can regulate their metabolism by changing their body temperature. Not food? Why not cool off and wait it out? We ridiculous endothermic homeotherms cannot pull off _that_ trick!]. Of course we beyond a certain range of body temperatures we become hypo- or hyper-thermic and bad things happen.^[This hints at something else we need to consider: How do organisms survive in a world where conditions are often _not_ ideal? Behavior, physiology, and their environment will all play some role. But more, later.] 
+
+This is not just hypothetical. Heat waves, especially heat waves combine with humidity^[And poverty, a lack of infrastructure, and loneliness] to make life miserable for us humans, to the point where some of us, often the most vulnerable but increasingly larger fractions of the population, can die. And climate change is, of course, making all of this work. We will see not only more heat waves, but more humid heat waves. That is important because our primary mechanism of cooling ourselves---sweating---rally only works when the sweat can evaporate and that is harder under humid conditions. So plant a tree^[Shade and evapotranspiration make a big, big difference], buy a good fan, or consider moving pole-ward^[Boy am I a ray of sunshine!]. 
+
+Anyway, why do organisms have such relatively narrow ranges of temperatures in which they thrive compared to what they can survive? Look to the thermal optima of their chemical reactions^[I am overselling this a bit. While the logic holds and there are many examples of temperature-dependent processes from the small (e.g., metabolism) to the large (e.g., speed), there are many other factors that end up affecting temperature-function relationships at the organism level, such as compensatory adaptations to nutrition. That is, we need to be cautious about scaling up these mechanisms to far without some care.]! If they can maintain their body temperatures within that narrow-ish range of temperatures, they can be much, much more efficient (or active, fast, responsive, etc.). 
+
+# Temperature-dependent rates of development
+
+Temperature-dependent rates and thermal optima also extend to development. Consider the process of going from an egg to a hatchling to a juvenile to an awkward, gangly pubescent teenager equivalent to a mature adult, or similarly a seed to seedling to small tree to mature tree. All of these steps are the result of a series of chemical reactions. Because these reactions tend to go faster at warmer temperatures, the time it takes to get to a particular developmental milestone (e.g., hatching or sprouting) tends to be shorter at warmer temperatures^[Yes, only up to a point.]. And while these rates increase more-or-less exponentially over a wide range of temperatures, most organisms do not live, or at least develop, over a terribly wide range of temperatures. Over this narrower range we might be forgiven for thinking that the rate is sort of linear. Let's run with this linear relationship between temperature and rates of development. What are the consequences? 
+```{r, fig.margin=TRUE, fig.cap="Time to eclosion (hatching) for black legged ticks. From Ogden et al. 2004. Journal of Medical Entomology 41:622-633." }
+knitr::include_graphics("DaysEcolosion.png", dpi=400)
+```
+
+First, if we were to raise, say, ticks or mosquitoes from eggs at one of a range of temperatures, we would see that the time to some developmental milestone declines rapidly with increasing temperature at first, but that change slows down. Indeed, this is a hyperbolic relationship where the time to the milestone is just one over the rate of development, which we just noted increases approximately linearly with temperature. That is, $T = 1/d_t$, where $d_t$ is the development rate at temperature $t$ and $T$ is the time to the milestone. Clear? No? OK, let's try an analogy.
+
+Imagine you are driving to the West Side. Let's say it is a 300 mile journey. You could drive the whole way at 60 miles per hour and it would take 300 miles/60 mph = 5 hours or you could drive at 90 mph and it would take  300 miles/90 mph = 3 hours 20 minutes. I you are a very slow driver moving at 30 mph this trip would take 10 hours! A graph of the time it takes to get to your destination, your milestone if you will, follows the same shape as the development graph, above. 
+
+```{r, fig.margin=TRUE, fig.cap="Time to drive to the West Side as a function of speed."}
+
+df <- tibble(Speed = 10:100, 
+             Time = 300/Speed)
+ggplot(df, aes(Speed, Time)) + 
+  geom_line() + 
+  geom_point(data=df %>% filter(Speed %in% c(60,90,30))) + 
+  scale_x_continuous("Speed (miles per hour)", breaks = c(30,60,90)) + 
+  scale_y_continuous("Time (hours)", lim = c(0, 30))
+
+```
+
+
+This analogy is important for another reason, because it helps us notice that we do not need to drive (or develop) at a constant rate, but rather accumulate speed (or temperature) and thus miles driven (or steps in development) to get to our destination. We might drive at 60 for a bit while we get through Colfax and then floor it on I-90 until we get snarled in traffic near Seattle. Similarly, development might be speeding along on warm days and going slower on cools ones. In biology we call this the "degree-day" model of development^[Sort of like the speed-hour model of travel], where we can estimate the accumulation of temperature as a proxy for the accumulation of development to some developmental milestone. 
+
+This sort of model is very common in farming, but is also very useful for thinking vector ecology. Ticks and mosquitoes take a certain number of degree days^[Often above some threshold temperature where there is no development. Zero Celsius is pretty cold, after all!] to complete their development into the next developmental stage, lay eggs, or even digest a bloodmeal. What's cool about this is that we can figure out how many generations we might have in an area as a function of that area's typical temperatures. It can even explain why, say, ticks are not found too far north: it is simply too cold for them to complete their development before they would run out of energy or freeze to death. 
+
+# And so on.
+
+So there are two ways that temperature ends up playing a prominent role in the biology (and health!) of organisms. Those are big ones, but I bet with some thought we can extend this list a bit more. For instance, temperature differences drive the movements of air and water, meaning they power weather patterns and thus other conditions, such as patterns of rainfall and humidity. Temperature also affects the rate of things like nitrogen mineralization and nitrification^[And most other biological processes, as we've discussed.], meaning it helps control nutrient availability. Essentially, temperature plays a first- or second-order role in most processes that govern nutrient availability and conditions. So don't be surprised when temperature keeps showing up to the party in this class and the world around us.
