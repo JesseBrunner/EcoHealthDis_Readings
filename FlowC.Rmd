@@ -1,9 +1,8 @@
 ---
 title: "Efficiency in the carbon cycle"
-subtitle: "YYY"
 author: "Jesse Brunner"
 date: "`r Sys.Date()`"
-output: tint::tintPdf
+output: tint::tintHtml
 latexfonts:
   - package: newtxmath
     options: 
@@ -32,6 +31,10 @@ library(scales) # for prettier axis labels
 library(simecol) # for running model 
 theme_set(theme_minimal())
 ```
+<script type="text/x-mathjax-config">
+        MathJax.Hub.Config({TeX: {extensions:["mhchem.js"]}});
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
 You may^[Should?] recall that 1) we can track organic carbon as a way of tracking energy flow within or among ecosystems and 2) that the sum amount of energy for _everything_ of interest in an ecosystem is called $NPP$. Moreover, this $NPP$ is what remains after a small part of the energy in the sunlight that strikes a leaf gets turned into sugars, after account for plant respiration. It is a fraction of a fraction of the energy hitting the ground. But that's it. That's all we have to play with. And yet it's enough to fuel amazing communities of diverse organisms in even the least productive places. That still blows my mind.
 
@@ -52,7 +55,7 @@ Imagine, for instance, that we wanted to raise some sort of animal in large numb
 The short answer is, "it depends." But that is not terribly satisfying. It depends on what? Well, let's follow the steps, like we did with $GPP$, and then talk about what makes them more or less efficient. 
 
 
-```{r, fig.margin = TRUE, fig.cap = "Secondary production of \\emph{Daphnia galatea} \"inspired\" by Urabe \\& Watanabe (1991) Functional Ecology 5:635-641. ( Reality is complicated and my estimates are rough.) Values correspond to one hundred 1-mm daphnia in the hhighest food treatent."}
+```{r, fig.margin = TRUE, fig.cap = "Secondary production of \\emph{Daphnia galatea} \"inspired\" by Urabe \\& Watanabe (1991) Functional Ecology 5:635-641. ( Reality is complicated and my estimates are rough.) Values correspond to one hundred 1-mm daphnia in the hhighest food treatent.", fig.alt = "Sankey diagram where the width of arrows is proportional to the size of the flow. Starts at the top with 2500 ug/day of available food, then 1200 is diverted because it is not eaten, 715 is diverted because it is defecated, and 36 is diverted to respiration, leaving secondary production of 549 ug/day on the bottom."}
 
 knitr::include_graphics("Sankey_DaphniaProduction.png", dpi=900)
 ```
@@ -89,7 +92,7 @@ Of course reality is more complex than this simple illustration. A lot of $NPP$ 
 So ecosystem ecologists get very excited about all of these energy (and nutrient) flows^[Or fluxes, in the parlance.], especially since Howard T. Odum presented his work on Silver Springs ecosystem in the 1950s. Check out this lovely Sankey^[All of these diagrams where the width of the arrows is proportional to the size of the flow are or are inspired by Sankey diagrams.] diagram!
 
 
-```{r, fig-fullwidth,, fig.cap="From Odum, H. T. (1971). Environment, Power, and Society. Wiley-Interscience New York, N.Y.."}
+```{r, fig-fullwidth,, fig.cap="From Odum, H. T. (1971). Environment, Power, and Society. Wiley-Interscience New York, N.Y..", fig.alt = "A Sanke diagram that looks like the path of a braided stream. Sunlight, which goes to photosynthesis, and imports of energy enter from the upper left, some of which goes to herbivores, whwch then moves to carnivors, and then to top carnivores. All boxes---representing primary producers, herbivores, carnivores, and top carnivores---have arrows that go to a box representing decomposers. Every box also has arrows flowing out of the system as heat. "}
 
 knitr::include_graphics("Silver_Spring_Model.jpg", dpi=600)
 ```
