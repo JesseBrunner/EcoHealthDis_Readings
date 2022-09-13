@@ -2,7 +2,7 @@
 title: "Organisms as sacks of chemical reactions"
 author: "Jesse Brunner"
 date: "`r Sys.Date()`"
-output: tint::tintPdf
+output: tint::tintHtml
 latexfonts:
   - package: newtxmath
     options: 
@@ -32,14 +32,17 @@ library(scales) # for prettier axis labels
 # library(simecol) # for running model 
 theme_set(theme_minimal())
 ```
-
+<script type="text/x-mathjax-config">
+        MathJax.Hub.Config({TeX: {extensions:["mhchem.js"]}});
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 We have introduced the idea that we can think of life as a series (or symphony) of interlocking chemical reactions, which means that what we have learned about chemistry can teach us a few things about ecology. Let me first review the reactants side of things.
 
 # Rates are controlled by the most-limiting reagent
 
 One way to speed a chemical reaction is to increase the concentration of the reactants. This is also true, to an extent, in biochemical reactions. Or more to the point, if a reactant is missing, it slows the rate of the reaction^[A plant cannot fix CO~2~ with photosynthesis if there is no more CO~2~!]. But what is important to remember about biochemical reactions is that reactions are chained together such that the product of one is the reactant of another. So slowing down one reaction can slow down others^[If nitrogen is limiting, it slows down production of amino acids, which slows down protein synthesis, which slows down growth or repair of myriad cell structures, and so on.]. 
 
-```{r, fig.margin = TRUE}
+```{r, fig.margin = TRUE, fig.alt = "Cartoon of a wooden barrel with uneven staves, each labelled with a particular nutrient. There is water in the barrel up to the level af the shortest stave. "}
 knitr::include_graphics("liebigsbarrel.jpg")
 ```
 
@@ -67,10 +70,10 @@ If I were to ask you how to increase the rate of a reaction, the two most common
 
 When we think of chemical reactions, we usually think of them happening in solution, so the water is just a given. But of course without water, many chemical reactions do _not_ work, and even if water is limiting the increase concentrations of chemicals in solution can cause problems. These issues are worse by 10 in living cells. Because cells are not simply test tubes or beakers; they are semi-permeable sacks made up of phospholipids and proteins. Stuff _leaks_ in and out! Things that should be in that sack over there get into this one here. Concentrations of things get all out of proportion. But even worse, cells can lose their structural integrity when there is not enough water or they are in a hyper-osmotic solution, where the water inside diffuses to the outside. Or they can explode if in a hypo-osmotic solution. So too much or too little water can be problematic^[Ignoring the myriad of physiological and structural mechanisms to maintain water balance]. 
 
-For plants, water is of course essential for nutrient transport from roots to shoots. But it is also important in photosynthesis for several reasons. Among the most consequential is that when plants open their stomata to let in \ce{CO2}, they inadvertently let out water. So in the process of making their photosynthetic reaction more efficient, by increasing the concentration of \ce{CO2}, they lose water. This trade-off is so important that it has led to the evolution, many times, of a more water-efficient form of photosynthesis called C4, as opposed to the normal C3, and even, in especially water restrictive environments, extra machinery called CAM photosynthesis^[My hope is that by continuing to mention it, you'll eventually ask to know more about these different types of photosynthesis]. 
+For plants, water is of course essential for nutrient transport from roots to shoots. But it is also important in photosynthesis for several reasons. Among the most consequential is that when plants open their stomata to let in $\ce{CO2}$, they inadvertently let out water. So in the process of making their photosynthetic reaction more efficient, by increasing the concentration of $\ce{CO2}$, they lose water. This trade-off is so important that it has led to the evolution, many times, of a more water-efficient form of photosynthesis called C4, as opposed to the normal C3, and even, in especially water restrictive environments, extra machinery called CAM photosynthesis^[My hope is that by continuing to mention it, you'll eventually ask to know more about these different types of photosynthesis]. 
 
 
-```{r, fig.margin = TRUE, fig.cap="A Whittaker biome diagram. Notice what's on the axes that organize the biomes?"}
+```{r, fig.margin = TRUE, fig.cap="A Whittaker biome diagram. Notice what's on the axes that organize the biomes?", fig.alt = "Diagram showing the world's biomes as areas on a graph of average annual temperature on the x-axis and average annual precipitation on the y-axis."}
 knitr::include_graphics("WhittakerDiagram.jpg")
 ```
 
@@ -79,11 +82,11 @@ Moreover, if you tell me the temperature and precipitation in a place, I can pro
 
 
 
-## What about \ce{O2}?
+## What about $\ce{O2}$?
 
-There are many other important conditions that govern the rates of chemical reactions, and thus life, but the third major one is oxygen concentrations. This is tricky, to a degree, because it is also a nutrient of sorts for most life^[Remember CHNOPS?]. However, for some organisms \ce{O2} is not a resource that is used, but rather a nuisance that keeps their chemical reactions, including those involved in metabolism, from working right. Many specialized bacteria work best under anoxic conditions---when free \ce{O2} is not available, but chemically bound oxygen, such as in \ce{NO3-}. For instance, the denitrification process occurs when free oxygen is not available and so denitrifying bacteria use the oxygen in \ce{NO2-} and \ce{NO3-} for electron acceptors. In these and many other cases, oxygen is essentially toxic to the anaerobic or fermenting microbes^[Anoxic refers to the conditions; anaerobic to the metabolic processes used.]. Other times, the rates of reactions, including the nitrogen fixation process, are governed by oxygen concentrations. 
+There are many other important conditions that govern the rates of chemical reactions, and thus life, but the third major one is oxygen concentrations. This is tricky, to a degree, because it is also a nutrient of sorts for most life^[Remember CHNOPS?]. However, for some organisms $\ce{O2}$ is not a resource that is used, but rather a nuisance that keeps their chemical reactions, including those involved in metabolism, from working right. Many specialized bacteria work best under anoxic conditions---when free $\ce{O2}$ is not available, but chemically bound oxygen, such as in $\ce{NO3-}$. For instance, the denitrification process occurs when free oxygen is not available and so denitrifying bacteria use the oxygen in $\ce{NO2-}$ and $\ce{NO3-}$ for electron acceptors. In these and many other cases, oxygen is essentially toxic to the anaerobic or fermenting microbes^[Anoxic refers to the conditions; anaerobic to the metabolic processes used.]. Other times, the rates of reactions, including the nitrogen fixation process, are governed by oxygen concentrations. 
 
-And of course, from the flip side, aerobic organisms such as ourselves do poorly when oxygen concentrations drop. But wait! In our case, the \ce{O2} is a reactant, or more broadly a resource. What is the difference?
+And of course, from the flip side, aerobic organisms such as ourselves do poorly when oxygen concentrations drop. But wait! In our case, the $\ce{O2}$ is a reactant, or more broadly a resource. What is the difference?
 
 # Resources vs. conditions
 
