@@ -2,7 +2,7 @@
 title:  "Population growth & why we create models"
 author: "Jesse Brunner"
 date: "`r Sys.Date()`"
-output: tint::tintPdf
+output: tint::tintHtml
 latexfonts:
   - package: newtxmath
     options: 
@@ -58,9 +58,9 @@ Which describes the size of a population, $N$, starting from $N_0$ at time $t=0$
 $$
 \log( N(t) ) = \log(N_0) + rt,
 $$
-Which is the equation for a line, like $y=mx+b$ with $y=\log( N(t) )$, an intercept of $\log(N_0)$ and a slope of $r$ (assuming we're using the natural logarithm).  This formulation emphasizes the constant proportionality in growth of the population. A population grows from 10 to 100 in the same amount of time it takes to grow from 100 to 1000 or 1000 to 10,000. 
+Which is the equation for a line, like $y=mx+b$ with $y=\log( N(t) )$, an intercept of $\log(N_0)$ and a slope of $r$ (assuming we are using the natural logarithm).  This formulation emphasizes the constant proportionality in growth of the population. A population grows from 10 to 100 in the same amount of time it takes to grow from 100 to 1000 or 1000 to 10,000. 
 
-The reason why becomes a bit clearer if we consider how the population _grows_ (or shrinks) over time, rather than the actual size at any time. (In maths-speak, we're interested in the first derivative of that first equation for the exponential model. Or in other words, the equation we show is the _solution_ to the differential equation we're about to present. You do not need to remember your calculus, but rather just notice the relationship between the solution and the differential equation.) The differential equation for exponential growth is:
+The reason why becomes a bit clearer if we consider how the population _grows_ (or shrinks) over time, rather than the actual size at any time. (In maths-speak, we're interested in the first derivative of the exponential model, $N(t) = N_0 e^{rt}$, we have been using so far. Or in reverse, the exponential model of $N(t)$ we have been using is the _solution_ to the differential equation we're about to present. You do not need to remember your calculus, but rather just notice the relationship between the solution and the differential equation.) The differential equation for exponential growth is:
 
 $$
 \frac{dN}{dt} = rN,
@@ -68,7 +68,7 @@ $$
 
 This equation translates into words as, "the rate of change in $N$, that is the _growth rate of the population_, is simply the _per capita_ growth rate^[Or, if $r<0$, the rate of decline.] times the population size." We'll come back to that  _per capita_ growth rate idea in a moment, but first, _Congratulations!_ That was first model of population growth! Not so difficult, right? 
 
-Second, notice that larger populations grow faster, period. What if the population size was $N=1,000,000,000,000$? No problem, the population grows at rate $rN=r \times 1,000,000,000,000$. Whatever $N$ is, the population grows at rate $rN$. 
+Second, notice that larger populations grow faster, period. If the population size were $N=1,000$ then the population would grow at rate $rN=r \times 1,000$. What if the population size was $N=1,000,000,000,000$? No problem, the population grows at rate $rN=r \times 1,000,000,000,000$. Whatever $N$ is, the population grows at rate $rN$. 
 
 
 ```{r, fig.margin=TRUE, fig.cap="Population growth rate as a function of population size with $r=0.2$ from the exponential model."}
@@ -83,7 +83,7 @@ We can plot this relationship between growth rate and population size. As you wo
 `r newthought("A word of warning:")` Be sure to pay attention to the axis labels. Before we were plotting $N$ against time, but now we are plotting $dN/dt$ against $N$. They show different things even though they might have similar lines.
 
 ## Population growth rates vs. per capita growth rates
-So this model and graph describes the growth of the population as a whole. What does this model say about the growth of individuals^[Here we mean the average rate of births minus deaths from individuals, not a change in their sizes]? Well, if $dN/dt$ is the population growth rate, then dividing it by $N$ gives us the average growth per individual in the population (all $N$ of them). 
+So this model and graph describes the growth of the population as a whole. What does this model say about the growth---as in _replication_^[Mean the average birth rate of from an individual minus the average death rate] not _getting bigger_---of individuals? Well, if $dN/dt$ is the population growth rate, then dividing it by $N$ gives us the average growth per individual in the population (all $N$ of them). 
 
 \begin{equation*}
 \begin{aligned}
@@ -92,7 +92,7 @@ So this model and graph describes the growth of the population as a whole. What 
 \end{aligned}
 \end{equation*}
 
-So mathematically the average growth per individual in the population, the _per capita_^[From the Latin, by heads.], is just $r$. Always. Whatever else might be happening, no matter how big or small the population, individuals reproduce (and die) on average at rate $r$. A plot of per capita growth rate against $N$ makes this clear; it always just $r$.
+So mathematically the average growth per individual in the population, also known as the _per capita_^[From the Latin, by heads.] growth rate, is just $r$. Always. Whatever else might be happening, no matter how big or small the population, individuals reproduce (and die) on average at rate $r$. A plot of per capita growth rate against $N$ makes this clear; it always just $r$.
  
 ```{r, fig.margin=TRUE, fig.cap="Per capita growth rate as a function of population size with $r=0.2$ in the exponential model."}
 ggplot(tibble(x=0:250, y=0.2), aes(x, y)) +
@@ -102,19 +102,22 @@ ggplot(tibble(x=0:250, y=0.2), aes(x, y)) +
        y="Per capita growth rate ([dN/dt]/N)")
 ```
 
+## Problems in the land of exponential growth
+
 The exponential model is very simple and quite useful, but does it not seem a bit, ummm, unrealistic? I mean, does it make sense that an individual in a real population of, say, elephants, would have the same number of offspring per year if she were surrounded by ten other females or ten thousand or ten million? Would there be enough resources for all of that reproduction? Enough room? Wouldn't the elephants run out of food and die? 
 
 Similarly, at the whole population level, does it make sense that the population just keeps growing faster and faster and faster over time, always doubling at the same rate no matter how big it gets^[You can extend the model well past the point where there are more elephants than atoms in the Galaxy, but that doesn't mean it makes biological sense.]? In a word, no. 
 
 The model is not wrong; it does what we told it to. We said, implicitly at least, that the per capita growth rate is just a constant, no matter what, which means that the population growth rate increases with population size.  The model just revealed the consequences of the assumptions we built into it. But this assumption was quite unrealistic and so, eventually, are the dynamics of the model. Let's try again.
 
-Before doing so, however, it is worth noting that every self-replicating thing---from computer viruses to real viruses to elephants---has the _potential_ to grow exponentially. Look back to the bit on doubling to remember the consequence, how rapidly we might be neck deep in elephants if their population kept growing at a constant rate^[Well, rapidly relative to the tens of millions of years modern elephants arose.]. What keeps us from being knee deep in elephants or bacteria or, well, anything? That is what much of the field of ecology is about. But I bet you can come up with a few reasonable guesses.
+Before doing so, however, it is worth noting that every self-replicating thing---from computer viruses to real viruses to elephants---has the _potential_ to grow exponentially. Look back to the essay on doubling to remember the consequences, how rapidly we might be neck deep in elephants if their population kept growing at a constant rate^[Well, rapidly relative to the tens of millions of years modern elephants arose.]. What keeps us from being knee deep in elephants or bacteria or, well, anything? That is what much of the field of ecology is about. But I bet you can come up with a few reasonable guesses.
 
 
 # The logistic model of population growth
 
 Instead of assuming that per capita growth is a constant, let us acknowledge that at some point the individuals in the population are using all of the resources available. 
-Perhaps food or water or shelter or who knows what is limiting. Thus, when $N$ gets big enough, there is just enough resources for individuals to replace themselves^[On average. In reality, some might do really well and others poorly, but these effects balance out.], meaning the per capita growth rate (and thus population growth rate) would be zero^[Remember we are talking about growth rate, not $\lambda$, the population multiplier in a discrete time step model like you've seen elsewhere. When $\lambda=1$, per capita growth is zero.]. In a simplistic sense, there can be no (successful) reproduction unless someone dies to make room for that new individual. Let us call this population size where individuals just replaces themselves $k$.
+
+Perhaps food or water or shelter or who knows what is limiting. Thus, when $N$ gets big enough, there is just enough resources for individuals to replace themselves^[On average. In reality, some might do really well and others poorly, but these effects balance out.], meaning the per capita growth rate (and thus population growth rate) would be zero^[Remember we are talking about growth rate, not $\lambda$, the population multiplier in a discrete time step model like you've seen elsewhere. When $\lambda=1$, per capita growth is zero.]. In a simplistic sense, there can be no (successful) reproduction unless someone dies to make room for that new individual. Let us call this population size where individuals _just_ replace themselves $k$.
 
  
 ```{r, fig.margin=TRUE, fig.cap="Per capita growth rate as a function of population size with $r=0.2$ in the exponential model and a point at $N=0$ where per capita growth is $r$, and one at $N=k=200$ where per capita growth is zero."}
@@ -156,8 +159,7 @@ $$
 \frac{\frac{dN}{dt}}{N} = r \left( 1 - \frac{N}{k} \right)
 $$
 
-We've only added one term, $k$, to our model and we get this nice behavior where per capita growth declines as $N$ gets bigger and it equals zero when $N=k$. (If you are unsure of this, try plugging in some numbers for $N$ and $k$, maybe $k=200$ and $N=1, 10, 100,$ and $200$.) Moreover, when we've gone past the "break even" point---maybe there are more individuals than the available resources can support---individuals will die faster than they give birth to new offspring and the per capita growth rate is _negative_. 
-
+Let's walk through how this works, mathematically. First, if $N$ is really small relative to $k$ (either $N$ is small or $k$ is very big) then the stuff in parentheses becomes one minus something small, perhaps very small. If it is small enough then the stuff in parentheses is essentially one and we get our exponential model back. If we wanted to get fancy we could say that the exponential model is just a special case of the logistic model where $N << k$. But of course we wouldn't want to be fancy, would we? Second, we can see that when the population reaches $k$, then $N/k = 1$ so the stuff in parentheses becomes $1-1 = 0$. This has the effect of multiplying the intrinsic growth rate by zero, so the overall _per capita_ growth rate is zero. Nice! Finally, note that if $N$ gets bigger than $k$ (and so $N/k > 1$) we end up subtracting a larger number from a smaller number, so the stuff in parentheses becomes _negative_. This means that if the population size is bigger than $k$ the _per capita_ growth rate goes negative! (If you are unsure of this, try plugging in some numbers for $N$ and $k$, maybe $k=200$ and $N=1, 10, 100,$ and $200$.) Neat! We added just one term, $k$, and we can get this nice behavior!
 
 ```{r, fig.margin=TRUE, fig.cap="Per capita growth rate as a function of population size in the exponential model and logistic models with $r=0.2$ and $k=200$."}
 df <- expand.grid(N=0:250, model=c("exponential", "logistic"))
@@ -172,7 +174,7 @@ ggplot(df, aes(N, percap, color=model)) +
   theme(legend.position="bottom")
 ```
 
-As an aside, this is one version of density-dependence, where a rate, here the per capita growth rate, is influenced by population size or density.  That is, something about being around or part of a larger (or smaller) population changes something fundamental in the process. Here we are assuming that birth rates are reduced and/or death rates are increased with higher population densities, perhaps because the finite resources are divided up among more and more individuals. We will see many other examples of density-dependence in biology.
+`r newthought('As an aside,')` this is one version of density-dependence, where a rate, here the _per capita_ growth rate, is influenced by population size or density.  That is, _something_ about being around or part of a larger (or smaller) population changes something fundamental in the process. Here we are assuming that birth rates are reduced and/or death rates are increased with higher population densities, perhaps because the finite resources are divided up among more and more individuals. But there is nothing about the biological mechanism here. You might have heard of $k$ being the "carrying capacity" of the environment, meaning something like the resources available in the environment, as is $k$ somehow accounted for all of the food and shelter and so on in a place. But none of that is intrinsic to the  model. All that extra meaning is applied to the the model by us, as biologists with some ideas of how things might work. The math just requires that _per capita_ growth is zero when $N = k$. That's it.
 
 Anyway, how does the _population_ growth rate change with $N$? We can multiply both sides of the equation by $N$ (the reverse of what we did above, with the exponential model) to get the differential equation describing population growth with density dependence. 
 
@@ -202,7 +204,7 @@ ggplot(df, aes(N, growth, color=model)) +
 ```
 You will see that the population growth rate is at first going up at about the same rate as the exponential model^[And if we make $k$ really, really big, then population growth in the logistic model will follow that of the exponential model over a much wider range. Think about what happens if $k = \infty$.], but curves away from the exponential line more and more as $N$ gets bigger. That is, the larger the population gets, the less it grows exponentially. That is the consequence of how we built this model. At $N=k$ the population growth rate is zero---that is, the population is stable---and beyond that it shrinks.
 
-You will also see that the population growth rate is highest half-way to $k$. How do we explain this, when the highest per capita growth rate was when $N$ was small? Well, the per capita growth rate is highest when population size is smallest, but then again, there are very few individuals to grow the population. At much higher population sizes there are lots of individuals doing the growing, but each has a very small per capita growth rate. In the middle we get a moderate number of individuals growing moderately. 
+You will also see that the population growth rate is highest half-way to $k$. How do we explain this, when the highest per capita growth rate was when $N$ was small? Well, the per capita growth rate is highest when population size is smallest, but then again, there are very few individuals replicating so quickly. At much higher population sizes there are lots of individuals doing the replicating, but each has a very small per capita growth rate. In the middle we get a moderate number of individuals replicating moderately, which happens to maximize the growth of the population as a whole. 
 
 ## Logistic growth dynamics
 Finally, we might ask what the population size would be like over _time_ given this model. Before showing it to you (though I expect many if not most of you have already seen the graph we'll make) it is worth thinking through what we would expect given our graph of population growth rates. Remember that the height of the line in this last graph of $dN/dt$ is the slope of the line showing how $N$ changes through time; low, but positive values of $dN/dt$ mean flatter slopes (i.e., less change over time) and larger positive values of $dN/dt$ mean a steeper slope. So...
@@ -267,13 +269,13 @@ We actually construct models in science and more broadly for lots and lots of re
 *  To understand the consequences of the assumptions you have embedded in a model. What happens if animals try to maximize their energy intake during foraging? How much of two alternative foods would they eat? What if they also had to avoid a predator? 
 *  To see how complex behaviors emerge from simple interactions / try to see what is required to create patterns or behaviors of interest. The murmurations you might have seen in flocks of birds flying around together or schools of fish? Those can be described with [three "rules" in an algorithm](https://www.youtube.com/watch?v=4LWmRuB-uNU). The population cycles of lynx and hare, a classic example in ecology, can be described, more or less, with two fairly simple equations.  Moreover, when a model _cannot_ produce or reasonably describe the phenomenon of interest, that's interesting! If means you are missing something important.
 * To compare systems. Rabies and influenza are of course very different viruses and so on, but perhaps their means of transmission are similar enough to suggest similar ways to intervene.   
-*  To make predictions^[Most people tend to think about prediction when they're thinking of models. If a model does not do a good job of predicting the future, it must be crap, right? But scientists are usually focused on the other types of uses; models as tools of understanding. ] about how a population or system will change in time or with interventions or so on. 
+*  To make predictions^[Most people tend to think about prediction when they're thinking of models. If a model does not do a good job of predicting the future, it must be crap, right? But scientists are usually focused on the other types of uses; models as tools of understanding. ] about how a population or system will change in time or with interventions or so on. Or perhaps more accurately and usefully, _projecting_ particular dynamics or mechanisms into the future, where the goal is less to generate accurate forecasts of, say, population size in the future and more to see how things might play out in the future under different scenarios.
 
-So with some of these uses in mind, is the logistic model better than the exponential? I would argue that we have actually learned a lot from it. First, it _can_ describe the early dynamics of some self-replicating process, at least in a stable environment _before_ resources become limiting, predators or immune responses kick in, and so on. But perhaps more importantly, it shows us the potential for what _could_ happen _if not for_ limiting resources,  predators, and so on. It is always, eventually, wrong, but it fails in an interesting and useful way. As such, it is a great starting place when thinking about a system or building a model (or teaching). 
+So with some of these uses in mind, is the logistic model better than the exponential? I would argue that we have actually learned a lot from the exponential model. First, it _can_ describe the early dynamics of some self-replicating process, at least in a stable environment _before_ resources become limiting, predators or immune responses kick in, and so on. But perhaps more importantly, it shows us the potential for what _could_ happen _if not for_ limiting resources, predators, and so on. It is always, eventually, wrong, but it fails in an interesting and useful way. As such, it is a great starting place when thinking about a system or building a model (or teaching). 
 
 Now the logistic model adds one parameter^[The parameters, $r$ and $k$, are sort of like tuning knobs. They control how quickly or slowly things happen or where stuff happens in the model, but not, overall, how the model works. There is only one (state) variable in the model, $N$, that changes or "evolves" (in the sense of unfolding) in response to model structure and parameter values. ], $k$, that provides us very different dynamics. It gives us a ceiling to growth, which is, in a sense, more realistic. This model also gives us a sense of how per capita and population growth change with population size, giving us greater intuition into how a system with density-dependent growth might work. 
 
 But it is worth noting that this model is still a vast over simplification of reality. Sure it can describe the dynamics of population of certain systems, like bacteria in [chemostats](https://en.wikipedia.org/wiki/Chemostat) or virus in cell culture, but only so long as they are held under fairly constant conditions, there are no other organisms interacting (e.g., no bacteriophage or bacterivores or competitors, no immune response, etc.), and so on. If those other factors become important, this model, which does not include them, will probably miss the mark. But then again, it's pretty interesting to see how far we can get with this simple model before it fails to capture the dynamics of a system. And it becomes interesting to see what tweaks^[A time delay? Stochastic variation in rates? Discrete time steps?] it takes until some alternate version of this model does capture the essential dynamics, if that is even possible. 
 
-I will write more in the future about how models are used, why they are wrong, and why that can be a good thing.  For now, I hope you see how we can alter a very simple model to create interesting new dynamics, how a model simply illustrates the results of the assumptions we build into it, and why even dumb models are useful. I also hope you feel like you can use these two models to make general statements about how populations might work. (It will be on the test!^[Well, not literally. There are no tests in this class...but I would like you to give this some time and attention.])
+In the future we can discuss how models are used, why they are wrong, and why that can be a good thing.  For now, I hope you see how we can alter a very simple model to create interesting new dynamics, how a model simply illustrates the results of the assumptions we build into it, and why even dumb models are useful. I also hope you feel like you can use these two models to make general statements about how populations might work. (It will be on the test!^[Well, not literally. But I would like you to be able to describe, use, and think with these two models for the DoM.])
  
