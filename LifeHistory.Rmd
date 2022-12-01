@@ -1,0 +1,95 @@
+---
+title: "Life history strategies"
+author: "Jesse Brunner"
+date: "`r Sys.Date()`"
+output: tint::tintHtml
+latexfonts:
+  - package: newtxmath
+    options: 
+      - cmintegrals
+      - cmbraces
+  - package: ebgaramond-maths
+---
+
+```{r setup, include=FALSE}
+library(tufte)
+# invalidate cache when the tufte version changes
+knitr::opts_chunk$set(tidy = FALSE, 
+                      message = FALSE, 
+                      warning = FALSE,
+                      echo = FALSE,
+                      cache.extra = packageVersion('tufte'))
+options(htmltools.dir.version = FALSE)
+```
+
+```{r, include=FALSE}
+# library(tidyverse)
+# library(scales) # for prettier axis labels
+# library(simecol) # for running model 
+# theme_set(theme_minimal())
+```
+
+# The history of one's life
+
+OK, let's get this out of the way: life history does not really refer to history _per se_. Rather, at least in evolutionary ecology, it refers to the path or pattern of an organism's life. In particular life history _theory_ tries to understand and explain the wide variety in and patterns between traits of species, such as longevity, fecundity, and time to maturity. Why, for instance, do lizards live for at most a few years and produces clutches of a dozens of eggs annually while others live for decades, don't become reproductive for a long, long time, and have clutches of one to two eggs?  And why are traits often so clearly correlated, producing, for instance, extremes such as what I like to call the rock star life history^[Live fast and die young.] in contact to the slow-and-steady tortoise approach? 
+
+We won't be able to do more than just scratch the surface, but I think a little exposure to these ideas will help you recognize patterns amongst the organisms you find most interesting, as well as set up some interesting questions to ponder.
+
+# The many axes^[No, not that kind. The kind that is a synonym for dimensions.] of life history
+
+There are many dimensions of a life history strategy that seem interesting and important. Historically, life history theory has considered characteristics such as:
+
+*  Size: small to large to very, very large
+*  Longevity (or survivorship): with life spans ranging from days to centuries. Wow!
+*  Fecundity (i.e., reproductive output): varies from just one or two to tens of thousands! We can think of the size of these offspring^[I bet you have some ideas about how size and number of offspring relate!], too. And we can  divide organisms into those that are:
+	* Semelparous, having a single reproductive output, often followed by death
+	* Iteroparous, reproducing in repeated (iterated) bouts
+*  Time to and size at maturity: some become reproductive right away while others wait (and grow) for a long time.
+
+We might add to this list other characteristics, such as: 
+
+*  Complexity of the life cycle: Some organisms have very simple life cycles---they simply divide and grow---while others go through many developmental stages, might have many hosts (if a parasites) or habitats (if free-living), and so on. We can think of several aspects of the life cycle:
+	* stages, such as egg to larva to pupa to butterfly, or just take a look at the malaria life cycle!
+	* hosts or habitats: Parasites, in particular, often have a series of hosts, sometimes three or more! Each stage, in turn, might be more or less specific (as opposed to general).  
+*  Developmental delays: Many ectotherms have delays when they essentially wait out poor conditions---hybernation, brumation, estivation, or developmental diapauses---that are a key part of their life cycle.
+*  Relationship between development & growth: We tend to think about growth and development as happening together. We grow and develop from babies to toddlers to little kids to teens to...well you get the idea. But amphibian larvae, for instance, can separate these processes, at least to an extent. Once a tadpole reaches a certain size it can continue to grow while not developing much, provided conditions are poor, but can rapidly develop and metamorphose to leave a pond when conditions deteriorate. Fancy!
+
+# Strategies
+
+All of these traits, collectively, end up being something like a "strategy" for the species^[Keeping in mind that individuals are not "choosing" any of this...rather, these strategies are encoded in their genes.]. These strategies end up influencing the overall survival and reproductive success of individuals of the species, and thus their evolutionary fitness.  Presumably different strategies lead to differences in relative fitness---at least in particular contexts---and so one would expect evolution would, through a lot of trial and error, favor those strategies that were, all else equal, more likely to produce more offspring over the long run.  
+
+Perhaps then evolution explains some of the patterns we see in life history traits. While it might be possible for all combinations of each of these characteristics to occur---and there has certainly been enough time for most all combinations to have evolved---there are clear patterns in the traits. Organisms produce lots of small offspring or a few larger ones. They either reproduce early, at a smaller size, and thus have smaller clutches, or wait to reproduce, growing large and thus capable of having much larger clutches. 
+
+
+# If it exists, it works
+It might be tempting to assume that there is a "best" strategy, but the very fact that there exists so much variation in strategies suggests otherwise. If there _were_ a best strategy, we would expect all lineages to evolve towards it^[Setting aside issues such as constraints in what is possible. For instance, a tiny turtle simply cannot fit hundreds of eggs in it!]. But instead, we see evolution towards many strategies, sometimes even within the same lineage. This strongly suggest that these different strategies all work quite well. There might be _bad_ strategies (e.g., die young and don't reproduce much at all), which are rare or just missing from the current biota, but there is no one _best_.
+
+Still, what works best (or amongst the best) often depends a great deal on context. We'll come back to this as well as the idea that trade-offs are likely an important part of the explanation for why there is no best.  But let us end by introducing some common ways of organizing our thinking about the diversity of strategies, keeping in mind that these are organizational schemes for us humans that necessarily simplify what is actually a rather complex topic.
+
+# Ends of the spectrum
+
+If you have heard about life history strategies before, you likely also heard of so-called $r$- and $k$-selected species, where the $r$ and $k$ come from the logistic equation for population growth^[$\frac{dN}{dt} = rN(1-N/k)$].  In this view, species fall along a spectrum and $r$- and $k$-selected species are the two extreme ends. On the $r$ end of things, species have very low survivorship due to little investment in offspring---small eggs or babies, no parental care---that is offset by having bazillions of little babies. The idea is that they are emphasizing the potential for rapid population growth, exemplified by a high intrinsic rate of increase or $r$ in the logistic model. Such species are often considered weedy or opportunistic. A the other end of the spectrum are those species that emphasize high survivorship of offspring due to investments in their eggs or babies. This investment, presumably, makes the offspring better competitors and thus better at persisting when the population size is at or close to the carrying capacity, $k$. This investment, however, comes at the cost of having few offspring overall. Such species are usually thought of as specialists. 
+
+| Feature                        | Specialized ($k$) | Opportunistic ($r$) |
+|--------------------------------|-------------------|---------------------|
+| Reproductive events (per year) | few               | many                |
+| Growth                         | slow              | fast                |
+| Reproductive effort            | low               | high                |
+| Offspring per lifetime         | few               | many                |
+| Size of offspring              | large             | small               |
+| Parental care                  | common            | absent              |
+| Adult size                     | large             | small               |
+| Death rate                     | low               | high                |
+| Life span                      | long              | short               |
+
+It is easy to think of species that do not fit neatly into such a one-dimensional scheme. So enter a three dimensional one.  It involves essentially (some of) the same traits---fecundity ($m_x$, if you recall from our life table), juvenile survivorship ($l_x$), and age at maturity (which is related to generation time)---but it does not force them to be so strongly correlated. It is possible, for example, to have reasonably high fecundity at a younger or older age of maturity, though these correspond with lower or higher juvenile survival. 
+
+```{r, fig.margin=FALSE, fig.cap="From Winemiller KO (1992) Life-History Strategies and the Effectiveness of Sexual Selection. Oikos 63:318-327. Notice a) this is three-dimensional, so the grey surfaces is slanting backwards a bit and b) we can see the classical $r-k$ axis as a slice through this grey surface."}
+
+knitr::include_graphics("Winemiller_lifehistory.png", dpi=200)
+```
+
+
+This scheme, first proposed by Winemiller and Rose (1992) for fishes, helped them delineate what they called opportunistic, equilibrium, and periodic strategies. (Think about why they think these combinations of life history traits correspond to these particular environments.) When applied to other vertebrate taxa (i.e., birds, amphibians and reptiles, mammals), it suggests that each taxa uses different sectors of the possible "strategy space," with some overlap. It also shows that fishes have the most diversity in strategies and mammals the least^[They actually follow the $r$ vs. $k$ axis pretty well.].
+
+There are other schemes for delineating  life history strategies^[If we were interested in macro parasites, we would almost certainly think about host specificity and the number of developmental stages. ], but these two should give you a sense of how we might approach this. In short, there are a lot of winning strategies out there!

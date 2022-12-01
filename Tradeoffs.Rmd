@@ -3,7 +3,7 @@ title: "Trade-offs"
 subtitle: "You just can't do everything you want all the time"
 author: "Jesse Brunner"
 date: "`r Sys.Date()`"
-output: tint::tintPdf
+output: tint::tintHtml
 latexfonts:
   - package: newtxmath
     options: 
