@@ -2,7 +2,7 @@
 title:  "Population growth & why we create models"
 author: "Jesse Brunner"
 date: "`r Sys.Date()`"
-output: tint::tintHtml
+output: tint::tintPdf
 latexfonts:
   - package: newtxmath
     options: 
@@ -129,7 +129,7 @@ ggplot(tibble(x=0:250, y=0.2), aes(x, y)) +
        y="Per capita growth rate ([dN/dt]/N)")
 ```
 
-So we know the extremes---at low $N$ per capita growth is $r$ and a $N=k$ per capita growth is zero---but how do we connect these terms? We have many options. Three are shown in the figure to the right. At one extreme (line C) we could create a model where the per capita growth is unaffected by population size right up to the point where it goes to zero, like an on/off switch. This does not seem very reasonable, as just below $k$ there is no effect of population size and then add one more individual and _bam!_, no more net growth! Instead, we might say that the effect of population size on per capita growth rate is negligible at low population sizes and then grows faster and faster (line B). That seems more reasonable. 
+So we know the extremes---at low $N$ per capita growth is $r$ and a $N=k$ per capita growth is zero---but how do we connect these terms? We have many options. Three are shown in the figure to the right. At one extreme (line C) we could create a model where the per capita growth is unaffected by population size right up to the point where it goes to zero, like an on/off switch. This does not seem very reasonable, as just below $k$ there is no effect of population size and then add one more individual and _bam!_, no more net growth! Instead, we might say that the negative effect of population size on per capita growth rate is negligible at low population sizes and becomes larger and larger (line B). That seems somewhat more reasonable. 
 
 ```{r, fig.margin=TRUE, fig.cap="Per capita growth rate as a function of population size with $r=0.2$ in the exponential model and three options for how we can reach zero per capita growth at $N=k=200$."}
 df <- expand.grid(N=0:250, model=c("exponential", "logistic"))
@@ -156,10 +156,10 @@ ggplot(df, aes(N, percap, color=model)) +
 The simplest option would be to say that per capita growth rates decline _linearly_ with population size (line A). This is equivalent to saying that there is a finite pool of resources that gets divided more or less evenly among the $N$ individuals, so with more individuals, each one gets fewer resources until they have enough to just replace themselves at $N=k$. This is the so-called "logistic" growth model and we can use it to revise our equation for per capita growth:
 
 $$
-\frac{\frac{dN}{dt}}{N} = r \left( 1 - \frac{N}{k} \right)
+\frac{\frac{dN}{dt}}{N} = r \left( 1 - \frac{N}{k} \right) 
 $$
 
-Let's walk through how this works, mathematically. First, if $N$ is really small relative to $k$ (either $N$ is small or $k$ is very big) then the stuff in parentheses becomes one minus something small, perhaps very small. If it is small enough then the stuff in parentheses is essentially one and we get our exponential model back. If we wanted to get fancy we could say that the exponential model is just a special case of the logistic model where $N << k$. But of course we wouldn't want to be fancy, would we? Second, we can see that when the population reaches $k$, then $N/k = 1$ so the stuff in parentheses becomes $1-1 = 0$. This has the effect of multiplying the intrinsic growth rate by zero, so the overall _per capita_ growth rate is zero. Nice! Finally, note that if $N$ gets bigger than $k$ (and so $N/k > 1$) we end up subtracting a larger number from a smaller number, so the stuff in parentheses becomes _negative_. This means that if the population size is bigger than $k$ the _per capita_ growth rate goes negative! (If you are unsure of this, try plugging in some numbers for $N$ and $k$, maybe $k=200$ and $N=1, 10, 100,$ and $200$.) Neat! We added just one term, $k$, and we can get this nice behavior!
+Let's walk through how this works, mathematically. First, if $N$ is really small relative to $k$ (either $N$ is small or $k$ is very big) then the stuff in parentheses becomes one minus something small, perhaps very small. If it is small enough then the stuff in parentheses is essentially one and we get our exponential model back. If we wanted to get fancy we could say that the exponential model is just a special case of the logistic model where $N << k$. Second, we can see that when the population reaches $k$, then $N/k = 1$ so the stuff in parentheses becomes $1-1 = 0$. This has the effect of multiplying the intrinsic growth rate by zero, so the overall _per capita_ growth rate is zero. Nice! (It can be helpful to plug in some numbers for $N$ and $k$ and calculate the _per capita_ growth rate. Try $r=0.5$, $k=200$, and $N=1, 10, 100,$ and $200$.) Finally, note that if $N$ gets bigger than $k$ (and so $N/k > 1$) we end up subtracting a larger number from a smaller number, so the stuff in parentheses becomes _negative_. This means that if the population size is bigger than $k$ the _per capita_ growth rate goes negative!  Neat! We added just one term, $k$, and we can get this nice behavior!
 
 ```{r, fig.margin=TRUE, fig.cap="Per capita growth rate as a function of population size in the exponential model and logistic models with $r=0.2$ and $k=200$."}
 df <- expand.grid(N=0:250, model=c("exponential", "logistic"))
@@ -174,7 +174,7 @@ ggplot(df, aes(N, percap, color=model)) +
   theme(legend.position="bottom")
 ```
 
-`r newthought('As an aside,')` this is one version of density-dependence, where a rate, here the _per capita_ growth rate, is influenced by population size or density.  That is, _something_ about being around or part of a larger (or smaller) population changes something fundamental in the process. Here we are assuming that birth rates are reduced and/or death rates are increased with higher population densities, perhaps because the finite resources are divided up among more and more individuals. But there is nothing about the biological mechanism here. You might have heard of $k$ being the "carrying capacity" of the environment, meaning something like the resources available in the environment, as is $k$ somehow accounted for all of the food and shelter and so on in a place. But none of that is intrinsic to the  model. All that extra meaning is applied to the the model by us, as biologists with some ideas of how things might work. The math just requires that _per capita_ growth is zero when $N = k$. That's it.
+`r newthought('As an aside,')` this is one version of density-dependence, where a rate, here the _per capita_ growth rate, is influenced by population size or density.  That is, _something_ about being around or part of a larger (or smaller) population changes something fundamental in the process. Here we are assuming that birth rates are reduced and/or death rates are increased with higher population densities, perhaps because the finite resources are divided up among more and more individuals. But there is nothing about the biological mechanism here. You might have heard of $k$ being the "carrying capacity" of the environment, as in all of the resources available in the environment in some place, which we could count up, at least in principle. But that is not how we define $k$. There is no term in the model representing resources. All that extra meaning is applied to the the model by us. The math just requires that _per capita_ growth is zero when $N = k$. That's it.
 
 Anyway, how does the _population_ growth rate change with $N$? We can multiply both sides of the equation by $N$ (the reverse of what we did above, with the exponential model) to get the differential equation describing population growth with density dependence. 
 
@@ -187,11 +187,11 @@ Anyway, how does the _population_ growth rate change with $N$? We can multiply b
 
 If we multiply the $rN$ term on the right-hand side through the terms in the parentheses we get 
 $$
-\frac{dN}{dt} = r N  - \frac{r}{k} N^2, 
+\frac{dN}{dt} = r N \left( 1 - \frac{N}{k} \right) = r N  - \frac{r}{k} N^2, 
 $$
-Which maybe pulls at your memory of math classes in the past. This is the equation for a parabola. And indeed, a plot of population growth rate against population size is parabolic. 
+which maybe pulls at your memory of math classes in the past. This is the equation for a parabola. And indeed, a plot of population growth rate against population size is parabolic. 
 
-```{r, fig.margin=TRUE, fig.cap="Population growth rate as a function of population size in the exponential model and logistic models with $r=0.2$ and $k=200$."}
+```{r, fig.margin=TRUE, fig.height=3, fig.cap="Population growth rate as a function of population size in the exponential model and logistic models with $r=0.2$ and $k=200$."}
 df <- df %>% mutate(growth=ifelse(model=="logistic", 0.2*N*(1-N/200),  0.2*N) )
 
 ggplot(df, aes(N, growth, color=model)) +
@@ -277,5 +277,5 @@ Now the logistic model adds one parameter^[The parameters, $r$ and $k$, are sort
 
 But it is worth noting that this model is still a vast over simplification of reality. Sure it can describe the dynamics of population of certain systems, like bacteria in [chemostats](https://en.wikipedia.org/wiki/Chemostat) or virus in cell culture, but only so long as they are held under fairly constant conditions, there are no other organisms interacting (e.g., no bacteriophage or bacterivores or competitors, no immune response, etc.), and so on. If those other factors become important, this model, which does not include them, will probably miss the mark. But then again, it's pretty interesting to see how far we can get with this simple model before it fails to capture the dynamics of a system. And it becomes interesting to see what tweaks^[A time delay? Stochastic variation in rates? Discrete time steps?] it takes until some alternate version of this model does capture the essential dynamics, if that is even possible. 
 
-In the future we can discuss how models are used, why they are wrong, and why that can be a good thing.  For now, I hope you see how we can alter a very simple model to create interesting new dynamics, how a model simply illustrates the results of the assumptions we build into it, and why even dumb models are useful. I also hope you feel like you can use these two models to make general statements about how populations might work. (It will be on the test!^[Well, not literally. But I would like you to be able to describe, use, and think with these two models for the DoM.])
+For now, I hope you see how we can alter a very simple model to create interesting new dynamics, how a model simply illustrates the results of the assumptions we build into it, and why even dumb models are useful. I also hope you feel like you can use these two models to make general statements about how populations might work. (It will be on the test!^[Well, not literally. But I would like you to be able to describe, use, and think with these two models for the DoM.])
  
