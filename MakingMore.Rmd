@@ -54,6 +54,12 @@ You may recall from prior classes, some vague sense of "nutrition", or a text^[E
 We can certainly find other basic molecules, but this short list comprises the vast majority of the cell's components. 
 
 
+```{r, fig.margin=FALSE, fig.cap="https://xkcd.com/2648/."}
+
+knitr::include_graphics("chemicals_2x.png", dpi=200)
+```
+
+
 # Building from scratch
 
 Again, we could theoretically take our list of ingredients, count how many glucoses and uracils and so on we needed to make a cell, and come up with a shopping list of sorts. We could even "build from scratch" by figuring out how many hydrogens we needed in all of the sugars and lipids and whatnot to get a more basic list of the numbers of each types of atom^[Of course cells often do not work with actual atoms—if they obtain an amino acid they can use that amino acid as is, or at least convert it to one that is needed. But thinking of atoms is a reasonable way to proceed at a course level.] that are required to build a new cell. After all, this is chemistry and at some level it is all interacting atoms. But we do not actually build our list of ingredients this way. For one, it would be tedious. And perhaps impossible^[I've been unable to find anyone that has actually done this. Let me know if you hear of such a study!]. 
