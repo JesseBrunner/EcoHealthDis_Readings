@@ -2,7 +2,7 @@
 title: "Bradford Hill criteria with examples"
 author: "Jesse Brunner"
 date: "`r Sys.Date()`"
-output: tint::tintPdf
+output: tint::tintHtml
 latexfonts:
   - package: newtxmath
     options: 
@@ -62,7 +62,7 @@ In a way, we can think of this as answering the question, _are we quibbling abou
 
 > _Coherence between epidemiological and laboratory findings increases the likelihood of [a causal] effect._
 
-Consistency and coherence are often confused. Consistency is about the reproducibility of a pattern whereas coherence is about the unity of different sorts of studies, approaches, or measures. For instance, we love stories of college dropouts starting tech start ups that become incredibly successful, and some of these entrepreneurs have even said that dropping out was instrumental in their success^[For instance, not having a "plan B" was motivating.]. However, the statistics show that the vast majority of people that drop out end up in lower-paying jobs. This suggests that the dropout-to-riches effect is inconsistent at best. 
+Consistency and coherence are often confused. Consistency is about the **reproducibility** of a pattern whereas coherence is about the unity of different sorts of studies, approaches, or measures. For instance, we love stories of college dropouts starting tech start ups that become incredibly successful, and some of these entrepreneurs have even said that dropping out was instrumental in their success^[For instance, not having a "plan B" was motivating.]. However, the statistics show that the vast majority of people that drop out end up in lower-paying jobs. This suggests that the dropout-to-riches effect is inconsistent at best. 
 
 Moreover, studies have shown that dropouts have smaller professional networks, higher debt-to-earning ratios, and even higher levels of circulating stress hormones, all of which paints a _coherent_ picture of how dropping out makes the road to success even rockier and less likely^[OK, I made this all up, but still, stay in school!].
 

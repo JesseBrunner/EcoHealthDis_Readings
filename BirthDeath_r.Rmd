@@ -2,7 +2,7 @@
 title: "Population growth from birth and death"
 author: "Jesse Brunner"
 date: "`r Sys.Date()`"
-output: tint::tintHtml
+output: tint::tintPdf
 latexfonts:
   - package: newtxmath
     options: 
@@ -77,11 +77,13 @@ knitr::kable(df, col.names = c("$x$", "$l_x$", "$m_x$"))
 
 Now here's the question: would a population of mice with these patterns of survivorship ($l_x$) and fecundity ($m_x$) grow? Shrink? Just replace itself?
 
-Initially this is a hard thing to answer. Sure, females that are 5 or more months old produce a lot of babies, but then again, relatively few actually survive that long. Moreover, how do we merge these gains and losses in a coherent way to estimate the population growth rate? 
+Initially this is a hard thing to answer. Sure, females that are 5+ months old produce a lot of babies, but relatively few mice actually survive to that age. Moreover, how do we merge these gains and losses in a coherent way to estimate the population growth rate? 
 
-A first step is to rephrase our question in a more tractable form: _What is the expected reproductive output of the average (female) mouse over her entire expected lifetime?_ We can call this value $R_0$. If a female just replaces herself, on average ($R_0 = 1)$, then the population must be just replacing itself, yes? And if a female produces two offspring, on average ($R_0 = 2$), then the population must double in each generation, meaning it is growing (fast!). If instead an average female only generated 3/4 of an offspring, on average ($R_0 = 0.75$), over her entire lifespan then she not even replacing herself and the population would shrink (by 25% a generation). Let's see how this works. 
+A first step is to rephrase our question in a more tractable form: _What is the expected reproductive output of the average (female) mouse over her entire expected lifetime?_ We will call this value $R_0$. 
 
-The key is that the expected reproductive output of females of a given age (e.g., $x = 5$ months old) is they must have survived to that point---given by $l_5$---and then have their clutches of average size $m_x$. We can thus figure out the expected reproduction of each stage as the product, $l_x \times m_x$. Let's add this into our table:
+If a female just replaces herself, on average ($R_0 = 1)$, then the population must be just replacing itself, yes? And if a female produces two offspring, on average ($R_0 = 2$), then the population must double in each generation, meaning it is growing (fast!). If instead an average female only generated 3/4 of an offspring, on average ($R_0 = 0.75$), over her entire lifespan then she not even replacing herself and the population would shrink (by 25% a generation). Let's see how this works. 
+
+The key to calculating the expected reproductive output of females of a given age (e.g., $x = 5$ months old) is to recognize that they _must have survived_ to that point (here, $l_5 =0.29$ for $x=5$) in order to produce a clutch of average size $m_x$ (here, $m_x = 1$ for $x=5$). We can thus figure out the expected reproduction of each stage as the product, $l_x \times m_x$ (here, $l_5m_5=0.29 \times 1 = 0.29$). Let's add this into our table:
 
 ```{r}
 df <- df %>% 
@@ -91,7 +93,7 @@ knitr::kable(df, col.names = c("$x$", "$l_x$", "$m_x$", "$l_x m_x$"))
 
 We can see that we expect no reproductive output from 1-month-olds or two-month-olds---they are pretty likely to survive to these stages, but their fecundity is zero. We then expect a bit less than half of the mice to survive to 3-months, and each of those would have, on average, half an offspring, which means we expect the average mouse to have a reproductive output of a bit less than quarter in their third year. We can also see that the gains in fecundity---bigger clutches---of older mice are offset by their lower survivorship---probability of surviving to that point---which means we get about the same expected reproductive output from 3--7 month-olds! 
 
-Now, finally, to get the expected reproductive output of the average mouse over its entire expected lifespan---from mice age zero to mice age 12 months---we can simply add up these $l_x m_x$'s. That's it! Or mathematically^[And calling $L$ the lifespan of the animal] ^[For some people it is helpful to think of this as the average fecundity weighted by the probability of survival. Does that help?], 
+Now, finally, to get the expected reproductive output of the average mouse over its entire expected lifespan^[For some people it is helpful to think of this as the average fecundity weighted by the probability of survival. Does that help?]---from mice age zero to mice age 12 months---we can simply add up these $l_x m_x$'s. That's it! Or mathematically^[And calling $L$ the lifespan of the animal], 
 
 $$
 R_0 = \sum_{x=0}^{x=L} l_x \times m_x.
@@ -106,6 +108,7 @@ ggplot(df, aes(x=x, y = lxmx)) +
   ylab(expression(paste(l[x], m[x])))
 ```
 
+See the figure to the right showing the $l_x m_x$ values (bars) for each time step, $x$, as well as the cumulative sum of those values (line). Here, that sum is $R_0 = `r with(df, sum(lxmx))`$.
 
 So, should we expect our hypothetical mouse population to shrink, stay the same, or grow? You now have all of the information. What do you think?
 
@@ -118,7 +121,7 @@ Recall that $R_0$ is the expected reproductive output of an average female over 
 $$
 R_0 = \lambda^T,
 $$
-where $T$ is the average generation time^[If this is not clear, think about a system with, say, $T=3$. Then the annual growth, $\lambda$ would happen three times in the average generation time. The amount of growth in a generation, $R_0$ would be equal to $\lambda \times \lambda \times \lambda$ or, more succinctly, $\lambda^3$.]. 
+where $T$ is the average generation time^[If this is not clear, think about a system with, say, $T=3$. Then the population would grow by $\lambda$ three times, sequentially, in the average generation time. The amount of growth in a _generation_, $R_0$ would be equal to $\lambda \times \lambda \times \lambda$ or, more succinctly, $\lambda^3$.]. 
 
 Our task, then, is simply to figure out the generation time. I'm going to skip most of the justification and go straight to the formula, but just know that this is essentially a way of finding the average time from birth to reproduction. 
 
@@ -131,14 +134,14 @@ Tc = round(with(df, sum(x*lx*mx)/sum(lx*mx) ), 2)
 ```
 In our case, this amounts to $T =$ `r Tc` months. 
 
-So we know that $R_0 =$ `r R0` $= \lambda^{6.5}$, which we can re-arrange^[$$ \begin{aligned} R_0 &= \lambda^T \\ (R_0)^\frac{1}{T} &= (\lambda^T)^\frac{1}{T} = \lambda \end{aligned}$$] to $\lambda = 1.922^{\frac{1}{6.5}}$$ = 1.112. 
+So we know that $R_0 =$ `r R0` $= \lambda^{6.5}$, which we can re-arrange^[$$ \begin{aligned} R_0 &= \lambda^T \\ (R_0)^\frac{1}{T} &= (\lambda^T)^\frac{1}{T} = \lambda \end{aligned}$$] to $\lambda = 1.922^{\frac{1}{6.5}}$ = 1.112. 
 
 To get to the value of $r$, the intrinsic growth rate, we simply need to remember that $\lambda = e^r$, so $1.112 = e^r$. If we take the log of both sides we get $r = \ln(1.112) = 0.106$. 
 
-All of these values---$R_0$, $\lambda$, and $r$---say the same thing: this population should grow. They have different uses, so ti is nice that they are (pretty) easy to convert between.
+All of these values---$R_0$, $\lambda$, and $r$---say the same thing: this population should grow. They have different uses, so it is nice that they are (pretty) easy to convert between.
 
 # What's the use?
 
-It turns out that this life-table approach to estimating population growth^[And related methods that rely on life-history matrix models] are really useful when thinking about all sorts organisms, from species of conservation concern, invasive species, invertebrate vectors, and pathogens. It is even possible to use a similar approach for _infections_ spreading in a population. You may have heard estimates of "r naught" for COVID, well that is the British pronunciation of $R_0$. It is, in effect, the same thing: the expected number of secondary cases caused by an infected individual over the duration of its infection in a wholly susceptible population^[This last bit is so we can avoid the inherent density-dependence that arises when infected individuals die or recover and become immune.]. 
+It turns out that this life-table approach to estimating population growth^[And related methods that rely on life-history matrix models] are really useful when thinking about all sorts organisms, from species of conservation concern, invasive species, invertebrate vectors, and pathogens. It is even possible to use a similar approach for _infections_ spreading in a population. You may have heard estimates of "r naught" for COVID, well that is the British pronunciation of $R_0$. It is, in effect, the same thing: the expected number of secondary cases caused by an infected individual over the duration of its infection in a wholly susceptible population^[This last bit is so we can avoid the inherent host density-dependence that arises when infected individuals die or recover and become immune.]. 
 
 We can thus take basic biological information, or reasonable guesses, and make estimates of whether a population of a species of interest will grow or shrink. We can also play with the values to see what whether, say, increasing or reducing fecundity at a certain stage might increase or decrease the overall population growth rate very much. It gives us a way to translate things we might try to do, like increasing larval tick mortality through the use of an acaricide or decrease mortality of young sea turtles by modifying shrimp trawling nets, to likely population-level outcomes. In short, this sort of thinking is incredibly useful and, I suspect, now that you know what it is, you will probably see it all over the place. 
