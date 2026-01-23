@@ -1,35 +1,23 @@
 ---
-title: "Making more of oneself"
-subtitle: "Life as chemical reactions"
-author: "Jesse Brunner"
+title: "Making more of oneself: Life as chemical reactions"
 date: "`r Sys.Date()`"
-output: tint::tintHtml
-latexfonts:
-  - package: newtxmath
-    options: 
-      - cmintegrals
-      - cmbraces
-  - package: ebgaramond-maths
-header-includes:
-   - \usepackage{booktabs}
-   - \usepackage{cancel}
+format:
+  pdf: default
+  html: 
+    self-contained: true
+    grid:
+      margin-width: 350px
+format-links: false
+execute:
+  echo: false
+toc: false
+reference-location: margin
 ---
-
-```{r setup, include=FALSE}
-library(tufte)
-# invalidate cache when the tufte version changes
-knitr::opts_chunk$set(tidy = FALSE, 
-                      message = FALSE, 
-                      warning = FALSE,
-                      echo = FALSE,
-                      cache.extra = packageVersion('tufte'))
-options(htmltools.dir.version = FALSE)
-```
 
 ```{r, include=FALSE}
 library(tidyverse)
-library(scales) # for prettier axis labels
-library(simecol) # for running model 
+# library(scales) # for prettier axis labels
+# library(simecol) # for running model 
 theme_set(theme_minimal())
 ```
 
@@ -53,10 +41,13 @@ You may recall from prior classes, some vague sense of "nutrition", or a text^[E
 
 We can certainly find other basic molecules, but this short list comprises the vast majority of the cell's components. 
 
+```{r}
+#| label: fig-xkcd1
+#| cap-location: margin
+#| fig-cap: "From xkcd.com/2648/ "
+#| fig-alt: "XKCD web comic about buying atoms in bulk and assembling them."
 
-```{r, fig.margin=FALSE, fig.cap="https://xkcd.com/2648/."}
-
-knitr::include_graphics("chemicals_2x.png", dpi=200)
+knitr::include_graphics("chemicals_2x.png", dpi=300)
 ```
 
 
@@ -70,12 +61,13 @@ If we are willing to build a list of atoms instead of molecules, we can simply^[
 
 I also want to add that there is a quite long list of other elements that are essential in small amounts to all life^[E.g., Na, Mg, K, Ca, Cl, Mn, Fe, Cu, Zi, I, K, Fe. Google them to find out their various roles. They are quite interesting!], or to particular types of life (e.g., boron for plants, sodium and chlorine for animals^[Think of nerve impulses.], or  silicon for diatoms). These are often called micronutrients because they are required in sometimes vanishingly small amounts. And again, remember that it is not necessarily the element that is important, but the molecule built from the elements. Vitamin C, for instance, is simply C~6~H~8~O~6~---all of the stuff we normally take in with CHNOPS---but we^[And guinea pigs for reasons I do not understand.] are unable to turn these elements we have in abundance into L-ascorbic acid. We must obtain it in its ready-to-use form. Our shortcut of simply counting atoms does not work universally, so take the next section with a grain of NaCl. 
 
-
-```{r, fig.margin=FALSE, fig.cap="https://xkcd.com/1490/."}
-
-knitr::include_graphics("atoms_2x.png", dpi=200)
+```{r}
+#| label: fig-xkcd2
+#| cap-location: margin
+#| fig-cap: "From xkcd.com/1490/"
+#| fig-alt: "XKCD web comic about someone being able to see the atoms in things."
+knitr::include_graphics("atoms_2x.png", dpi=300)
 ```
-
 
 # Stoichiometry becomes useful
 

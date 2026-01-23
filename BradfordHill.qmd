@@ -2,37 +2,25 @@
 title: "Bradford Hill criteria with examples"
 author: "Jesse Brunner"
 date: "`r Sys.Date()`"
-output: tint::tintHtml
-latexfonts:
-  - package: newtxmath
-    options: 
-      - cmintegrals
-      - cmbraces
-  - package: ebgaramond-maths
-header-includes:
-   - \usepackage{booktabs}
-   - \usepackage{cancel}
+format:
+  pdf: default
+  html: 
+    self-contained: true
+    grid:
+      margin-width: 350px
+format-links: false
+execute:
+  echo: false
+reference-location: margin
 ---
 
-```{r setup, include=FALSE}
-library(tufte)
-# invalidate cache when the tufte version changes
-knitr::opts_chunk$set(tidy = FALSE, 
-                      message = FALSE, 
-                      warning = FALSE,
-                      echo = FALSE,
-                      cache.extra = packageVersion('tufte'))
-options(htmltools.dir.version = FALSE)
-```
 
 ```{r, include=FALSE}
-# library(tidyverse)
-# library(scales) # for prettier axis labels
+library(tidyverse)
+library(scales) # for prettier axis labels
 # library(simecol) # for running model 
-# theme_set(theme_minimal())
+theme_set(theme_minimal())
 ```
-
-
 
 Bradford Hill's criteria are, I think, terribly useful in thinking about the evidence for causal relationships. They were born from, and are still commonly applied in, an epidemiological setting, but we can use them more broadly. It is worth noting that the many people who quibble with BHC take issue with that last word, "criteria." It is not as if one must 'tick' all of the boxes to demonstrate causality, nor is it certain that if one did they would be right^[Perhaps it should be Bradford Hill's _characteristics_? Flavors of evidence?]. Still, they are quite useful if, like all tools^[Bradford Hill's _tools_?], they are used for the right sorts of problems and one is mindful about where the sharp bits are.
 
