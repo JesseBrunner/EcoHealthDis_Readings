@@ -1,0 +1,31 @@
+---
+title: "A confession / my philosophy for this class"
+author: "Jesse Brunner"
+date: "`r Sys.Date()`"
+format:
+  pdf: default
+  html: 
+    self-contained: true
+    grid:
+      margin-width: 350px
+format-links: false
+execute:
+  echo: false
+reference-location: margin
+---
+
+
+```{r, include=FALSE}
+library(tidyverse)
+library(scales) # for prettier axis labels
+# library(simecol) # for running model 
+theme_set(theme_minimal())
+```
+
+The natural world is amazing in its diversity, complexity, and scale. Zoom into a single cell or even a virus and you will find a cacophony of myriad molecules whirling around, interacting in complex ways, and somehow "living"^[Depending on the day, I may or may not consider viruses as "alive." The categories we use come from our minds. Nature just _is._]. Take an airplane and fly over any stretch of the Earth and you will see an ecosystem with countless individuals of a diversity of species going about their lives, interacting in complex ways with the physical and biotic world, making more of themselves (often at the cost of others!) producing strange emergent properties^[One of my favorite authors, David Quammen wrote about ecosystems as tapestries of interacting species; others have made comparisons of modern jet aircraft with their millions of parts. The general point is that if you remove too many parts or pull on too many threads, at some point it falls apart and stops working.] such as nutrient cycling or climate stabilization or just "being a forest." Indeed, you need not look past your own self to see an ecosystem, though it helps to have some modern molecular tools to sort to what is what and who is who^[Roughly half the cells that are you are not human.]. It is amazing, breath-taking, awe-inspiring! But it's too much. 
+
+Many ecologists like to think about the diversity of interacting organisms and the abundance of connections, both obvious and hidden, between them. They like to tell stories of how one little change over _there_ can have larger, cascading effects right _here_ that no one would have seen coming! My mind tends to find  all that  overwhelming. It throws up its metaphorical arms and cries, _If even the smallest things can have such surprising impacts on the whole system, how can we understand  **anything**_?! My mind likes pattern and predictability, or, even better, causal understanding. 
+
+Nature is too complex to be understood perfectly, but that is not our aim in this class. Instead, I think we should be looking to understand the primary causes, relationships, and interactions that shape our world. The building-blocks of ecological interactions, if you will. Or put another way, I think we should aim to develop a very deep, but necessarily incomplete understanding of how a system _probably_ or _mostly_ works. We should at least have some good guesses as to what might be important. Thus our goal in this class is not to document or describe the complexities of the natural world, although they are certainly present and interesting, but rather to see how _little_ we need to understand to have a first order approximation of how any natural system probably works. 
+
+One consequence of this approach is that we will focus on developing a deeper understanding of a just a few basic processes. We will then take these very simple ideas and concepts and start to extrapolate from then towards more complex, realistic settings. We will focus not on strict categorizations or pinning down definitions, things that unfortunately lead to students cramming with index cards the night before an exam. Instead let's keep our eye on the concepts and how we can use them, how they relate, and where they are helpful versus where they fail us.  Let us not be stamp collectors^[This term is sometimes used in a derogatory way as an insult to biologists in general, or at least those who's efforts focus on organizing and understanding relationships between species. This use is completely unfair. Such work is essential to the broader enterprise of biology and anyway often involves very deep questions of history, evolution, epistemology, and more. I do not use the term in this way. I simply mean that we should not focus on memorizing and categorizing terminology. We should avoid becoming pedants of concepts.] but explorers of the processes and interactions that make this natural world so amazing!  
