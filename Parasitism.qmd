@@ -1,36 +1,27 @@
 ---
-title: "The Banality, but importance of parasitism"
+title: "The ubiquity & importance of parasitism"
 author: "Jesse Brunner"
 date: "`r Sys.Date()`"
-output: tint::tintHtml
-latexfonts:
-  - package: newtxmath
-    options: 
-      - cmintegrals
-      - cmbraces
-  - package: ebgaramond-maths
-header-includes:
-   - \usepackage{booktabs}
-   - \usepackage{cancel}
+format:
+  pdf: default
+  html: 
+    self-contained: true
+    grid:
+      margin-width: 350px
+format-links: false
+execute:
+  echo: false
+reference-location: margin
 ---
 
-```{r setup, include=FALSE}
-library(tufte)
-# invalidate cache when the tufte version changes
-knitr::opts_chunk$set(tidy = FALSE, 
-                      message = FALSE, 
-                      warning = FALSE,
-                      echo = FALSE,
-                      cache.extra = packageVersion('tufte'))
-options(htmltools.dir.version = FALSE)
-```
 
 ```{r, include=FALSE}
 library(tidyverse)
 library(scales) # for prettier axis labels
-library(simecol) # for running model 
+# library(simecol) # for running model 
 theme_set(theme_minimal())
 ```
+
 
 We often treat parasites as if they are these rare things that occasionally crop up and cause problems. And understandably so! Being sick is terrible. Epidemics bring illness and even death to many and pain and suffering to most. If only we could just get rid of these few nuisance species!  Wouldn't the world be a better places? 
 
@@ -53,13 +44,16 @@ First, consider viruses in the oceans. They make up a surprisingly large amount 
 What do those bazillions of viruses do? Well, they replicate and in the process most lyse or break open their host cells. Viruses of phytoplankton thus kill and break open their phytoplankton hosts---estimates are on the order of 10--40% of prokaryotic cells per day!---releasing all of their hosts' nutrients into the waters to be taken up by other phytoplankton. This is important when considering the alternative; plankton that die intact drop out of the water column, taking their nutrients with them. No nutrients, no growth. No growth, no converting atmospheric CO~2~ into biomass. Thus, viruses play an important role in the worlds oceans, facilitating phytoplankton growth and even increasing rates of carbon absorption into deep oceans on a scale relevant to geochemical cycles!  
 
 
-```{r, fig.margin=TRUE, fig.cap="The amount of biomass in different sorts of parasites in three estuaries. The bird icon marks the mean winter bird mass density across the three estuaries (4.1 kg ha$^{-1}$)."}
+```{r}
+#| label: fig-biomass
+#| column: margin
+#| fig-cap: "The amount of biomass in different sorts of parasites in three estuaries. The bird icon marks the mean winter bird mass density across the three estuaries (4.1 kg ha$^{-1}$)."
+#| fig-alt: "Bar graph showing that the biomass of trophically-transmitted prasites and castrating parasites. is about the same as that of birds in these estuaries."
 
 knitr::include_graphics("Estuary_Parasite_Biomass.png", dpi=400)
 ```
 
-
-Second, consider the parasites in the birds (and crabs and other animals) found in marine estuaries. One study of three estuaries found that the biomass of just tropically-transmitted^[That is, transmitted by the infected host being eaten.] and castrating parasites were each roughly equivalent to the biomass of all of the wading birds^[[Kuris et al. 2008. Ecosystem energetic implications of parasite and free-living biomass in three estuaries. Nature 454:515-518.](https://www.researchgate.net/publication/51424455_Ecosystem_energetic_implications_of_parasite_and_free-living_biomass_in_three_estuaries)]! Imagine that! In and around all of those wading birds that people come to see is an equal mass of worms and so on, hidden from sight, and for most people's thoughts.  
+Second, consider the parasites in the birds (and crabs and other animals) found in marine estuaries. One study of three estuaries found that the biomass of just tropically-transmitted^[That is, transmitted by the infected host being eaten.] and castrating parasites were each roughly equivalent to the biomass of all of the wading birds^[[Kuris et al. 2008. Ecosystem energetic implications of parasite and free-living biomass in three estuaries. Nature 454:515-518.](https://www.researchgate.net/publication/51424455_Ecosystem_energetic_implications_of_parasite_and_free-living_biomass_in_three_estuaries)] (@fig-biomass)! Imagine that! In and around all of those wading birds that people come to see is an equal mass of worms and so on, hidden from sight, and for most people's thoughts.  
 
 These macroparasites are also important in the energy flow through ecosystems, not simply by releasing nutrients into the water, but through their trophic interactions. These parasites eat things---both literally and metaphorically---and are then eaten, moving energy  (ATP, sugars, long-chain carbon molecules more broadly) and nutrients along with them. Parasites, especially those with complex life histories, add connections in food webs, providing different routes through which energy and nutrients flow^[[Dunne et al. 2013. Parasites affect food web structure primarily through increased diversity and complexity. PLoS Biol 11:e1001579.](https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1001579)], all of which can stabilize food webs.
 
@@ -75,4 +69,4 @@ Indeed, much of the time the worst outcomes occur only in those in the worst of 
 
 What is the point? I want you to realize, in a bone-deep way, that most parasites, most of the time, are far from from the lethal monsters we often imagine^[Parasites need love, too!].
 
-`r newthought('I hope I have')` convinced you that while we can certainly find some impressively harmful (and [odd](https://en.wikipedia.org/wiki/Cymothoa_exigua)!) parasites, these species comprise a very small portion of parasite diversity. Parasites are all around and in us most all the time. They usually cause little obvious harm to us or the animals we care about, at least most of the time. This might be attributed in some degree to our amazing immune systems, capable of wrangling innumerable intruders without us even noticing, and to a degree to the fact that parasites usually have little interest in causing us harm. Indeed, their more important adversaries are often their co-infecting symbiotic neighbors or the harsh environment away from the host. In the end, parasitism is simply a very common way of making a living in the world. It can be hugely important for hosts and populations and even ecosystems, but more often, it is quite banal. 
+I hope I have convinced you that while we can certainly find some impressively harmful (and [odd](https://en.wikipedia.org/wiki/Cymothoa_exigua)!) parasites, these species comprise a very small portion of parasite diversity. Parasites are all around and in us most all the time. They usually cause little obvious harm to us or the animals we care about, at least most of the time. This might be attributed in some degree to our amazing immune systems, capable of wrangling innumerable intruders without us even noticing, and to a degree to the fact that parasites usually have little interest in causing us harm. Indeed, their more important adversaries are often their co-infecting symbiotic neighbors or the harsh environment away from the host. In the end, parasitism is simply a very common way of making a living in the world. It can be hugely important for hosts and populations and even ecosystems, but more often, it is quite banal. 
