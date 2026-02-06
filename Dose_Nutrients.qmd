@@ -25,7 +25,7 @@ theme_set(theme_minimal())
 
 # Dose-dependence
 
-```{r, fig.margin=TRUE, fig.cap="A hypothetical dose response."}
+```{r}
 #| label: fig-DoseResponse
 #| column: margin
 #| fig-cap: "A hypothetical dose-response relationship."
