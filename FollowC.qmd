@@ -2,29 +2,22 @@
 title: "Carbon as the common currency for life"
 author: "Jesse Brunner"
 date: "`r Sys.Date()`"
-output: tint::tintPdf
-latexfonts:
-  - package: newtxmath
-    options: 
-      - cmintegrals
-      - cmbraces
-  - package: ebgaramond-maths
-header-includes:
-   - \usepackage{booktabs}
-   - \usepackage{cancel}
-   - \usepackage[version=4]{mhchem}
+format:
+  pdf: 
+    include-in-header: 
+      text: |
+        \usepackage{cancel}
+        \usepackage[version=4]{mhchem}
+  html: 
+    self-contained: true
+    grid:
+      margin-width: 350px
+format-links: false
+execute:
+  echo: false
+reference-location: margin
 ---
 
-```{r setup, include=FALSE}
-library(tufte)
-# invalidate cache when the tufte version changes
-knitr::opts_chunk$set(tidy = FALSE, 
-                      message = FALSE, 
-                      warning = FALSE,
-                      echo = FALSE,
-                      cache.extra = packageVersion('tufte'))
-options(htmltools.dir.version = FALSE)
-```
 
 ```{r, include=FALSE}
 library(tidyverse)
@@ -32,11 +25,6 @@ library(tidyverse)
 # library(simecol) # for running model 
 theme_set(theme_minimal())
 ```
-
-<script type="text/x-mathjax-config">
-        MathJax.Hub.Config({TeX: {extensions:["mhchem.js"]}});
-</script>
-<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
 In graduate school I took an ecology class from a rather famous, very clever, and somewhat curmudgeonly professor. I was excited to learn more about population dynamics, community interactions, and on and on. So I was a little shocked on the first day when he said that ecology was the study of the cycling of energy and nutrients through ecosystems. I raised my hand immediately and ask, "Wait, is that all?" To which he responded, "What else is there?" 
 
@@ -51,8 +39,11 @@ However, if we zoom out just a little bit we see that energy is stored in the fo
 So if we are interested in how much energy is available in an ecosystem, or to a particular population or community---and trust me, we are!---we do not need to worry about the Kilocalories in this or that animal or plant. From the broad perspective of an ecosystem ecologist, all of the organisms growing, reproducing, dying, eating and being eaten, etc. are just so many carbon atoms being cycled around. Follow the carbon, the rest is just details. 
 
 
-```{r, fig.margin=TRUE, fig.cap="https://xkcd.com/1744/."}
-
+```{r}
+#| label: fig-xkcd
+#| column: margin
+#| fig-cap: "https://xkcd.com/1744/"
+#| fig-alt: "An XKCD comic where cueball says, I have one of those metabolisms where I can eat whatever I want and my body converts it to energy and stores the excess as fat."
 knitr::include_graphics("metabolism.png", dpi=150)
 ```
 
@@ -76,11 +67,17 @@ Wait! One more thing! Photosynthesis, or the turning of inorganic $\ce{CO2}$ int
 
 ## An aside on measuring photosynthesis
 
-```{r, fig.margin = TRUE, fig.cap="The Keeling curve.", fig.alt="This figure shows the history of atmospheric carbon dioxide concentrations as directly measured at Mauna Loa, Hawaii since 1958. A red dotted line is increasing, from less than 320 to 420 over the yers, with annual cycles that look like jagged teeth on the curve. A blue line shows the smoothed trend line. There is an inset graph showing the departure from average CO2 over the year. It shows a smooth cycle increasing from January to a peak in May, then a decline to a low in mid September, then restarting the cycle."}
-knitr::include_graphics("Mauna_Loa_CO2_monthly_mean_concentration.svg.png", dpi=600)
+```{r}
+#| label: fig-keelingcurve
+#| column: margin
+#| fig-cap: "The Keeling curve."
+#| fig-alt: "A red line showing CO2 concentartions start at less than 320 in 1958 increasing to 420 by 2020. The line has annual ups and downs that make the line look like a saw blade. There is an inset graph showing a smooth annual cycle increasing from January to a peak in May, then a decline to a low in mid September, then restarting the cycle."
+
+
+knitr::include_graphics("Mauna_Loa_CO2_monthly_mean_concentration.svg.png", dpi=900)
 ```
 
-One neat consequence of this chemical formulation is that we can see some ways we might  _measure_ the amount of photosynthesis or primary production. Look at that equation. What do we gain with photosynthesis? Complex organic carbon molecules, yes? Or since most (dry) biomass is carbon, we could just measure the increase in biomass! And oxygen, we could measure increases in oxygen produced during photosynthesis. Scientists use all of these as metrics of primary production, from simply weighing plants and trees to see how much they've grown to using "flux towers" to measure oxygen concentrations in and around forests. Finally, we could measure the (local) reduction in $\ce{CO2}$ concentrations. You've seen the jagged [Keeling curve](https://en.wikipedia.org/wiki/Keeling_Curve) showing concentrations of $\ce{CO2}$ in the Earth's atmosphere over the decades since March 1958. Well the jagged up and down in the line (that otherwise rises alarmingly) in an annual pattern corresponds to growing seasons and the fact that there is more productive surface area in the Northern than the Southern Hemisphere. That is the Earth "inhaling"  or fixing carbon in the northern summer and then "exhaling" or respiring more in the northern winter. Crazy, right?^[If you are uncertain what you are seeing in the figure, walk through what happens to $\ce{CO2}$ when plants are growing and when they are not growing. And hint: plants respire as well as photosynthesize.]
+One neat consequence of this chemical formulation is that we can see some ways we might  _measure_ the amount of photosynthesis or primary production. Look at that equation. What do we gain with photosynthesis? Complex organic carbon molecules, yes? Or since most (dry) biomass is carbon, we could just measure the increase in biomass! And oxygen, we could measure increases in oxygen produced during photosynthesis. Scientists use all of these as metrics of primary production, from simply weighing plants and trees to see how much they've grown to using "flux towers" to measure oxygen concentrations in and around forests. Finally, we could measure the (local) reduction in $\ce{CO2}$ concentrations. You've seen the jagged [Keeling curve](https://en.wikipedia.org/wiki/Keeling_Curve) (@fig-keelingcurve) showing concentrations of $\ce{CO2}$ in the Earth's atmosphere, directly measured at Mauna Loa, Hawaii, over the decades since March 1958. Well the jagged up and down in the line (that otherwise rises alarmingly) in an annual pattern corresponds to growing seasons and the fact that there is more productive surface area in the Northern than the Southern Hemisphere. That is the Earth "inhaling"  or fixing carbon in the northern summer and then "exhaling" or respiring more in the northern winter. Crazy, right?^[If you are uncertain what you are seeing in the figure, walk through what happens to $\ce{CO2}$ when plants are growing and when they are not growing. And hint: plants respire as well as photosynthesize.]
 
 
 ## An aside on the conservation of energy and $\ce{CO2}$
@@ -89,10 +86,15 @@ You may recall from an earlier science class that energy cannot be created nor d
 
 # Sunshine to sugar
 
-Since essentially all the energy available for the world's organisms comes from photosynthesis, it is interesting to pause and think about how much of that sunshine ends up becoming plant.  
+Since essentially all the energy available for the world's organisms comes from photosynthesis, it is interesting to pause and think about how much of that sunshine ends up becoming plant (@fig-sanke).  
 
-```{r, fig.margin = TRUE, fig.cap="The fate of sunlight in the conversion to sugars .", fig.alt = "Sankey diagram where the width of arrows is proportional to the size of the flow. Starts at the top with 100% of sunlight energy, then 47% is diverted to not photosynthetically active, then 25% is diverted to not absorbed, 19% to conversion costs, and 4% to cost of business, leaving 5% of the sunlight converted to GPP."}
-knitr::include_graphics("Sankey_GPP.png", dpi=600)
+```{r}
+#| label: fig-sanke
+#| column: margin
+#| fig-cap: "The fate of sunlight in the conversion to sugars"
+#| fig-alt: "Sankey diagram where the width of arrows is proportional to the size of the flow. Starts at the top with 100% of sunlight energy, then 47% is diverted to not photosynthetically active, then 25% is diverted to not absorbed, 19% to conversion costs, and 4% to cost of business, leaving 5% of the sunlight converted to GPP."
+
+knitr::include_graphics("Sankey_GPP.png", dpi=300)
 ```
 
 First^[  Values taken from [Hall and Rao 1999 Photosynthesis](https://books.google.com/books?id=6F7yuf1Sj30C). ], nearly half of sunlight is outside the range that chlorophyll absorbs (400--700 nm). Then, of the "photosynthetically active radiation," another half (a quarter of the energy in sunlight) is simply not absorbed (e.g., they hit something besides a chlorophyll molecule) or otherwise lost in the interaction with the chlorophyll. We we are down to ~28\% of the sunlight shining down being collected by chlorophyll. But wait, something like 68\% of this remaining energy is lost in the process of converting ATP and NADPH to glucose! However, the plant's photosynthetic machinery takes energy, too. Some 35--40\% of the remaining 9\% of sunlight's energy is respired just to keep this machinery working. So, of the sunlight that strikes a leaf, something like 5\%^[And often much, much less. Think winter or cloudy days or droughts or...] is actually converted into sugars that can then be used to grow and fuel the plant. 
