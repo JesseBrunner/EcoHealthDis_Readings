@@ -1,58 +1,60 @@
 ---
 title: "The axes of interspecific interactions"
-author: "Jesse Brunner"
 date: "`r Sys.Date()`"
-output: tint::tintHtml
-latexfonts:
-  - package: newtxmath
-    options: 
-      - cmintegrals
-      - cmbraces
-  - package: ebgaramond-maths
-header-includes:
-   - \usepackage{booktabs}
-   - \usepackage{cancel}
+format:
+  pdf: default
+  html: 
+    self-contained: true
+    grid:
+      margin-width: 350px
+format-links: false
+execute:
+  echo: false
+toc: false
+reference-location: margin
 ---
-
-```{r setup, include=FALSE}
-library(tufte)
-# invalidate cache when the tufte version changes
-knitr::opts_chunk$set(tidy = FALSE, 
-                      message = FALSE, 
-                      warning = FALSE,
-                      echo = FALSE,
-                      cache.extra = packageVersion('tufte'))
-options(htmltools.dir.version = FALSE)
-```
 
 ```{r, include=FALSE}
 library(tidyverse)
-library(scales) # for prettier axis labels
-library(simecol) # for running model 
+# library(scales) # for prettier axis labels
+# library(simecol) # for running model 
 theme_set(theme_minimal())
 ```
 
-`r newthought("From time immemorial")`^[How's that for a first line?] species have interacted. One species might have stolen another's food, or eaten some or part of the other species, or found a way to make a living on or inside the other one. Or perhaps they helped each other, directly or indirectly. And often, one would assume, they mostly ignored each other. Or, for a visceral introduction, see any nature documentary. Species interact, often, in myriad ways. 
+
+From time immemorial`^[How's that for a first line?] species have interacted. One species might have stolen another's food, or eaten some or part of the other species, or found a way to make a living on or inside the other one. Or perhaps they helped each other, directly or indirectly. And often, one would assume, they mostly ignored each other. Or, for a visceral introduction, see any nature documentary. Species interact, often, in myriad ways. 
 
 My purpose, here, is to bring some clarity to these _inter_specific interactions, to provide some axes along which to sort these interactions, if not to provide clear-cut bins in which every interaction can comfortably fit. So let's start at the beginning.
 
 # The _matrix_ of interactions
 
-Probably the simplest way to organize interspecific interactions is to consider the effect of the interaction on both players^[By "effect" we ultimately mean the effect on an individual's fitness, but usually we just mean something like the effect on growth or survival or reproduction, or even energetic reserves or something else we can easily measure.]. These can either be positive (+), neutral (0), or negative (-) for each player. We can place these in a matrix, of sorts, where  the columns represents the effects of the interaction on species A and the rows the effects on species B. 
-
-|   |         -         |       0      |         +         |
-|---|:-----------------:|:------------:|:-----------------:|
-| + | pred/herb/parasit | commensalism |  mutualism        |
-| 0 |   amensalism      |  neutralism  |  commensalism     |
-| - | competition       |  amensalism  |  pred/herb/parasit  |
-
-I'm guessing you've seen most of these labels, though amensalisms are not often considered. So easy-peasy, right?
-
-## _Axes_ of interactions
-
-Not so fast! While we often see the range of interspecific interactions in the form of a nice, neat table, the effects of the interactions on each player are much more accurately thought of as _continuous_.  For instance, one interaction might be _slightly_ negative, bordering on neutral, while anothr might be strongly negative. Are those equivalent? Probably not. So instead of thinking of interactions as falling into one of these bins in the table, imagine them as occurring along axes of interaction strengths^[The actual numbers in the plot do not mean much... just the sign and magnitude.] representing the effect on each of the two interacting species.
+Probably the simplest way to organize interspecific interactions is to consider the effect of the interaction on both players^[By "effect" we ultimately mean the effect on an individual's fitness, but usually we just mean something like the effect on growth or survival or reproduction, or even energetic reserves or something else we can easily measure.]. These can either be positive (+), neutral (0), or negative (-) for each player. We can place these in a matrix, of sorts, where the columns represents the effects of the interaction on species A and the rows the effects on species B (@tbl-interactions). 
 
 ```{r}
+#| label: tbl-interactions
+##| tbl-cap-location: margin
+
+matrix(c("pred/herb/parasit",  "commensalism", "mutualism", 
+ "amensalism" ,  "neutralism" ,  "commensalism" ,
+"competition" , "amensalism" ,  "pred/herb/parasit" ), 
+nrow = 3, byrow = TRUE, 
+dimnames = list(c("+","0","-"), c("-","0","+"))
+) %>% knitr::kable(align = "c", 
+                   caption = "The classic table of interspecific interactions.")
+```
+
+I'm guessing you've seen most of these labels, although amensalisms are not often considered. So easy-peasy, right?
+
+# _Axes_ of interactions
+
+Not so fast! While we often see the range of interspecific interactions in the form of a nice, neat table, the effects of the interactions on each player are much more accurately thought of as _continuous_.  For instance, one interaction might be _slightly_ negative, bordering on neutral, while anothr might be strongly negative. Are those equivalent? Probably not. So instead of thinking of interactions as falling into one of these bins in the table, imagine them as occurring along axes of interaction strengths^[The actual numbers in the plot do not mean much... just the sign and magnitude.] representing the effect on each of the two interacting species (@fig-axes1).
+
+```{r}
+#| label: fig-axes1
+#| cap-location: margin
+#| fig-cap: "The axes of interactions"
+#| fig-alt: "Graph showing effect (from negative to positive) of the interaction on species A (x-axis) and species B (y-axis), with labels, as in the matrix, above (@tbl-interactions). A red dot represents an interaction that is slightly negative for species A, but very positive for species B"
+
 df <- expand_grid(A = -1:1, B = -1:1) %>% 
   mutate(label = c("Competition", "amensalism", "pred/herb/parasit",
                    "amensalism", "neutralism", "commensalism",
@@ -74,9 +76,14 @@ You will see the same labels, but the boundaries between them are intentionally 
 
 # Many interactions means muddled categorization
 
-Another key problem with our nice, neat categorization is that a particular interaction can exist at multiple places on the axes at the same time!^[In part, because while we are considering just two species, there are many individuals of each species that interact.]  Let's make our example (the red dot, above) more specific.  [_Staphylococcus aureus_](https://en.wikipedia.org/wiki/Staphylococcus_aureus) is a common and normal part of our skin and even gut microbiota. Our interaction with _S. aureus_ is rather like the dot I drew on the graph, above. Except  _S. aureus_ is _also_ known for causing horrendous skin infections, blood and bone infections, and food poisoning which are collectively linked to tens of thousands of deaths a year in the U.S.A. So...is it a parasite or commensal? <shrug> 
+Another key problem with our nice, neat categorization is that a particular interaction can exist at multiple places on the axes at the same time!^[In part, because while we are considering just two species, there are many individuals of each species that interact.]  Let's make our example (the red dot, in @fig-axes1) more specific.  [_Staphylococcus aureus_](https://en.wikipedia.org/wiki/Staphylococcus_aureus) is a common and normal part of our skin and even gut microbiota. Our interaction with _S. aureus_ is rather like the dot I drew on the graph, above. Except  _S. aureus_ is _also_ known for causing horrendous skin infections, blood and bone infections, and food poisoning which are collectively linked to tens of thousands of deaths a year in the U.S.A. So...is it a parasite or commensal? <shrug> Whatever we call it, we can represent the interactions between _S. aureus_ and its hosts as a smear of points on the axes, from closer to commensal to more parasitic (@fig-axes2).
 
 ```{r}
+#| label: fig-axes2
+#| cap-location: margin
+#| fig-cap: "A more realistic sort of interaction"
+#| fig-alt: "Same as @fig-axes1, but the red dots spread from only slighly negative for Species A to, occasionally, very negative for Species A."
+#| 
 df2 <- tibble(x = -0.05 - rexp(200, rate = 5), 
               y = rnorm(200, 0.8 + -0.2*x, 0.025))
 
