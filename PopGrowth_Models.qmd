@@ -1,37 +1,31 @@
 ---
-title:  "Population growth & why we create models"
-author: "Jesse Brunner"
+title: "Population growth & why we create models"
 date: "`r Sys.Date()`"
-output: tint::tintPdf
-latexfonts:
-  - package: newtxmath
-    options: 
-      - cmintegrals
-      - cmbraces
-  - package: ebgaramond-maths
+format:
+  pdf: default
+  html: 
+    self-contained: true
+    grid:
+      margin-width: 350px
+format-links: false
+execute:
+  echo: false
+toc: false
+reference-location: margin
 ---
-
-```{r setup, include=FALSE}
-library(tufte)
-# invalidate cache when the tufte version changes
-knitr::opts_chunk$set(tidy = FALSE, 
-                      message = FALSE, 
-                      warning = FALSE,
-                      echo = FALSE,
-                      cache.extra = packageVersion('tufte'))
-options(htmltools.dir.version = FALSE)
-```
 
 ```{r, include=FALSE}
 library(tidyverse)
 library(scales) # for prettier axis labels
+# library(simecol) # for running model 
 theme_set(theme_minimal())
 ```
 
 
+
 > "A model does nothing but expose the consequences of the assumptions upon which it is based."
 >
-> `r tufte::quote_footer('--- Eric Schauber & Rick Ostfeld (2002) Ecol. Appl., 12(4):1142–1162')`
+> --- Eric Schauber & Rick Ostfeld (2002) Ecol. Appl., 12(4):1142–1162
 
 # Exponential growth, the doubling model
 We've seen the exponential model
@@ -40,25 +34,33 @@ $$
 N(t) = N_0 e^{rt}
 $$
 
-```{r, fig.margin=TRUE, fig.cap=c("Population size over time, starting from $N_0=1$, in the exponential model with $r=0.2$.", "Same plot with a logarithmic y-axis.")}
+```{r}
+#| label: fig-expN
+#| column: margin
+#| fig-height: 6
+#| fig-cap: "Population size over time, starting from $N_0=1$, in the exponential model with $r=0.2$. Top graph uses a linear y-axis and the bottom a logarithmic y-axis"
+#| fig-alt: "Line graph showing population size (y-axis) increasing exponentially over time (x-axis). Top graph is a j-curbve and the bottom a straigh line."
+
 df <- tibble(t=0:30, 
              N=2*exp(0.2*t)  
          )
 
-ggplot(df, aes(t, N)) +
+top <- ggplot(df, aes(t, N)) +
   geom_line(color="red") + 
   labs(x= "time (t)", 
        y="Population size (N)") 
 
-last_plot() + scale_y_log10()
+bottom <- last_plot() + scale_y_log10()
+
+ggpubr::ggarrange(top, bottom, ncol = 1)
 ```
 
 
-Which describes the size of a population, $N$, starting from $N_0$ at time $t=0$, and growing at an accelerating rate. Remember, if we take the logarithm of both sides we get
+Which describes the size of a population, $N$, starting from $N_0$ at time $t=0$, and growing at an accelerating rate (@fig-expN top). Remember, if we take the logarithm of both sides we get
 $$
 \log( N(t) ) = \log(N_0) + rt,
 $$
-Which is the equation for a line, like $y=mx+b$ with $y=\log( N(t) )$, an intercept of $\log(N_0)$ and a slope of $r$ (assuming we are using the natural logarithm).  This formulation emphasizes the constant proportionality in growth of the population. A population grows from 10 to 100 in the same amount of time it takes to grow from 100 to 1000 or 1000 to 10,000. 
+Which is the equation for a line, like $y=mx+b$ with $y=\log( N(t) )$, an intercept of $\log(N_0)$ and a slope of $r$ (assuming we are using the natural logarithm).  This formulation (see @fig-expN bottom) emphasizes the constant proportionality in growth of the population. A population grows from 10 to 100 in the same amount of time it takes to grow from 100 to 1000 or 1000 to 10,000. 
 
 The reason why becomes a bit clearer if we consider how the population _grows_ (or shrinks) over time, rather than the actual size at any time. (In maths-speak, we're interested in the first derivative of the exponential model, $N(t) = N_0 e^{rt}$, we have been using so far. Or in reverse, the exponential model of $N(t)$ we have been using is the _solution_ to the differential equation we're about to present. You do not need to remember your calculus, but rather just notice the relationship between the solution and the differential equation.) The differential equation for exponential growth is:
 
@@ -66,21 +68,27 @@ $$
 \frac{dN}{dt} = rN,
 $$
 
-This equation translates into words as, "the rate of change in $N$, that is the _growth rate of the population_, is simply the _per capita_ growth rate^[Or, if $r<0$, the rate of decline.] times the population size." We'll come back to that  _per capita_ growth rate idea in a moment, but first, _Congratulations!_ That was first model of population growth! Not so difficult, right? 
+This equation translates into words as, "the rate of change in $N$, that is the _growth rate of the population_, is simply the _per capita_ growth rate^[which is the _intrinsic growth rate_,  $r$ in this model.] times the population size." We'll come back to that  _per capita_ growth rate idea in a moment, but first, _Congratulations!_ That was first model of population growth! Not so difficult, right? 
 
 Second, notice that larger populations grow faster, period. If the population size were $N=1,000$ then the population would grow at rate $rN=r \times 1,000$. What if the population size was $N=1,000,000,000,000$? No problem, the population grows at rate $rN=r \times 1,000,000,000,000$. Whatever $N$ is, the population grows at rate $rN$. 
 
 
-```{r, fig.margin=TRUE, fig.cap="Population growth rate as a function of population size with $r=0.2$ from the exponential model."}
+```{r}
+#| label: fig-exp_dN
+#| column: margin
+#| fig-cap: "Population _grawth rate_  as a function of _population size_ with $r=0.2$ from the exponential model."
+#| fig-alt: "A line increasing linearly indicating population growth rate (y-axis) increases linearly with population size (x-axis)."
+
+
 ggplot(tibble(x=0:250, y=x*0.2), aes(x, y)) +
   geom_line(color="red") + 
   geom_hline(yintercept=0, color="gray30") + 
   labs(x="Population size (N)", 
        y="Population growth rate (dN/dt)")
 ```
-We can plot this relationship between growth rate and population size. As you would expect from what we just said in words, this relationship is just a straight line starting at zero^[With a population of zero, there is no one to reproduce!] that goes up and up forever with a slope of $r$. 
+We can plot this relationship between growth rate and population size (@fig-exp_dN). As you would expect from what we just said in words, this relationship is just a straight line starting at zero^[With a population of zero, there is no one to reproduce!] that goes up and up forever with a slope of $r$. 
 
-`r newthought("A word of warning:")` Be sure to pay attention to the axis labels. Before we were plotting $N$ against time, but now we are plotting $dN/dt$ against $N$. They show different things even though they might have similar lines.
+**A word of warning**: Be sure to pay attention to the axis labels. Before we were plotting $N$ against time, but now we are plotting $dN/dt$ against $N$. They show different things even though they might have similar lines.
 
 ## Population growth rates vs. per capita growth rates
 So this model and graph describes the growth of the population as a whole. What does this model say about the growth---as in _replication_^[Mean the average birth rate of from an individual minus the average death rate] not _getting bigger_---of individuals? Well, if $dN/dt$ is the population growth rate, then dividing it by $N$ gives us the average growth per individual in the population (all $N$ of them). 
@@ -92,9 +100,14 @@ So this model and graph describes the growth of the population as a whole. What 
 \end{aligned}
 \end{equation*}
 
-So mathematically the average growth per individual in the population, also known as the _per capita_^[From the Latin, by heads.] growth rate, is just $r$. Always. Whatever else might be happening, no matter how big or small the population, individuals reproduce (and die) on average at rate $r$. A plot of per capita growth rate against $N$ makes this clear; it always just $r$.
+So mathematically the average growth per individual in the population, also known as the _per capita_^[From the Latin, by heads.] growth rate, is just $r$. Always. Whatever else might be happening, no matter how big or small the population, individuals reproduce (and die) on average at rate $r$. A plot of per capita growth rate against $N$ makes this clear; it always just $r$ (@fig-exp_dN_N).
  
-```{r, fig.margin=TRUE, fig.cap="Per capita growth rate as a function of population size with $r=0.2$ in the exponential model."}
+```{r}
+#| label: fig-exp_dN_N
+#| column: margin
+#| fig-cap: "Per capita growth rate as a function of population size with $r=0.2$ in the exponential model."
+#| fig-alt: "A flat line at a height (per-capita growth rate) of r=0.2, no matter what the population size is (x-axis)"
+
 ggplot(tibble(x=0:250, y=0.2), aes(x, y)) +
   geom_line(color="red") + 
   geom_hline(yintercept=0, color="gray30") + 
@@ -116,11 +129,15 @@ Before doing so, however, it is worth noting that every self-replicating thing--
 # The logistic model of population growth
 
 Instead of assuming that per capita growth is a constant, let us acknowledge that at some point the individuals in the population are using all of the resources available. 
-
-Perhaps food or water or shelter or who knows what is limiting. Thus, when $N$ gets big enough, there is just enough resources for individuals to replace themselves^[On average. In reality, some might do really well and others poorly, but these effects balance out.], meaning the per capita growth rate (and thus population growth rate) would be zero^[Remember we are talking about growth rate, not $\lambda$, the population multiplier in a discrete time step model like you've seen elsewhere. When $\lambda=1$, per capita growth is zero.]. In a simplistic sense, there can be no (successful) reproduction unless someone dies to make room for that new individual. Let us call this population size where individuals _just_ replace themselves $k$.
+Perhaps food or water or shelter or who knows what is limiting. Thus, when $N$ gets big enough, there is just enough resources for individuals to replace themselves^[On average. In reality, some might do really well and others poorly, but these effects balance out.], meaning the per capita growth rate (and thus population growth rate) would be zero^[Remember we are talking about growth rate, not $\lambda$, the population multiplier in a discrete time step model like you've seen elsewhere. When $\lambda=1$, per capita growth is zero.]. In a simplistic sense, there can be no (successful) reproduction unless someone dies to make room for that new individual. Let us call this population size where individuals _just_ replace themselves $k$ (blue dot in @fig-exp_dN_N_2). 
 
  
-```{r, fig.margin=TRUE, fig.cap="Per capita growth rate as a function of population size with $r=0.2$ in the exponential model and a point at $N=0$ where per capita growth is $r$, and one at $N=k=200$ where per capita growth is zero."}
+```{r}
+#| label: fig-exp_dN_N_2
+#| column: margin
+#| fig-cap: "Per capita growth rate as a function of population size with $r=0.2$ in the exponential model and a point at $N=0$ where per capita growth is $r$, and one at $N=k=200$ where per capita growth is zero."
+#| fig-alt: "Identical to @fig-exp_dN_N except for the two blue dots described in the caption."
+
 ggplot(tibble(x=0:250, y=0.2), aes(x, y)) +
   geom_line(color="red") + 
   geom_hline(yintercept=0, color="gray30") + 
@@ -129,9 +146,16 @@ ggplot(tibble(x=0:250, y=0.2), aes(x, y)) +
        y="Per capita growth rate ([dN/dt]/N)")
 ```
 
-So we know the extremes---at low $N$ per capita growth is $r$ and a $N=k$ per capita growth is zero---but how do we connect these terms? We have many options. Three are shown in the figure to the right. At one extreme (line C) we could create a model where the per capita growth is unaffected by population size right up to the point where it goes to zero, like an on/off switch. This does not seem very reasonable, as just below $k$ there is no effect of population size and then add one more individual and _bam!_, no more net growth! Instead, we might say that the negative effect of population size on per capita growth rate is negligible at low population sizes and becomes larger and larger (line B). That seems somewhat more reasonable. 
+So we know the extremes---at low $N$ per capita growth is $r$ and a $N=k$ per capita growth is zero (@fig-exp_dN_N_2)---but how do we connect these terms? We have many options. 
 
-```{r, fig.margin=TRUE, fig.cap="Per capita growth rate as a function of population size with $r=0.2$ in the exponential model and three options for how we can reach zero per capita growth at $N=k=200$."}
+Three are shown in the figure to the right (@fig-exp_dN_N_3). At one extreme (line C) we could create a model where the per capita growth is unaffected by population size right up to the point where it goes to zero, like an on/off switch. This does not seem very reasonable, as just below $k$ there is no effect of population size and then add one more individual and _bam!_, no more net growth! Instead, we might say that the negative effect of population size on per capita growth rate is negligible at low population sizes and becomes larger and larger (line B). That seems somewhat more reasonable. 
+
+```{r}
+#| label: fig-exp_dN_N_3
+#| column: margin
+#| fig-cap: "Three ways of connecting the two blue dots in @fig-exp_dN_N_2."
+#| fig-alt: "The same as @fig-exp_dN_N_2 only the two dots have been connected by a straight line (line A), a line curving down (line B), or vertical step down at N = k (line C)."
+
 df <- expand.grid(N=0:250, model=c("exponential", "logistic"))
 df <- df %>% 
   mutate(percap=ifelse(model=="logistic", 0.2-N*0.2/200, 0.2) )
@@ -153,7 +177,7 @@ ggplot(df, aes(N, percap, color=model)) +
   theme(legend.position="none")
 ```
 
-The simplest option would be to say that per capita growth rates decline _linearly_ with population size (line A). This is equivalent to saying that there is a finite pool of resources that gets divided more or less evenly among the $N$ individuals, so with more individuals, each one gets fewer resources until they have enough to just replace themselves at $N=k$. This is the so-called "logistic" growth model and we can use it to revise our equation for per capita growth:
+The simplest option would be to say that per capita growth rates decline _linearly_ with population size (line A, @fig-exp_dN_N_3). This is equivalent to saying that there is a finite pool of resources that gets divided more or less evenly among the $N$ individuals, so with more individuals, each one gets fewer resources until they have enough to just replace themselves at $N=k$. This is the so-called "logistic" growth model and we can use it to revise our equation for per capita growth:
 
 $$
 \frac{\frac{dN}{dt}}{N} = r \left( 1 - \frac{N}{k} \right) 
@@ -161,7 +185,12 @@ $$
 
 Let's walk through how this works, mathematically. First, if $N$ is really small relative to $k$ (either $N$ is small or $k$ is very big) then the stuff in parentheses becomes one minus something small, perhaps very small. If it is small enough then the stuff in parentheses is essentially one and we get our exponential model back. If we wanted to get fancy we could say that the exponential model is just a special case of the logistic model where $N << k$. Second, we can see that when the population reaches $k$, then $N/k = 1$ so the stuff in parentheses becomes $1-1 = 0$. This has the effect of multiplying the intrinsic growth rate by zero, so the overall _per capita_ growth rate is zero. Nice! (It can be helpful to plug in some numbers for $N$ and $k$ and calculate the _per capita_ growth rate. Try $r=0.5$, $k=200$, and $N=1, 10, 100,$ and $200$.) Finally, note that if $N$ gets bigger than $k$ (and so $N/k > 1$) we end up subtracting a larger number from a smaller number, so the stuff in parentheses becomes _negative_. This means that if the population size is bigger than $k$ the _per capita_ growth rate goes negative!  Neat! We added just one term, $k$, and we can get this nice behavior!
 
-```{r, fig.margin=TRUE, fig.cap="Per capita growth rate as a function of population size in the exponential model and logistic models with $r=0.2$ and $k=200$."}
+```{r}
+#| label: fig-exp_dN_N_4
+#| column: margin
+#| fig-cap: "Per capita growth rate as a function of population size in the exponential model and logistic models with $r=0.2$ and $k=200$."
+#| fig-alt: "A modified version of @fig-exp_dN_N_3 with only a flat line, representing the constant per-capita growth rate in the exponential model, and a straight declining line, represeneting per-capita growth rates declining linearly with population size in the logistic model."
+
 df <- expand.grid(N=0:250, model=c("exponential", "logistic"))
 df <- df %>% 
   mutate(percap=ifelse(model=="logistic", 0.2-N*0.2/200, 0.2) )
@@ -174,7 +203,7 @@ ggplot(df, aes(N, percap, color=model)) +
   theme(legend.position="bottom")
 ```
 
-`r newthought('As an aside,')` this is one version of density-dependence, where a rate, here the _per capita_ growth rate, is influenced by population size or density.  That is, _something_ about being around or part of a larger (or smaller) population changes something fundamental in the process. Here we are assuming that birth rates are reduced and/or death rates are increased with higher population densities, perhaps because the finite resources are divided up among more and more individuals. But there is nothing about the biological mechanism here. You might have heard of $k$ being the "carrying capacity" of the environment, as in all of the resources available in the environment in some place, which we could count up, at least in principle. But that is not how we define $k$. There is no term in the model representing resources. All that extra meaning is applied to the the model by us. The math just requires that _per capita_ growth is zero when $N = k$. That's it.
+As an aside, this is one version of density-dependence, where a rate, here the _per capita_ growth rate, is influenced by population size or density.  That is, _something_ about being around or part of a larger (or smaller) population changes something fundamental in the process. Here we are assuming that birth rates are reduced and/or death rates are increased with higher population densities, _perhaps_ because the finite resources are divided up among more and more individuals. But there is nothing about the biological mechanism here. You might have heard of $k$ being the "carrying capacity" of the environment, as in all of the resources available in the environment in some place, which we could count up, at least in principle. But that is not how we define $k$. There is no term in the model representing resources. All that extra meaning is applied to the the model by us. The math just requires that _per capita_ growth is zero when $N = k$. That is, we define the carrying capacity as the population size or density at which individuals _just_ replace themselves, on average.
 
 Anyway, how does the _population_ growth rate change with $N$? We can multiply both sides of the equation by $N$ (the reverse of what we did above, with the exponential model) to get the differential equation describing population growth with density dependence. 
 
@@ -189,9 +218,14 @@ If we multiply the $rN$ term on the right-hand side through the terms in the par
 $$
 \frac{dN}{dt} = r N \left( 1 - \frac{N}{k} \right) = r N  - \frac{r}{k} N^2, 
 $$
-which maybe pulls at your memory of math classes in the past. This is the equation for a parabola. And indeed, a plot of population growth rate against population size is parabolic. 
+which maybe pulls at your memory of math classes in the past. This is the equation for a parabola. And indeed, a plot of population growth rate against population size is parabolic (@fig-exp_dN_both). 
 
-```{r, fig.margin=TRUE, fig.height=3, fig.cap="Population growth rate as a function of population size in the exponential model and logistic models with $r=0.2$ and $k=200$."}
+```{r}
+#| label: fig-exp_dN_both
+#| column: margin
+#| fig-cap: "Population growth rate as a function of population size in the exponential model and logistic models with $r=0.2$ and $k=200$."
+#| fig-alt: "A graph with two lines, one showing how population growth rate (y-axis) increases linearly with population size (x-axis) in the exponential model, the other showing how growth rate increases up to a maximum N = K/2 and then decreases back to zero at N = K in the logistic model. The logistic curve is a parabola and always less than the straight line"
+
 df <- df %>% mutate(growth=ifelse(model=="logistic", 0.2*N*(1-N/200),  0.2*N) )
 
 ggplot(df, aes(N, growth, color=model)) +
@@ -202,7 +236,7 @@ ggplot(df, aes(N, growth, color=model)) +
   theme(legend.position="bottom") + 
   coord_cartesian(ylim=c(-15,30))
 ```
-You will see that the population growth rate is at first going up at about the same rate as the exponential model^[And if we make $k$ really, really big, then population growth in the logistic model will follow that of the exponential model over a much wider range. Think about what happens if $k = \infty$.], but curves away from the exponential line more and more as $N$ gets bigger. That is, the larger the population gets, the less it grows exponentially. That is the consequence of how we built this model. At $N=k$ the population growth rate is zero---that is, the population is stable---and beyond that it shrinks.
+You will see that the population growth rate is at first going up at about the same rate as the exponential model^[And if we make $k$ really, really big, then population growth in the logistic model will follow that of the exponential model over a much wider range (@fig-exp_dN_both). Think about what happens if $k = \infty$.], but curves away from the exponential line more and more as $N$ gets bigger. That is, the larger the population gets, the less it grows exponentially. That is the consequence of how we built this model. At $N=k$ the population growth rate is zero---that is, the population is stable---and beyond that it shrinks (@fig-exp_dN_both).
 
 You will also see that the population growth rate is highest half-way to $k$. How do we explain this, when the highest per capita growth rate was when $N$ was small? Well, the per capita growth rate is highest when population size is smallest, but then again, there are very few individuals replicating so quickly. At much higher population sizes there are lots of individuals doing the replicating, but each has a very small per capita growth rate. In the middle we get a moderate number of individuals replicating moderately, which happens to maximize the growth of the population as a whole. 
 
@@ -216,6 +250,7 @@ Finally, we might ask what the population size would be like over _time_ given t
 In fact, try sketching out your guess of population size through time on these blank axes, starting at the dot.
 
 ```{r}
+#| fig-alt: "Blank axes showing population size (y-axis) against time (x-axis). There is a point N=1 when time = 0, from which one might draw the rest of the trajectory."
 tibble(time=c(0,60), N=c(0, 250)) %>% 
   ggplot(., aes(time, N)) +
   geom_blank() + 
@@ -229,9 +264,15 @@ For completeness more than anything, here's the equation for solution to the log
 $$
 N(t) = \frac{k}{1+\left(\frac{k}{N_0} - 1 \right) e^{-rt}}.
 $$
-You'll probably never need to use this, but if you like the math^[Yay math!] you might see that as time, $t$, gets really big, the $-rt$ becomes a very large negative number, and so the $e^{-rt}$ gets closer and closer to zero. So the stuff after the one in the denominator gets smaller and smaller, no matter what, when $t$ is big. This means that $N(t \rightarrow \infty) \rightarrow k/1 = k$. We end up at $k$. Is that what you expected?
+You'll probably never need to use this, but if you like the math^[Yay math!] you might see that as time, $t$, gets really big, the $-rt$ becomes a very large negative number, and so the $e^{-rt}$ gets closer and closer to zero. So the stuff after the one in the denominator gets smaller and smaller, no matter what, when $t$ is big. This means that $N(t \rightarrow \infty) \rightarrow k/1 = k$. We end up at $k$. Is that what you expected? You can _see_ the results in @fig-exp_N_t_both.
 
-```{r, fig.margin=TRUE, fig.cap=c("Population size over time, starting from $N_0=1$, in the exponential and logistic models with $r=0.2$ and $k=200$.", "Same plot with a logarithmic y-axis.")}
+```{r}
+#| label: fig-exp_N_t_both
+#| column: margin
+#| fig-height: 6
+#| fig-cap: "Population size over time, starting from $N_0=1$, in the exponential and logistic models with $r=0.2$ and $k=200$ on linear (top) and logarithmic (bottom) y-axes."
+#| fig-alt: "Top graph shows two lines, one growing exponentially (j-shaped) and the other logistically (i.e., sigmoidally or s-shaped) up to N = k (y-axis) over time (x-axis). The bottom graph shows the same data on a logarithmic y-axis, so the exponential line become linear and the sigmoidal logistic line becomes one that increases and saturates at a horizontal line when N = K."
+
 df <- expand.grid(t=0:60, model=c("exponential", "logistic"))
 df <- df %>% 
   mutate(N=ifelse(model=="logistic", 
@@ -244,15 +285,23 @@ A <- ggplot(df, aes(t, N, color=model)) +
   labs(x= "time (t)", 
        y="Population size (N)") + 
   theme(legend.position="bottom") 
-A + coord_cartesian(ylim=c(0,400))
-A + scale_y_log10()
+top <- A + coord_cartesian(ylim=c(0,400))
+bottom <- A + scale_y_log10( labels = label_log()) 
+
+ggpubr::ggarrange(top, bottom, ncol = 1)
 ```
 
 There we have it! The characteristic sigmoidal curve of population through time up to a "carrying capacity" we called $k$, is logistic growth. It's a curve you have almost certainly seen before, but now you see the underlying logic of it and how those assumptions we made lead to these dynamics. And it is your second model of population growth! A double woo-woo!
 
 Do we see logistic growth in nature? You bet! For instance, in a classic set of experiments Russian biologist Georgii Frantsevich Gause  studied the growth of several species of ciliates (bacteria-eating protozoans) and, in other experiments, yeast, grown in isolation and in combination. You can see how the logistic curves seem to capture the general dynamics of his ciliates. It's not perfect, but it's pretty darn good!
 
-```{r, fig.cap="Gause's ciliates grown by themselves or in pairs with low food (half loop) or high food availability (one loop). Notice that when the food was doubled, the population size grew about twice as large.", fig.height=3.5}
+```{r}
+#| label: fig-gause
+#| cap-location: margin
+#| fig-height: 3.5
+#| fig-cap: "Gause's ciliates grown by themselves or in pairs with low food (half loop) or high food availability (one loop). Notice that when the food was doubled, the population size grew about twice as large."
+#| fig-alt: "A four panel figure with data points and best-fit logistic curves overlaid on them. The rows represent the abundance of the two species and the columns the amount of food provided."
+
 knitr::include_graphics("Paurelia_Pcaudatum.png", dpi=425)
 ```
 
