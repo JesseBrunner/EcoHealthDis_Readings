@@ -1,38 +1,27 @@
 ---
-title: "Some advice for writers"
-author: "Jesse Brunner"
+title: "Some advice for scientific writers"
 date: "`r Sys.Date()`"
-output: tint::tintPdf
-latexfonts:
-  - package: newtxmath
-    options: 
-      - cmintegrals
-      - cmbraces
-  - package: ebgaramond-maths
-header-includes:
-   - \usepackage{booktabs}
-   - \usepackage{cancel}
+format:
+  pdf: default
+  html: 
+    self-contained: true
+    grid:
+      margin-width: 350px
+format-links: false
+execute:
+  echo: false
+toc: false
+reference-location: margin
 ---
 
-```{r setup, include=FALSE}
-library(tufte)
-# invalidate cache when the tufte version changes
-knitr::opts_chunk$set(tidy = FALSE, 
-                      message = FALSE, 
-                      warning = FALSE,
-                      echo = FALSE,
-                      cache.extra = packageVersion('tufte'))
-options(htmltools.dir.version = FALSE)
-```
+> "Half the time I write to find out what I mean."
+>
+> --- Shirley MacLaine, Actress, Author, and, in a [previous life in Atlantis, the brother of a 35,000-year-old spirit named Ramtha](https://en.wikipedia.org/wiki/Shirley_MacLaine#Beliefs_and_interests)  
 
-```{r, include=FALSE}
-# library(tidyverse)
-# library(scales) # for prettier axis labels
-# library(simecol) # for running model 
-# theme_set(theme_minimal())
-```
 
-Writing well is not easy^[See, for instance, your own experience or ask pretty much anyone.]. In part that is because putting our ideas down on a page involves thinking; deep, careful, thinking. If our thinking is unclear, so too will be our writing. Writing in classes can also be difficult because we write for so many purposes: to persuade, to elaborate, to fill the page requirement, or the convince the instructor that _I know the answer!_ and its somewhere in this jungle of sentences if only you look carefully^[Word vomit is rarely good writing!]. 
+Writing well is not easy^[See, for instance, your own experience or ask pretty much anyone.]. In part that is because putting our ideas down on a page involves thinking; deep, careful, thinking. If our thinking is unclear, so too will be our writing. Moreover, like the above quote (and the [myriad of its predescesors and followers](https://quoteinvestigator.com/2023/01/26/think-read/)) suggest, we often work through our thinking as we write! 
+
+Writing in classes can also be difficult because we write for so many purposes: to persuade, to elaborate, to fill the page requirement, or the convince the instructor that _I know the answer!_ and its somewhere in this jungle of sentences if only you look carefully^[Word vomit is rarely good writing!]. 
 
 So let me be pain about what I am looking for in your writing: I would like you to _clearly, concisely, evaluate evidence around some argument._
 
@@ -44,13 +33,13 @@ By clarity I mean the clearness, intelligibility, comprehensibility, plainness, 
 
 The problem with the first of these is that while you might know what you mean, I cannot follow along. Often this comes from a lack of care or thought about the reader's perspective. Sometimes a sentence starts heading in one direction and then we are talking about rabbit holes. Sometimes ideas are repeated, but not always sequentially. Sometimes a sentences introduces a cool idea but never. Fragments are. Sometimes a person tries to connect multiple distinct ideas with a comma, I'm confused when it looks like a list but isn't. Sometimes a person repeats their ideas, making me wonder if there is some distinction I missed. 
 
-Often the relationship between ideas is just muddled, as if you are casually pointing out two people at a party and saying they are related. But I don't know these people, I do not know what "related" means, not precisely. (Siblings? Significant others? Both members of the Fraternal Order of Moose?). It makes me wonder why you're telling me there is a relationship. I need context and guidance. I need structure. Even the order in which the ideas are presented generates structure, so if you give me a scatter shot of ideas, that's how they'll be arranged in my mind; all over the place! 
+Often the relationship between ideas is just muddled, as if you are casually pointing out two people at a party and saying they are related. But I don't know these people, I do not know what "related" means, not precisely^[Siblings? Significant others? Both members of the Fraternal Order of Moose?]. It makes me wonder why you're telling me there is a relationship. I need context and guidance. I need structure. Even the order in which the ideas are presented generates structure, so if you give me a scatter shot of ideas, that's how they'll be arranged in my mind; all over the place! 
 
-Imagine you're explaining something complicated to a a seven year old with a short attention span. Then clarify it further.  Remember, you are not your audience. _I am_. You are not writing to get your ideas on paper for your own purposes (those are called notes). You are writing to convey ideas and understanding. So **keep your audience in mind**. _Guide_ the reader through comparisons (e.g., "The response was five-fold greater in the treatment group than the controls"), highlight the relationships between ideas or studies (e.g., "While x found this, y found the opposite" or "Similarly, ..." or "In contrast, ..."), and provide a clear structure (e.g., introduce ideas from small to large, first to last, or similar). 
+Imagine you're explaining something complicated to a a seven year old with a short attention span. Then clarify it further. Remember, you are not your audience. _I am_. You are not writing to get your ideas on paper for your own purposes (those are called notes). You are writing to convey ideas and understanding. So **keep your audience in mind**. _Guide_ the reader through comparisons (e.g., "The response was five-fold greater in the treatment group than the controls"), highlight the relationships between ideas or studies (e.g., "While x found this, y found the opposite" or "Similarly, ..." or "In contrast, ..."), and provide a clear structure (e.g., introduce ideas from small to large, first to last, etc.). 
 
 The second problem is sort of the opposite of the first, but leads to similar issues with clarity. I think some people think something along the lines of, "Cool! I get to write _Science_! Let me throw down all of the _Science_ words I know!" One issue is that this leads to unexplained jargon. Look, I'm a professor, but that doesn't mean I know all of the terms in all of these fields. Help a reader out! (Sometimes I am pretty sure you, the author, do not know what these words meant either... just because it sounds cool doesn't mean you should use it. Simpler is often better, even in science.) 
 
-Sometimes authors will imply mechanisms or assume I know about them. But again, what is blindingly obvious in your head is probably not in mine. I need you to help me connect the dots. Hold my hand and guide me through the logic. I promise I will not be offended if you explain even simple things.
+Sometimes authors will imply mechanisms or assume I know about them. But again, what is blindingly obvious in your head is probably not in mine^[It's sometimes called the [curse of knowledge](https://timharford.com/2021/04/cautionary-tales-the-charge-of-the-light-brigade/).]. I need you to walk me through the logic of the mechanism, hypothesis, methods, or whatever. I promise I will not be offended if you explain even simple things.
 
 Of course some students' papers combined elements of both categories^[Going for the double! Well done!]! In the end, it does not matter. The issues with clarity mean that I have a hard time understanding what you are trying to say, so your thinking might be admirable, but I might not be able to tell simply because I am confused by your writing. 
 
@@ -59,15 +48,15 @@ Of course some students' papers combined elements of both categories^[Going for 
 > _"Giving a lot of information clearly and in a few words; brief, but comprehensive."_
 >  ---New Oxford American Dictionary
 
-In essence, to write concisely means to get rid of everything that might cloud your point. Even strong logic and understanding can be hidden by a blizzard of extraneous words or details. Your job is to strip these away^[Even if they sound "science-y"! See the _Clarity_ section, above.]. While it is not incorrect to write, "While comparing individuals in control and treatment groups in a study in 2002 Smith and colleagues found that those given a placebo had just as much of a reduction in self-reported test-taking anxiety than those given the new drug, relaxenol," that's quite a lot to process and keep in mind from start to finish. Could we not say this more succinctly, for instance as, "Smith et al. (2002) found that a placebo reduced self-reported test-taking anxiety as much as relaxenol," or even "Placebos were as effective as relaxenol in reducing test-taking anxiety (Smith et al. 2002)"? I prefer this last version, myself, because it places the emphasis on the comparison rather than the authors or what they did. The point of this word-jitsu is that our point is made clearer when we say it concisely. Conciseness and clarity often go hand-in-hand.
+In essence, to write concisely means to get rid of everything that might cloud your point. Even strong logic and understanding can be hidden by a blizzard of extraneous words or details. Your job is to strip these away^[Even if they sound "science-y"! See the _Clarity_ section, above.]. It is not _wrong_ to write, "While comparing individuals in control and treatment groups in a study in 2002, Smith and colleagues found that those given a placebo had just as much of a reduction in self-reported test-taking anxiety than those given the new drug, relaxenol," but that's quite a lot to process and keep in mind from start to finish. Could we not say this more succinctly, for instance as, "Smith et al. (2002) found that a placebo reduced self-reported test-taking anxiety as much as relaxenol," or even "Placebos were as effective as relaxenol in reducing test-taking anxiety (Smith et al. 2002)"? I prefer this last version, myself, because it places the emphasis on the comparison rather than the authors or what they did. The point of this word-jitsu is that our point is made clearer when we say it concisely. Conciseness and clarity often go hand-in-hand.
 
 Writing concisely is not easy. Most of us have to go through drafts to get there. We start with our weedy, thicket of a paragraph and cut and refine until we get something that is much shorter and clearer. It takes practice, but there are two hallmarks of wordy or discursive writing you should look for. First, try finding the verb. If the action is towards the end of the sentence you are probably writing passively and that usually means more words and more work for the reader. Compare where the word, "found," is found in the first and second versions of the sentence about the Smith et al paper in the prior paragraph. Which version sounds more active and authoritative? Which version sounds like the author knows what they are talking about? My advice is this: Write actively; put the verb up front. 
 
-Second, look for "weasel words^[See https://en.wikipedia.org/wiki/Weasel_word]," that imply  you are unwilling to commit to a statement or position. Look carefully for such words for phrases and destroy them on sight. If you find yourself tempted to use a weasel word or phrase, stop yourself and ask what it is you are really trying to say. Usually passive and weaselly writing signals that you are uncertain of what you mean. Remedy the lack of understanding rather than wrapping it in a torrent of words^[Trust me: I'm pretty good at spotting what you do and do not understand!]. 
+Second, look for "weasel words^[See https://en.wikipedia.org/wiki/Weasel_word]," that imply  you are unwilling to commit to a statement or position. Look carefully for such words for phrases and destroy them on sight. If you find yourself tempted to use a weasel word or phrase, stop and ask yourself what it is you are trying to say. Passive and weaselly writing often signals that you are uncertain of what you mean. Remedy the lack of understanding rather than wrapping it in a torrent of words^[Trust me: I'm pretty good at spotting what you do and do not understand!]. 
 
 # Evaluate and argue
 
-Good writing builds to something---an argument or point of view, or evaluating an argument or point of view. There needs to be a sense of direction. For our purposes, writing is always, always about evaluating evidence around an argument. It is not just restating details or evidence from sources^[A list is not an argument], but rather telling the reader what these details or evidence _means_ for or about some assertion or point of view^[This does not work well when someone does their best to remove themselves from equation, for instance using weasel words to avoid committing to a statement.]. Most of the time I'll be providing a set of questions to answer, so your point or argument will be about your answer(s). But this extends to other settings, too. In any case, you will find that clarity and conciseness become much easier if you know what you think. 
+Good writing builds to something---an argument or point of view, or evaluating an argument or point of view. There needs to be a sense of direction. For our purposes, writing is always, always about evaluating evidence around an argument. It is not just restating details or evidence from sources^[A list is not an argument], but rather telling the reader what these details or evidence _means_ for some assertion or point of view^[This does not work well when someone does their best to remove themselves from equation, for instance using weasel words to avoid committing to a statement.]. Most of the time I'll be providing a set of questions to answer, so your point or argument will be about your answer(s). But this extends to other settings, too. In any case, you will find that clarity and concision become much easier if you know what you think.  
 
 Usually, your point should be made in the first sentence of a paragraph, your topic sentence. Look at mine, for examples. Most of the time they make a point that is then supported by logic or evidence. This does not work as well if we have to wait until the end of the paragraph to see your point. That leads to the reader having to guess where you're going, often getting it wrong. Instead, tell us what you are arguing then support that. 
 
