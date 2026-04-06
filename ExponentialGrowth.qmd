@@ -65,7 +65,7 @@ $\text{Number on square 64} \rightarrow n_{64}=2^{64-1}=2^{63}$ = `r prettyNum(a
 
 $\text{Number on all 64 squares} \rightarrow T_{64}=2^{64}-1=$ \hspace{0.4cm} `r prettyNum(as.bigz(2^64-1), big.mark = " ")`
 
-Those are big numbers! Quintillions or, if you prefer, billions of billions of grains of rice! But quite honestly that doesn't mean a lot to me. I tried asking [Wolfram Alpha](https://www.wolframalpha.com/input/?i=2^64+grains+of+rice) how much rice this was and while the nutrition label wasn't terribly helpful (@fig-ric), it is sort of fun!
+Those are big numbers! Quintillions or, if you prefer, billions of billions of grains of rice! But quite honestly that doesn't mean a lot to me. I tried asking [Wolfram Alpha](https://www.wolframalpha.com/input/?i=2^64+grains+of+rice) how much rice this was and while the nutrition label wasn't terribly helpful (@fig-rice), it is sort of fun!
 ```{r}
 #| label: fig-rice
 #| column: margin
