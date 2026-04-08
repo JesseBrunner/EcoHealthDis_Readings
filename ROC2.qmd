@@ -1,0 +1,136 @@
+---
+title: "The difficulty of diagnostics: 2) tests as information rather than Truth"
+date: "`r Sys.Date()`"
+format:
+  pdf: default
+  html: 
+    self-contained: true
+    grid:
+      margin-width: 350px
+format-links: false
+execute:
+  echo: false
+toc: false
+reference-location: margin
+---
+
+```{r, include=FALSE}
+library(tidyverse)
+library(scales) # for prettier axis labels
+# library(simecol) # for running model 
+# library(gmp) # for large numbers to display correctly
+
+theme_set(theme_minimal())
+```
+
+
+# The signal gets swamped: Bayes rule and prevalence
+
+Let us continue thinking about diagnostic testing. Consider antibody-based tests for Covid-19 infections. There was surprisingly little publicly available information published about diagnostic^[As opposed to analytic sensitivity, which measures how little of a virus like can be detected.] sensitivity. In part this was because it was not clear how to determine who is _truly_ infected and who is _truly_ negative^[Usually one compares their test to a "gold standard," which is assumed to be correct, but in this case with a novel disease how can one be sure? This is never an easy problem, but it's even harder in the middle of a fast-moving crisis!] and in part it is because the amount of virus (and antibodies) changes throughout an infection, varies among different classes of people, and so on. 
+
+But let's simplify things and instead consider a real-time reverse-transcriptase PCR reactions, the basis of many diagnostic tests, with a sensitivity of 0.95 (95%) and a specificity of 0.97 (97%). Not bad, right? (Most tests, especially those based on detecting viral antigens or antibodies, are almost certainly worse, especially on the sensitivity side of things, but let's just pretend.) 
+
+Now comes the wrinkle. Let's also assume that 1% of the population as a whole is infected. If we were to randomly^[This is important in that if we just test sick people we would tend to have more infected people than the population average of 1%.] test 10,000 people we would expect 100 people to be really, truly infected and of those, 95 would be correctly identified, leaving 5 false negatives (@fig-10000). I guess we could live with that, although if we were thinking of Ebola virus infections that might be worrying! Now what about the 9,900 uninfected people? The vast majority, 9,603, would be correctly told they are not infected, but 3% of them, or 297 uninfected people would be told they _are_ infected. Or put another way, only 95/(95+297) = 24% of the people with positive test are actually infected! 
+
+```{r}
+#| label: fig-10000
+#| fig-width: 11
+#| fig-column: page-right
+#| fig-asp: 1
+#| fig-cap-location: bottom
+#| fig-cap: "Ten thousand individuals (dots), 1% (100) of which are infected (red) and 99% (9,900) that are negative. With a sensitivity of 95% we should get 95 positive tests from the truly infected, but because the specificity is 97% (meaning 3% false positives) we will get 297 ($9900 \times 0.03$) false positives from the uninfected individuals (blue)."
+#| fig-alt: "Ten thousand dots representing infected and uninfected people."
+
+#### Construct DF of 10,000 people
+N <- 1e4
+prev <- 0.01
+se <- 0.95
+sp <- 0.97
+
+### Calculations
+true_pos = round( prev * se * N )
+false_neg = round( prev * (1 - se) * N )
+true_neg = round( (1 - prev) * sp * N )
+false_pos = round( (1 - prev) * (1 - sp) * N )
+
+
+df <- expand_grid(x=1:100, y=1:100)
+df <- df %>%
+  mutate(Status = if_else(row_number(x) <= round(prev*N), "Infected", "Uninfected"))
+
+df <- df %>% arrange(Status, y, x) %>%
+  mutate(Test = c(
+    rep("Negative", false_neg),
+    rep("Positive", true_pos),
+    rep("Negative", true_neg),
+    rep("Positive", false_pos))
+  )
+
+ggplot(df, aes(x,y, shape = Test, color = Status)) +
+  geom_raster(aes(fill = paste(Test,Status)), alpha = 1/4) +
+  geom_point(size=2) +
+  theme(legend.position = "top") +
+  scale_color_manual("Infection status", values=c("red", "darkblue")) +
+  scale_shape_manual("Test results", values=c(1, 19) ) +#values = c(".", "+")) +
+  scale_fill_manual(values = c("pink", "darkblue","darkred", "lightblue")) +
+  theme_void() +
+  guides(fill="none") +
+  theme(legend.position = "top",
+        legend.box = "horizontal",
+        legend.direction = "vertical",
+        legend.justification = "left")
+
+```
+
+But wait, it can be even worse. In early stages of the epidemic when perhaps only 0.1% of the population was infected, nine or ten of the truly infected individuals would be detected, but roughly 300 of the 9,990 _uninfected_ people would get false positives, so only 10/(10+300) = ~3% of the positive tests would indicate true infections. 
+
+\newpage
+This is often presented as "The medical paradox," though it isn't really a paradox. It is also used as an example of Bayes theorem. We might write this as:
+
+\begin{align}
+\Pr(I^+ | T^+)  &= \frac{\text{Sensitivity}\times \text{Prevalence}}{\Pr(\text{True positive})+\Pr(\text{False positive})} \\
+&= \frac{\text{Sensitivity}\times \text{Prevalence}}{ \text{Sensitivity}\times \text{Prevalence} + (1-\text{Specificity)}\times (1-\text{Prevalence})}
+\end{align}
+
+We can read this as: "The probability a person is infected, given that they test positive, is equal to the probability they test positive given that they are infected times the probability they really are infected, divided by the probability they test positive." Does that help? No? Didn't think so. We'll move on, but just for clarity, let's plug in the numbers from our example with 1% prevalence, a sensitivity of 0.95, and a specificity of 0.97:
+
+\begin{align}
+\Pr(I^+ | T^+)  &= \frac{0.95\times 0.01}{0.95\times 0.01+(1-0.97)\times (1-0.01)} \\
+&=0.242,
+\end{align}
+
+which matches our previous calculation.
+
+# Tests provide evidence, not absolutes
+
+Sometimes people look at these examples and come to the conclusion that anything other than perfect diagnostic tests are worthless. But that's actually missing the point. Diagnostic tests bring evidence to the table. Let's walk through this example, but paying attention to the odds a person is infected before and after the test^[This way of presenting the medical paradox comes from a [wonderful video by 3Blue1Brown](https://www.youtube.com/watch?v=lG4VkPoG3ko). I think it makes the logic much clearer!]. 
+
+First, let's consider the odds a random person from our population of 10,000 is infected, prior to testing them. Not knowing anything else about them (e.g., whether they are high or low risk, young or old, etc.) we would probably guess their probability of being infected is 1\%, the prevalence of infection in the population. This means the _odds_^[Odds of infection $= \frac{\Pr(\text{infected})}{\Pr(\text{not infected})}$.] of infection are $0.01/0.99 = 0.01010101$, or really, really small. 
+
+Now let's think about what the test tells us. If we get a positive, we could have gotten that from a true positive or from a false positive. The former, true positives, happen with a probability of 0.95, the sensitivity of the test, while the latter, the false positives, occurs with a probability of 0.03, or 1 - the specificity of the test. We can compare the likelihoods of these two hypotheses---the probability of getting a positive test from an infected person vs. the probability of getting a positive test from an uninfected person---with a ratio^[Often called a Bayes factor, but let's not get distracted.]. In this case, this ratio is $0.95/0.03 = 31.667$. That is, positive tests are much more likely to be true positives than false positives. 
+
+We can do the same thing with negative tests. Here likelihood of getting a negative from an infected person is 1 - sensitivity, or $1-0.95 = 0.05$ and the likelihood of getting a negative from an uninfected person is the test's specificity, here 0.97. Thus, the ratio is $0.05/0.97 = 0.0515$. Negative tests are much less likely to be false negatives than true negatives. 
+
+The cool part is that we can "update" our odds that a random person from our population is infected given these test results. We simply multiply the odds they were infected _prior_ to the test by the likelihood ratio (or Bayes factor) of getting the positive (or negative) test. So if our random person gets a positive test result, the odds they are infected becomes $\frac{0.01}{0.99} \times \frac{0.95}{0.03} = 0.0101 \times 31.667 = 0.320$. That is, their odds of being infected increased over thirty-fold after testing positive. Moreover, these odds of 0.320 corresponds to a probability of ~24\%, which is the same as we calculated from the numbers in @fig-10000, above.
+
+If instead they had a negative test we would update their odds of infection as $\frac{0.01}{0.99} \times \frac{0.05}{0.93} = 0.0101 \times 0.0515 = 0.00054$; their odds _decreased_ almost 20-fold! The probability of being infected went from 1\% down to ~0.05\%. 
+
+The point is that we are getting a lot of evidence from these tests. Better tests will have larger likelihood ratios, meaning they provide more evidence. But evidence, of course, is not certainty. Think about it this way: imagine you took a test for Ebola virus infection, a really, really good, accurate one. Now imagine you got a positive test. Would you really think that you were infected with Ebola virus? Really? Probably not, because your prior (before the test) probability of being infected with Ebola virus would be vanishingly small. But this test result might want you to check in with your doctor, right? Because it did update your beliefs a bit. This is probably a much more reasonable way to think about diagnostic tests. 
+
+One last note on this perspective: we or our (future) patients are usually not some random person. We often know a bit more about people, such as their age or occupation or where they live or other risk factors. We can (and do^[Though often informally.]) update our priors based on these factors. If, during the pandemic, you were masking up, staying home, and minimizing your risk, your might reasonably assume that your prior (before the diagnostic test) odds of infection were lower than our 0.01/0.99 calculation based on prevalence in the population, whereas if you were going to parties or had housemates who were infected your prior odds of infection might be much higher. The _test_ results still provide the same evidence, but your starting point would be different. 
+
+Cool, huh?
+
+# What to do with diagnostic tests 
+
+I hope I've convinced you that the seemingly simple task of sorting individuals into infected or uninfected bins is actually much more difficult than it first seems. And there are always trade-offs lurking. Sure, we might gain sensitivity, but we do so at the cost of specificity. And depending on the context a positive test might not translate into a high probability that you are actually infected. So, what's a person to do?
+
+First, it is worth thinking about what we are trying to accomplish with a test. Tests are used for all sorts of things and pretending they are used in only one way ignores all of the trade-offs and potential biases we just learned. If we are thinking about you in a doctor's office getting back test results (or conversely, you, the doctor, giving someone the news) it is worth thinking about how well the test performs, but also your _prior_ odds of having whatever you are testing for in the first place. You might also look for some confirmation from other independent tests or context. In short, tests provide useful _evidence_, but they are not magic wands!
+
+Alternatively, if we are interested in trying to estimate the prevalence of infection in the population, we can correct our estimates so long as we know the sensitivity and specificity. We may not know whether _this_ person or _that one_ is infected, but we could have a pretty good idea that, say, 20\% of the population was infected, on average^[This is part of the rationale for using fast, cheap, but crappy antibody-based tests for influenza or COVID-19. [Yes, they suck, but they can still give us a window on what's happening and, importantly, we get the answers back quickly!](https://www.nytimes.com/2020/08/06/health/rapid-Covid-tests.html).   
+
+Second, it is worth noting that we can be clever about our testing regime. For instance, we might employ a two-step approach for widespread testing. We would employ a test with high sensitivity, but low specificity, for instance and antibody test tune for maximum sensitivity. This would ensure that few truly infected people test negative, but would yield a _lot_ of false positives. Those false positives would then be re-tested with a separate test with much higher specificity (e.g., a nucleic acid-based test) to sort out which of that big heap of "positives" from the first test were actually real. Most HIV screening is done this way.
+
+Third, it pays to think about the costs of false negatives _and_ false positives^[My own opinion is that many conflicts boil down to some people focusing on one set of costs---such as missing a tumor or someone who honestly needs assistance---while others focus only on the costs of false positives---unnecessary health care interventions or welfare cheats.]. What are the costs of false positives during a pandemic? Perhaps many, many people being quarantined for no good reason, not to mention all of the stress and worry. What are the costs of missing a COVID-19 infection? A person might ignore their other symptoms because they thought they were clear, perhaps even die. At a larger scale, the infected person who thinks they are COVID-free might go on to infect (many) others and so the infection spreads. 
+
+This highlights one other issue that crops up frequently when it comes to diagnostic testing: the right or optimal answer at an individual level is not necessarily the right or optimal answer for the population. A doctor might see the ghost of a tumor in a mammogram and recommend a biopsy if not a lumpectomy. Yes, it might have been a false positive, but the cost---an unnecessary procedure---seems small compared to letting a real tumor grow and, potentially, become much worse. An epidemiologist, who focuses on the whole population, might instead note that because tumors are fairly rare and mammograms imperfect, there are lots and lots of false positives, the costs of which collectively outweigh the benefits of catching a few tumors early. Both are "right," given their perspective, but they might strongly disagree about what is best. You could extend the same thinking to the TSA's security at airports or the Innocence Project's efforts to find and exonerate the wrongly convicted. Or even to all of those amazing people at offices across the nation trying to sort out who, among the many applicants, most need public assistance.  
