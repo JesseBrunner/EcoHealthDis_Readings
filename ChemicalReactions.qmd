@@ -1,7 +1,7 @@
 ---
 title: "Organisms as sacks of chemical reactions"
-author: "Jesse Brunner"
-date: "`r Sys.Date()`"
+date-meta: "`r Sys.Date()`"
+author-meta: "Jesse Brunner"
 format:
   pdf: 
     include-in-header: 

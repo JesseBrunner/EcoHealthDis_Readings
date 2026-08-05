@@ -1,8 +1,12 @@
 ---
 title: "The power of exponential growth"
-date: "`r Sys.Date()`"
+date-meta: "`r Sys.Date()`"
+author-meta: "Jesse Brunner"
 format:
-  pdf: default
+  pdf: 
+    include-in-header: 
+      text: |
+        \usepackage[group-separator={,}]{siunitx}
   html: 
     self-contained: true
     grid:
@@ -60,10 +64,23 @@ $$
 What about the _total_ number of grains on square $x$, which we'll call $T(x)$? We could just do the math and add those numbers up: $T(x)=2^0 + 2^1 + 2^2 + \dots + 2^{x-1}$. We could also write it more compactly using the summation sign, $\Sigma$: $T(x) = \sum_{i=1}^{i=n} 2^{i-1}$. But we can also cheat a bit if we notice the pattern. The total in the first two squares is $1+2=3$ and in the first three squares is $1+2+4=7$ and in the first four squares is $1+2+4+8=15$. These sums are _close_ to the power of two (i.e., $2^2, 2^3, \text{ and}, 2^4$). Indeed, in each case they are just one less than that power of two. The pattern is $T(x) = 2^x - 1$. So the total (cumulative) number of grains on the 64 squares^[If we started counting with $x=0$ then this would be $T(x) = 2^{x+1} - 1$.] of the chessboard given this little doubling game is $T_{64}=2^{64}-1$.
 
 Now, how much are those? 
+\begin{equation*}
+\begin{aligned}
+\text{Number on square 64} \rightarrow n_{64} &= 2^{64-1} \\
+&= 2^{63} \\
+&= \text{`r prettyNum(as.character(as.bigz(2^63)), big.mark = " ")`}
+\end{aligned}
+\end{equation*}
 
-$\text{Number on square 64} \rightarrow n_{64}=2^{64-1}=2^{63}$ = `r prettyNum(as.bigz(2^63), big.mark = " ")`
+and 
 
-$\text{Number on all 64 squares} \rightarrow T_{64}=2^{64}-1=$ \hspace{0.4cm} `r prettyNum(as.bigz(2^64-1), big.mark = " ")`
+\begin{equation*}
+\begin{aligned}
+\text{Number on all 64 squares} \rightarrow T_{64} &= 2^{64}-1 \\ 
+&= \text{`r prettyNum(as.character(as.bigz(2^64-1)), big.mark = " ")`}
+\end{aligned}
+\end{equation*}
+
 
 Those are big numbers! Quintillions or, if you prefer, billions of billions of grains of rice! But quite honestly that doesn't mean a lot to me. I tried asking [Wolfram Alpha](https://www.wolframalpha.com/input/?i=2^64+grains+of+rice) how much rice this was and while the nutrition label wasn't terribly helpful (@fig-rice), it is sort of fun!
 ```{r}

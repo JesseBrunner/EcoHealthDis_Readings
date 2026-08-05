@@ -1,6 +1,7 @@
 ---
-title: "The axes of interspecific interactions"
-date: "`r Sys.Date()`"
+title: "The axes of interactions"
+#date: "`r Sys.Date()`"
+author-meta: "Jesse Brunner"
 format:
   pdf: default
   html: 

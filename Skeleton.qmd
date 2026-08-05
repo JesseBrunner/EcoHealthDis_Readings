@@ -1,9 +1,14 @@
 ---
 title: "Skeleton"
-author: "Jesse Brunner"
-date: "`r Sys.Date()`"
+date-meta: "`r Sys.Date()`"
+author-meta: "Jesse Brunner"
 format:
-  pdf: default
+  pdf:
+    pdf-standard: ua-2
+    include-in-header: 
+      text: |
+        \usepackage{mhchem}
+        \usepackage{cancel}
   html: 
     self-contained: true
     grid:

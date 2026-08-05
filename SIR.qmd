@@ -1,54 +1,53 @@
 ---
-title: "Epidemic dynamics"
-subtitle: "Boxes and flows"
-author: "Jesse Brunner"
-date: "`r Sys.Date()`"
-output: tint::tintPdf
-latexfonts:
-  - package: newtxmath
-    options: 
-      - cmintegrals
-      - cmbraces
-  - package: ebgaramond-maths
-header-includes:
-   - \usepackage{booktabs}
-   - \usepackage{cancel}
+title: "Epidemic dynamics: boxes & flows"
+date-meta: "`r Sys.Date()`"
+author-meta: "Jesse Brunner"
+format:
+  pdf: 
+    include-in-header: 
+      text: |
+        \usepackage{cancel}
+  html: 
+    self-contained: true
+    grid:
+      margin-width: 350px
+format-links: false
+execute:
+  echo: false
+toc: false
+reference-location: margin
 ---
-
-```{r setup, include=FALSE}
-library(tufte)
-# invalidate cache when the tufte version changes
-knitr::opts_chunk$set(tidy = FALSE, 
-                      message = FALSE, 
-                      warning = FALSE,
-                      echo = FALSE,
-                      cache.extra = packageVersion('tufte'))
-options(htmltools.dir.version = FALSE)
-```
 
 ```{r, include=FALSE}
 library(tidyverse)
 library(scales) # for prettier axis labels
 library(simecol) # for running model 
+library(diagram) # for the box-and-arrow diagrams
 theme_set(theme_minimal())
 ```
-How does disease spread in a population? How do epidemics work? 
+
+
+How does disease spread in a population? How do epidemics work? Our goal here is to develop a bit of intuition about these questions using a class of mathematical models of the spread of infections in a population. These models are useful for organizing our thinking, focusing on the processes at play, and then translating these processes into population-level dynamics. As always, they are simplifications of reality, so pay attention to what you think is a reasonable starting point and what important aspects of biology we might be missing.  
 
 # Common processes
-At this point we have all seen at least one epidemic, if not many, happen around us. There have been flare ups of measles in many communities with low vaccination rates, two large Ebola virus epidemics in X and Y in recent years, and of course the COVID-19 pandemic^[A pandemic is just an epidemic with a global scale.]. And that is just epidemics in humans. In animals there are myriad epidemics every year, though most of the time these go unnoticed by the general population. Even plants have epidemic disease^[One disease ecologist has made a strong case that plants even have sexually transmitted infections. Pollinators, after all, often transmit infections.]. While the host populations and the etiologies^[Underlying causes of disease.] vary from viruses to bacteria to fungi to multicellular organisms^[Parasitic barnacles? Check! Parasitic plants? There are many, including mistletoes. Birds? Yup! Just look at the brown cow birds. ], disease ecologists and epidemiologists see a common set of processes at work in all of these epidemics. 
+At this point in our lives, we are fairly used to seeing epidemics, from flare ups of measles in communities with low vaccination rates, to Ebola virus epidemics to the COVID-19 pandemic^[A pandemic is just an epidemic with a global scale.]. There are myriad epidemics in populations of animal and even plants, too, though most go unnoticed by the general population.  While the host populations and the etiologies^[Underlying causes of disease.] vary from viruses to bacteria to fungi to multicellular organisms^[Parasitic barnacles? Check! Parasitic plants? There are many, including mistletoes. Birds? Yup! Just look at the brown cow birds.], disease ecologists and epidemiologists see a common set of processes at work in all of these epidemics. 
 
-1. **Transmission**. This is the process by which uninfected, but susceptible individuals become infected. There are several routes of transmission (e.g., by direct contact, from the environment, via the bite of some arthropod vector), but we'll come back to these later. 
+1. **Transmission**. This is the process by which uninfected, but susceptible individuals or "hosts^[A host is just the organism in or on which the parasite or pathogen lives.]" become infected. There are several routes of transmission (e.g., by direct contact, from the environment, via the bite of some arthropod vector), but we'll come back to these later. 
 
-2.  **Virulence**. This is the disease caused by infection---morbidity---potentially including death---mortality. This can range from barely detectable to mild (e.g., a fever and the sniffles) to very severe (e.g., bleeding out of every orifice).  Actually, every biological and medical discipline seems to use this word differently^[To a virologist, virulence means the capacity to replicate efficiently in a host, but to a doctor virulence usually refers to the severity of symptoms.]. I'm a disease ecologist and so we will think about virulence as the disease-induced reduction in host fitness. This usually implies direct mortality, although it could also be making an individual sick enough that they are more likely to die from other causes (e.g., predation, starvation). It would also include loss of reproductive output^[There are many, many castrating parasites, and not all of them are sexually-transmitted.]. 
+2.  **Virulence**. Every biological and medical discipline seems to use this word differently^[To a virologist, virulence means the capacity to replicate efficiently in a host, but to a doctor virulence usually refers to the severity of symptoms.]. To a disease ecologist virulence is the disease-induced reduction in host fitness. Althogh it could include the loss of reproductive fitness^[There are many, many castrating parasites, and not all of them are sexually-transmitted.] we usually mean disease-induced death. That is, for us virulence is the cumulative effects of disease caused by infection---morbidity or illness---potentially including death---mortality. Virulence can range from barely detectable to mild (e.g., a fever and the sniffles) to very severe (e.g., bleeding out of every orifice). In terms of the model, virulence is one way that we lose infected individuals  
  
-3. **Recovery**.  The job of the immune system is to prevent infections from taking hold and to clear them out if they get established. When we say recovery, we mean the latter. Yes, there's lots of fascinating complexities to how this all works^[It is worth noting that while we tend to take a very mammalian-focused view of immunology, with innate and acquired branches, B- and T-cells, cytokines and all of that, virtually every organism has some sort of immune system.  Have you heard of the CRISPR-Cas9 system that is all the rage in molecular biology? It comes from the antiviral defense system of bacteria. And plants have sophisticated immune responses, too.], but for our purposes we need to make only one distinction: Is there immune memory or not? If not, individuals recover, but can be re-infected. If there is memory, recovered individuals are resistant to re-infection, at least for some time^[Yes, immunity to some pathogens wains. That is why you need booster shots, e.g., for tetanus.].  
+3. **Recovery**.  The job of the immune system is to prevent infections from taking hold and to clear them out if they get established. When we say "recovery", we mean the latter. Recovery is the other way we lose infected individuals. Yes, there's lots of fascinating complexities to how this all works^[It is worth noting that while we tend to take a very mammalian-focused view of immunology, with innate and acquired branches, B- and T-cells, cytokines and all of that, virtually every organism has some sort of immune system.  Have you heard of the CRISPR-Cas9 system that is all the rage in molecular biology? It comes from the antiviral defense system of bacteria. And plants have sophisticated immune responses, too.], but for our purposes we need to make only one distinction: Is there immune memory or not? If not, individuals recover, but can be re-infected. If there is memory, recovered individuals are resistant to re-infection, at least for some time^[Yes, immunity to some pathogens wains. That is why you need booster shots, e.g., for tetanus.].  
 
-That's it. Sure, we can make all of these processes more nuanced and complex, but everything we might add, disease-wise, can be shoe-horned into one of these processes. Now let's see how they work together to make an epidemic!
+That's it^[Well, assuming we don't have other processes that lead to the addition or loss of individuals in our population. We'll keep it simple for now.]. Sure, we can make all of these processes more nuanced and complex, but everything we might add, disease-wise, can be shoe-horned into one of these processes. Now let's see how they work together to make an epidemic!
 
 # A divided population
 
-```{r boxes, fig.margin = TRUE, echo=FALSE, message=FALSE, fig.width = 4, fig.height = 3}
-library(diagram)
+```{r boxes}
+#| label: fig-SIR1
+#| column: margin
+#| warning: false
+#| fig-cap: "The boxes or compartments of an SIR model"
+#| fig-alt: "Boxes labeled S, I, and R"
 
 openplotmat()
 # pos <- coordinates(c(7))
@@ -67,8 +66,12 @@ Now it is time to start thinking about the rates at which the three processes oc
 # Rates of flow from the $I$ box
 But first, let me emphasize the key word in that last paragraph: _rates_. Why are we focusing on say the rate of recovery rather than the probability or odds an individual recovers?  The reason is that all of these processes, and the unfolding of the epidemic overall, are _dynamic_, they occur over time, and so how long individuals spend in one box or another matters. For instance, consider two infections with zero virulence and 100% recovery. Outcome-wise, they are identical, but what if the first infection was cleared in five days, on average, whereas the second one took 25 days. What would the size of the overall epidemics look like? Well, individuals with the second infection would be hanging around in the infectious box five times longer, meaning they'd have five times as long to pass on the infection. We would expect, all else equal, many more new infections from each infected individual, and much larger epidemics. Rates (and thus residence times) matter. 
 
-```{r boxarrowsI, fig.margin = TRUE, echo=FALSE, message=FALSE, fig.width = 4, fig.height = 3}
-library(diagram)
+```{r boxarrowsI}
+#| label: fig-SIR2
+#| column: margin
+#| warning: false
+#| fig-cap: "Adding in flows from I"
+#| fig-alt: "As in @fig-SIR1, but with arrows from the I box going to R (recovery) and Dead (virulence)"
 
 openplotmat()
 #
@@ -94,8 +97,14 @@ Since those that do not die recover, we can write the recovery rate as  $(1-\phi
 
 These are the _average_ rates of disease induced mortality and recovery _for an individual_^[Like a _per capita_ rate.]. The overall flow of individuals out of the infected box and into, well, a heap on the ground^[We haven't created a box for the dead individuals. Instead, we just know that animals leaving $I$ to virulence are dead.] is $0.02 \times I$ (or $\phi \gamma I$ more generally). Similarly, the flow of individuals out of the $I$ box and into the $R$ box is $0.08 \times I$ (or $(1-\phi) \gamma I$).
 
-```{r boxarrowsIeq, fig.margin = TRUE, echo=FALSE, message=FALSE, fig.width = 4, fig.height = 3}
-library(diagram)
+```{r boxarrowsIeq}
+#| label: fig-SIR3
+#| column: margin
+#| warning: false
+#| fig-cap: "Labeling the _rates_ of flow from I"
+#| fig-alt: "As in @fig-SIR2, but the arrows from I box to R and Dead are labeled with the rates (1-phi) gamma I and phi gamma I"
+
+
 
 openplotmat()
 
@@ -119,8 +128,13 @@ It is not essential that you are able to estimate virulence and recovery rates, 
 # Transmission
 
 
-```{r boxarrowS, fig.margin = TRUE, echo=FALSE, message=FALSE, fig.width = 4, fig.height = 3}
-library(diagram)
+```{r boxarrowS}
+#| label: fig-SIR4
+#| column: margin
+#| warning: false
+#| fig-cap: "Labeling the _rates_ of flow from I"
+#| fig-alt: "As in @fig-SIR1, but with an arrow from S to I box labeled transmission"
+
 
 openplotmat()
 straightarrow(c(0.17, 0.65), c(0.4, 0.65), arr.pos = 1)
@@ -149,7 +163,7 @@ $$
 c(N) \times \frac{I}{N} \times \pi.
 $$
 
-For simplicity, let's just assume that every susceptible makes $c'$ contacts per day, like 10 or something. Importantly, we're focusing on _potentially infectious_ contacts. This will depend on the pathogen or parasite. For some, just being in the same room or shaking hands might be sufficient, for others it might require prolonged close contact or sexual contact. Anyway, our rate per susceptible becomes
+For simplicity, let's just assume that every susceptible makes $c'$ contacts per day, like 10 or something. Importantly, we're focusing on _potentially infectious_ contacts. This will depend on the pathogen or parasite. For some, just being in the same room or shaking hands might be sufficient, for others it might require prolonged close contact or sexual contact^[One disease ecologist has made a strong case that even plants have sexually transmitted infections. Pollinators, after all, often transmit infections and pollination is sex...]. Anyway, our rate per susceptible becomes
 
 $$
 c' \frac{I}{N} \pi,
@@ -168,8 +182,13 @@ $$
 $$
 
 
-```{r boxarrowseq, fig.margin = TRUE, echo=FALSE, message=FALSE, fig.width = 4, fig.height = 3}
-library(diagram)
+```{r boxarrowseq}
+#| label: fig-SIR5
+#| column: margin
+#| warning: false
+#| fig-cap: "Labeling the _rates_ of flow from I"
+#| fig-alt: "As in @fig-SIR4, but the arrow from S to I is labeled beta time the fraction I over N time S and with the arrows from I to R and to Dead"
+
 
 openplotmat()
 # pos <- coordinates(c(7))
@@ -189,6 +208,7 @@ textplain(mid=c(0.3, 0.85),
 textplain(mid=c(0.7, 0.85), lab = expression((1-phi)*gamma*I), cex=1)
 textplain(mid=c(0.6, 0.3), lab = expression(phi*gamma*I), cex=1)
 ```
+
 
 
 # Putting it all together
@@ -250,8 +270,12 @@ This means that $\beta$ must have units of _per time_. Try it!
 
 This can be a useful way of making sure you did things correctly and also that you are thinking about your rates correctly. But do beware: just because your units work out does not mean you have the right answer!
 
-```{r, fig.margin = TRUE, echo=FALSE, out.width = "160px"}
-knitr::include_graphics("dimensional_analysis.png")
+```{r}
+#| label: fig-dimensional_analysis
+#| column: margin
+#| fig-cap: "From xkcd.com/687/ "
+#| fig-alt: "XKCD web comic about dimensional analysis."
+knitr::include_graphics("dimensional_analysis.png", dpi = 300)
 ```
 
 
@@ -301,7 +325,15 @@ SIR <- sim(SIR)
 
 OK, now here's what the model actually does (using the parameters we imagined above). How does it differ from your predictions? Why? (This is a good time to stop and refine or reconcile your thinking before moving on.) Do you understand why $I$ goes up and down? Why $S$ only declines and $R$ only increases? What happened to the total population size, $N$? Does this make sense to you?
 
-```{r, fig.margin=TRUE, fig.cap="Epidemic dynamics of an SIR model with $\\beta = 0.5$, $\\gamma=0.1$, and $\\phi=0.2$ and starting from a population with $S=100$ and $I=1$."}
+```{r}
+#| label: fig-epi1
+#| column: margin
+#| warning: false
+#| fig-cap: "Epidemic dynamics of an SIR model with $\\beta = 0.5$, $\\gamma=0.1$, and $\\phi=0.2$ and starting from a population with $S=100$ and $I=1$."
+#| fig-alt: "Three lines representing the quantities (y-axis) of S, I, and R over time (x-axis)"
+
+
+
 out(SIR) %>% 
   # turn it from wide to long
   gather(key="Box", value="Number", S, I, R) %>% 
@@ -312,12 +344,18 @@ out(SIR) %>%
   scale_color_manual(values = c("Blue", "Red", "Green"))
 ```
 
+
+
 You'll probably notice that the model describes fractions of individuals in each box. This is because these equations describe numbers continuously, not as discrete individuals. You can make a model with discrete individuals, but it will necessarily be stochastic, involving chance events (e.g., did individual 99 get infected in this time step or not?). These ordinary differential equations (ODEs) are best thought of as describing the _average_ dynamics and work best in large populations.
 
 ## Another aside: including an incubation period
 
-```{r boxarrowSEIR, fig.margin = TRUE, echo=FALSE, message=FALSE, fig.width = 4, fig.height = 3}
-library(diagram)
+```{r boxarrowSEIR}
+#| label: fig-SEIR
+#| column: margin
+#| warning: false
+#| fig-cap: "The structure of an SEIR model"
+#| fig-alt: "Four boxes with arrows going from S to E to I to R"
 
 openplotmat()
         # pos <- coordinates(c(7))
@@ -345,7 +383,15 @@ openplotmat()
 
 You may have noticed or recall that we are assuming that all individuals in the $I$ class are equally infectious. One perhaps non-obvious consequence of this is that infected individuals in this model are _instantaneously_ infectious to others. But most real-life infections take a bit of time to ramp up; there is an incubation period^[Doctors tend to define the incubation period as the time until symptoms develop, but epidemiological modelers would usually think of it as the time until they are infectious. They _can_ be the same thing, but not always.]. To account for this we can include an exposed-but-not-yet-infectious class, $E$. Newly infected individuals flow into the $E$ box with transmission and then flow out at a rate $k$ = 1/(the incubation period), on average. Everything else is the same. 
 
-```{r simpleSEIR, fig.margin=TRUE, fig.cap="Epidemic dynamics of an SEIR model with $\\beta = 0.5$, $k = 0.33$, $\\gamma=0.1$, and $\\phi=0.2$ and starting from an a population with $S=100$ and $I=1$."}
+```{r simpleSEIR}
+#| label: fig-epi2
+#| column: margin
+#| warning: false
+#| fig-cap: "Epidemic dynamics of an SEIR model with $\\beta = 0.5$, $k = 0.33$, $\\gamma=0.1$, and $\\phi=0.2$ and starting from an a population with $S=100$ and $I=1$."
+#| fig-alt: "Four lines representing the quantities (y-axis) of S, E, I, and R over time (x-axis)"
+
+
+
 SEIR <- odeModel( 
           main = function (time, init, parms, ...) { 
             # (1) unpack variables
@@ -399,7 +445,13 @@ $$
 \frac{dI}{dt} = \overbrace{ \beta\frac{I}{N}S }^{gains} - \overbrace{\gamma I}^{losses}
 $$
 
-```{r, fig.margin=TRUE, fig.cap="Rates of gains (solid line) and losses (dotted line) as a function of $I$ with $\\beta = 1$, $\\gamma=0.1$, and, for simplicity, $\\phi = 1$."}
+```{r}
+#| label: fig-epi_fade
+#| column: margin
+#| warning: false
+#| fig-cap: "Rates of gains (solid line) and losses (dotted line) as a function of $I$ with $\\beta = 1$, $\\gamma=0.1$, and, for simplicity, $\\phi = 1$."
+#| fig-alt: "An upward parabolic solid line and a dotted increasing straight line"
+
 
 tibble(I = 0:100, 
        gains = 0.5*(I/100)*(100-I),
@@ -468,7 +520,7 @@ R_0 &= \beta \times 1/(\gamma) \\
 
 This is the magic term $R_0$, often called "R-naught" from the British English habit of calling zero "naught." It is also known as the reproductive number of the infection^[And its interpretation is analogous to the reproductive number of an organism estimated from a life table, $R_0 = \sum l_x b_x$ if you've seen one elsewhere.]. If $R_0>1$, meaning that an infection is expected to more than replace itself, the epidemic is expected to grow, on average, and if $R_0<1$, meaning an infection will not replace itself, the epidemic is expected to fade before it really gets going. 
 
-For context, one study^[[Liu et al. (2020) J. Travel Med.](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7074654/)] of early estimates of $R_0$ for COVID-19 found values from a low of 1.5 to a high of 6.68 and one^[[Zhang et al. (2020) Int. J. Infect. Dis.](https://www.sciencedirect.com/science/article/pii/S1201971220300916)] from the Diamond Princess cruise ship, which was a nice, closed and well-studied population, was 2.28. All of these estimates suggest that COVID-19 would tend to grow, but by different amounts. Why the range of estimates? Some of it is just a product of statistical uncertainty and data sets of varying size and quality. But more fundamentally, the rate of transmission and duration of infection are going to depend on the population in which the infection is spreading (e.g., young or old, healthy or sick) and the local conditions (e.g., crowded or not, little or lots of movement and contacts, as well as, perhaps, temperature and humidity). In other words, $R_0$ is _not_ a fixed characteristic of an infection or pathogen, but rather a product of that pathogen in a particular host population. 
+For context, one study^[[Liu et al. (2020) J. Travel Med.](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7074654/)] of early estimates of $R_0$ for COVID-19 found values from a low of 1.5 to a high of 6.68 and one^[[Zhang et al. (2020) Int. J. Infect. Dis.](https://www.sciencedirect.com/science/article/pii/S1201971220300916)] from the Diamond Princess cruise ship, which was a nice, closed and well-studied population, was 2.28. All of these estimates suggested that COVID-19 would tend to grow, but by different amounts. Why the range of estimates? Some of it is just a product of statistical uncertainty and data sets of varying size and quality. But more fundamentally, the rate of transmission and duration of infection are going to depend on the population in which the infection is spreading (e.g., young or old, healthy or sick) and the local conditions (e.g., crowded or not, little or lots of movement and contacts, as well as, perhaps, temperature and humidity)^[Here is one for COVID-19 in WSU and Pullman in the fall of 2020: [Clancey et al. (2025) Epi.](https://pubmed.ncbi.nlm.nih.gov/40838608) ]. In other words, $R_0$ is _not_ a fixed characteristic of an infection or pathogen, but rather a product of that pathogen in a particular host population. 
 
 It is important to remember that $R_0$ is defined with a single infected entering a wholly susceptible population. When an epidemic has begun this is no longer the case and so we instead think of the _effective_ reproductive number, $R$ or $R_{t}$, which describes the same things given whatever $I$ and $S$ are at the time^[See this site for state-by-state estimates of $R_t$ https://rt.live/]. 
 
@@ -482,6 +534,12 @@ $$
 Well, let's see what happens if we plot our simulated epidemic on a logarithmic y-axis. 
 
 ```{r, fig.margin=TRUE, fig.cap="Epidemic dynamics of an SIR model on a logarithmic y-axis. The parameters and results are the same as above."}
+#| label: fig-epi_log
+#| column: margin
+#| warning: false
+#| fig-cap: "Epidemic dynamics of an SIR model on a logarithmic y-axis. The parameters and results are the same as above."
+#| fig-alt: "Same as @fig-epi1, but on a log y-axis"
+
 out(SIR) %>% 
   # turn it from wide to long
   gather(key="Box", value="Number", S, I, R) %>% 
@@ -494,7 +552,14 @@ out(SIR) %>%
 ```
 
 Clearly, none of these lines are straight over the whole time period, but look at the line for the infected individuals. It looks like its initial increase follows a straight line for a while, and then it seems to decline along a straight line later. (You can probably find some bits of the other two lines that approximately straight for some stretches, too. But let us focus on the $I$ box.) Let me zoom in on the first ten days of the $I$ line and fit a linear regression to it:
-```{r, fig.margin=TRUE, fig.cap="The first ten days of dynamics of the infected box from an SIR model on a logarithmic y-axis. The blue line is from a linear regression."}
+```{r}
+#| label: fig-epi_logI
+#| column: margin
+#| warning: false
+#| fig-cap: "The first ten days of dynamics of the infected box from an SIR model on a logarithmic y-axis. The blue line is from a linear regression."
+#| fig-alt: "Just the red line (number of I) from @fig-epi_log over the first ten days, where it is approximately linear"
+
+
 out(SIR) %>% 
   # turn it from wide to long
   gather(key="Box", value="Number", S, I, R) %>% 
@@ -517,11 +582,12 @@ from which we get $1+`r round(coef(l)[2], 3)`/0.1 = `r round(1+coef(l)[2]/0.1, 3
 
 In actual practice, researchers _do_ use this approach to estimate $R_0$, but actually sorting out the duration of time in the infected class can be tricky and nuanced. There are many other more sophisticated approaches to estimating $R_0$, as you might expect, but it is nice to see that 1) simple can work and 2) once again, plotting numbers against time on a logarithmic scale tells us something about the underlying process^[I'll let you think about what the linear _decline_ in $I$ on the graph above means and what the slope might represent.].
 
+
 # What does it take for an epidemic _not_ to grow? Reducing $R_t < 1$
 
 You can think about most public health interventions as aimed at reducing $R_0$ (or really $R_t$, which relaxes the assumption of a wholey susceptible population) so that on average each infected individual produces less than one new infection. When this happens, the epidemic will start to fade. Of course this happens naturally when an infection has spread so much that it runs out of susceptible hosts^[[Although it can take a long time get there!](https://www.nytimes.com/interactive/2020/05/28/upshot/coronavirus-herd-immunity.html)]. Like a wildfire running out of unburned trees, the spread of the infection will slow down and eventually fade out. What's more, like the unburned trees after a fire, an epidemic will not generally infect everyone, even if left uncontrolled. This was one of the more surprising results from early epidemic models. Even highly transmissible infections will not reach everyone. 
 
-This finding, and the underlying logic, that we might reach a critical level of "**heard immunity**", has featured prominently in discussions about how the COVID-19 pandemic might end. If a large enough fraction of the population is immune (i.e., in the $R$ class) then infected individuals will, on average, fail to pass on their infection to someone else and the epidemic will wain. This has sometimes led to a I-might-as-well-get-it-over-with attitude in some, although [this is not without serious risks](https://www.nytimes.com/2020/04/08/opinion/coronavirus-parties-herd-immunity.html). A much better strategy is to intervene earlier in ways that reduce $R_t \text{ or } R_0 < 1$.) Indeed you can map all interventions on to one or more components of the equation for $R_0$ or the underlying bits in our SIR model.
+This finding, and the underlying logic, that we could reach a critical level of "**heard immunity**", featured prominently in early discussions about how the COVID-19 pandemic might end. If a large enough fraction of the population is immune (i.e., in the $R$ class) then infected individuals will, on average, fail to pass on their infection to someone else and the epidemic will wain. This sometimes leads to a I-might-as-well-get-it-over-with attitude in some, although [this is not without risks](https://www.nytimes.com/2020/04/08/opinion/coronavirus-parties-herd-immunity.html). A much better strategy is to intervene earlier in ways that reduce $R_t \text{ or } R_0 < 1$.) Indeed you can map all interventions on to one or more components of the equation for $R_0$ or the underlying bits in our SIR model^[More on this later!].
 
 * **Vaccination** essentially reduces $S$ and puts those individuals into the $R$ class. This means fewer individuals that can get sick and, if you get a high enough fraction of the population vaccinated, that first infected individual will not find enough susceptibles in the population to replace itself before it dies or recovers. This is heard immunity, but without all of the morbidity and mortality to get there^[[Yes, vaccines can have side effects, but those are much, much, much less severe than the disease.](https://gimletmedia.com/shows/science-vs/n8ho59/)]. What's more, you can protect particularly vulnerable groups, such as the very young or old or immunocompromised, by vaccinating the people around them.    
   There is a simple equation that describes the fraction of the population that must be vaccinated, which we call $q$, to ensure that $R_0 \leq 1$: $q \geq 1-\tfrac{1}{R_0}$. As you would expect, the higher $R_0$, the greater that fraction you must vaccinate. 
@@ -529,4 +595,4 @@ This finding, and the underlying logic, that we might reach a critical level of 
 * **Contact tracing** is especially important because it allows one to focus these efforts to reduce infectious contacts on 1) the infected people and 2) their close contacts that might have been infected. With good contact tracing^[Which requires good testing broadly applied.] one need not apply control measures blindly across a whole population. Indeed, most successful control programs, such as the recent end to the Ebola virus outbreak in northeastern [Democratic Republic of the Congo](https://www.scientificamerican.com/article/worlds-second-deadliest-ebola-outbreak-ends-in-democratic-republic-of-the-congo/), involve contact tracing in combination with quarantine and, often, targeted vaccination. 
 * **Treatment** of infections, often with chemical therapeutics, can reduce the duration of an infection, as well as reduce morbidity and mortality. If individuals are infectious for less time^[It is important to note that some treatments and vaccines can reduce symptoms in a person or animal without reducing their ability to spread the infection. This is good for the individuals, sure, but it can exacerbate the spread of infection, making the epidemic worse. This is one of many potential conflicts between what is optimal for an individual vs for a population.], there is a shorter window for transmission, which can reduce $R_0$. 
 
-If you would like to try your hand at ending the COVID-19 epidemic, try this fun interactive application: https://alhill.shinyapps.io/COVID19seir/ . It includes a lot of sliders, but the essential features of the system (outside of space and stochastic dynamics) are there. 
+

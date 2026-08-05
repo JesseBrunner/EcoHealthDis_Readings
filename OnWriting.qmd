@@ -1,6 +1,7 @@
 ---
 title: "Some advice for scientific writers"
-date: "`r Sys.Date()`"
+date-meta: "`r Sys.Date()`"
+author-meta: "Jesse Brunner"
 format:
   pdf: default
   html: 

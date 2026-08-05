@@ -1,6 +1,9 @@
 ---
-title: "Making more of oneself: Life as chemical reactions"
-date: "`r Sys.Date()`"
+title: "Making more of oneself"
+subtitle: "Life as chemical reactions"
+date-meta: "`r Sys.Date()`"
+author-meta: "Jesse Brunner"
+# date: "`r Sys.Date()`"
 format:
   pdf: default
   html: 

@@ -1,7 +1,7 @@
 ---
 title: "Why (model) predictions fail"
-author: "Jesse Brunner"
-date: "`r Sys.Date()`"
+date-meta: "`r Sys.Date()`"
+author-meta: "Jesse Brunner"
 format:
   pdf: default
   html: 

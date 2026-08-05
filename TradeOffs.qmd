@@ -1,8 +1,11 @@
 ---
-title: "Trade-offs: you just can't maximize everything"
-date: "`r Sys.Date()`"
+title: "Trade-offs"
+subtitle: "You just can't maximize everything"
+#date: "`r Sys.Date()`"
+author-meta: "Jesse Brunner"
 format:
-  pdf: default
+  pdf:
+    pdf-standard: ua-2
   html: 
     self-contained: true
     grid:

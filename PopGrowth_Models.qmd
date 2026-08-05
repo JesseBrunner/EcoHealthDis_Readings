@@ -1,6 +1,7 @@
 ---
 title: "Population growth & why we create models"
-date: "`r Sys.Date()`"
+date-meta: "`r Sys.Date()`"
+author-meta: "Jesse Brunner"
 format:
   pdf: default
   html: 
