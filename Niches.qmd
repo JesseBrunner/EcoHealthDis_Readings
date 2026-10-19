@@ -1,0 +1,68 @@
+---
+title: "Niches and ranges"
+date-meta: "`r Sys.Date()`"
+author-meta: "Jesse Brunner"
+format:
+  pdf:
+    pdf-standard: ua-2
+  html: 
+    self-contained: true
+    grid:
+      margin-width: 350px
+format-links: false
+execute:
+  echo: false
+toc: false
+reference-location: margin
+---
+
+The niche^[However you want to pronounce it.] is a lovely idea. From the French for "recess," meaning a nook, cranny, cavity, or cubbyhole, niche came to mean "a comfortable or suitable position in life or employment" (New Oxford American Dictionary). This is the form in which Joseph Grinnell and later Charles Elton used the term, meaning something like a place or role in the environment or community that a species might play or "fill." There are nuances to their views of niches, but honestly, the waters get muddy, quickly. Thus, between the colloquial uses of the term "niche"^[E.g., unusual, specialized, ...] and the sometimes vague scientific definitions, this single word is one of the more commonly used, and commonly confused terms in ecology. 
+
+In this class we are going to side-step the Grinnellian^[Grinnell thought of the niche as the habitat in which a species lived and the species' adaptations, especially behavioral adaptations, to that habitat.] or Eltonian^[Elton emphasized a species' use of resources along with its interactions with other species.] versions and instead use the Hutchinsonian definition of a niche. It is a bit less intuitive at first—it flips the whole idea of suitability on its head—but much more useful in the long run. It helps us translated the resource requirements and tolerance of conditions into a sense of where a species  can and cannot live. It links physiology to species ranges. And it underpins all of those fancy maps showing the future (potential) distributions of, say Dengue virus-carrying mosquitoes or ticks or hookworms. 
+
+# The Hutchinsonian niche
+
+In an honestly fairly impenetrable^[If you've heard the "n-dimensional hypervolume" used in the context of biology before, it came from this paper. [Hutchinson (1957). "Concluding remarks" Cold Spring Harbor Symposia on Quantitative Biology.](http://artifex.org/~ecoreaders/lit/Hutchinson1957.pdf)] 1957 paper G. Evelyn Hutchinson set his definition of a niche. I am paraphrasing and adapting it to our needs, but he thought of a niche as "the set of environmental conditions and resources over which a species can persist." Or to put it another way, it is **the suite of conditions and resources required by a species to persist indefinitely.** 
+
+Notice what is _not_ in this definition. There is nothing about the role a species plays in its community or ecosystem. Indeed, there are no biotic interactions at all outside of other species potentially being resources the species of interest^[More on this later.]. There is nothing about "optimal" conditions or the like; a species may barely eke out an existence or it may thrive, but all this definition care about is whether the species persists. Moreover, the idea that a niche can be filled or unfilled does not make sense in this view. The key is that to Hutchinson, the niche is a property or characteristic of the species, not of the environment or its place in the environment. In his view, a niche is just a description of what the species needs to persist. 
+
+What is somewhat clever is that we can, at least in theory, _quantify_ the niche of a species. We first think of these requirements as different axes on a graph and then we determine (experimentally, observationally, or from first principles) which combinations of values along those axes. Here is one of my favorite examples, because it is so visual (@fig-VibrioNiche). 
+
+```{r}
+#| label: fig-VibrioNiche
+#| fig-cap: "Left: A two-dimensional salinity (y-axis)–temperature (x-axis) gradient created in a solid growth medium in in 24 × 24 cm square culture dishes. The white spots are growing colonies of _Vibrio_ bacteria. The dark spots are locations where the colonies _just_ persisted. Cores were taken at these locations so that salinity could be measured directly. Right: The projection of the fundamental Hutchinsonian niche of this bacterium. From Materna et al. (2012) Shape and evolution of the fundamental niche in marine Vibrio. ISME J 6, 2168–2177."
+#| fig-alt: "Left: A top-down view of a 24 × 24 grid of growth media in which colonies can be seen growing in some areas, representing low to mederate salinity and low to moderate temperature. Right: A similar-looking graph showing the combinations of salinity and temperature under which this bacterium can grow."
+
+knitr::include_graphics("VibrioNiche.png", dpi = 200)
+
+```
+
+In this example, and most we graph, we consider just two axes. But in principle we could have one axis for each of the many, many resources and conditions that were important to a species^[Remember the n-dimensional hypervolume? This is where that comes in. We have _n_ dimensions for each of the _n_ different axes that are relevant. In real research we often present just two axes, but they are often statistical representations (e.g., axes of a PCA) of many different variables. Biologically they are harder to interpret, but they capture more of the many dimensions that are important.]. The idea is simply that with certain bounds (e.g., of salinity and temperature) a species can persist, and outside it cannot. 
+
+The axes of a niche include both conditions (e.g., temperature, salinity) and resources (e.g., sunlight, water availability, soil nitrogen concentrations). And these axes may or may not be independent of one another. Consider, for instance, a species requirements for water. Do you think that those minimum requirements will change with the prevailing temperature? Probably! Or maybe a species can persist at colder temperatures, but only if it has access to more food. You get the idea.
+
+This, in its own right, is useful. It allows us to characterize niches in a quantitative way. We can compare the niches of different species or different populations of a species (e.g., in an ancestral and invasive range). We can also think about using this information as a means of intervening, for instance restricting resources needed by a nuance species to persist^[While the draining of swamps in the American Southeast predates the Hutchinsonian niche, the idea to remove a needed resource---breeding habitat---perfectly aligns with this thinking.]. 
+
+# Hutchinson's duality
+  
+The real genius of Hutchinson's formulation of a niche is how it connects with where a species can live: its distribution or range^[Or in his original lingo, the "biotope." I told you he made it tough to wade through!]. The idea is that any place a species lives and persists _must_ provide the necessary resources and suitable conditions. If you were to measure all of these things from an area and plot them in "niche space" (i.e., that graph with many axes), the point would necessarily fall within the niche of the organism. And likewise, if you were to find all of the places on Earth that fell within the niche of the organism (i.e., had the right combination of temperature and humidity and pH and so on), you would be describing the potential range, all of the places that species _could_ live. We can map one to the other, with a little bit of careful wording and thought.
+
+Importantly, a given point in niche space (i.e., particular values of conditions and resources) may be found in many places in the world, but a given place in the world will only be represented by a single point in niche space. Or the make it sound all fancy, we have a one to many mapping of niches into ranges.  
+
+# Fundamental vs. realized niches
+The *fundamental niche* is the full suite of conditions and resources in which a species _could_ live. If mapped onto the real world, it would represent the fundamental or *potential range* of that species. 
+
+Of course a species may not live in all of those places within the potential range (and thus may not occupy all of its fundamental niche) for a number of reasons. It may not be able to get to some of those places. Imagine a perfectly suitable island in the middle of the Pacific ocean that our species, a salamander for instance, simply cannot disperse to. Or maybe it simply hasn't had enough time to cross the continental divide to get to other suitable locations. Time and dispersal can strongly shape what we call the *realized* range (and thus realized area in niche space) of the species. So, too, can species interactions. For instance, a predator or competitor or parasite might prevent a species from persisting in some place that would otherwise have all of the conditions and resources required by that species. 
+
+We're not going to get into these ideas of competitive exclusion, resource or predator partitioning, or other fancy-sounding ideas. For our purposes it is sufficient to simply note that the realized niche (or range) will be some subset of the fundamental niche (or range) and that there are many reasons that this might occur.
+
+# Bottom up or top down?
+
+We tend to approach niches and ranges in a couple of ways. First, we can sort out the conditions and resources that are needed by a species, trying to sketch out (at least some axes) of the niche. For instance, we can see how a species survives or performs across a gradient of temperatures and salinity concentrations or the like. We might then use this sketch of the fundamental niche to figure out where a species could live. I think of this as the bottom up approach to niches and ranges. 
+
+The other way is the opposite. We figure out where a species is (currently or historically) found and presumably persisting, measure the conditions there^[It's almost always just conditions that are measured. These are things that we can remotely sense, whereas the abundance of some combination of food items they may need is much harder to estimate, especially at scale.] and use that to sketch out the realized niche of the species. I call this the top down approach.
+
+Researchers do both, but it is getting much easier to do the top down version very quickly from your comfortable office. You can download geotagged location data and climatic data sets and with some simple software come up with realized niches in less than an hour. Do they have strong assumptions built into them? Absolutely! But they are a good starting point and often useful. For instance, imagine there is a species that is invading North America. Maybe we can predict where it might be able to live (and hopefully not live) if we knew where it could live in its native range. Or maybe we can see where this pesky Zika virus-carrying mosquito may end up being able to live if climate change projections are correct. See how useful that can be?
+
+# A final question for you
+I'm going to leave this for you to ponder: if, say, climate change continues to change conditions on earth, how (or when) would you expect the range and niche of a species to change? There are actually a few different aspects to this question, so give it some thought. I'll take your fundamental and realized questions in class or office hours!
